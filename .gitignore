@@ -4,3 +4,5 @@ yarn-error.log
 .history
 .env
 logs/
+.DS_Store
+src/front/build

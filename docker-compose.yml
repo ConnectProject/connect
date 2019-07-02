@@ -10,7 +10,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
+      MONGO_INITDB_PARSE_DATABASE: ${MONGO_DB_NAME}
+      MONGO_INITDB_API_DATABASE: ${MONGO_DB_NAME}-api
+      MONGO_INITDB_SANDBOX_DATABASE: ${MONGO_DB_NAME}-sandbox
   mongo-express:
     image: mongo-express
     ports:
