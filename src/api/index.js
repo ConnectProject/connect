@@ -1,15 +1,10 @@
-const auth = require('./services/auth');
-const logger = require('./../logger');
+const authMiddleware = require('./middleware/auth');
+const authController = require('./controller/auth');
+const applicationController = require('./controller/application');
 
 module.exports = srv => {
-  srv.post('/api/auth', async (req, res) => {
-    try {
-      const jwt = await auth.connectUser(req.body.code);
+  srv.use('/api/*', authMiddleware);
 
-      res.send(jwt);
-    } catch (err) {
-      logger(err);
-      res.sendStatus(500);
-    }
-  });
+  srv.post('/api/auth', authController.github);
+  srv.post('/api/application', applicationController.create);
 };

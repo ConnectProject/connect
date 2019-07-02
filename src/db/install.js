@@ -8,8 +8,8 @@ class MongoInstall {
   async exec() {
     let developer = new Developer({
       login: 'sample',
-      githubId: 12345,
-      companyName: 'company',
+      github_id: 12345,
+      company_name: 'company',
       email: 'undefined@company.com',
       created_at: new Date(),
       updated_at: new Date(),
@@ -18,7 +18,7 @@ class MongoInstall {
     developer = await developer.save();
 
     let application = new Application({
-      developerId: developer._id,
+      developer_id: developer._id,
       name: 'sampleApp',
       token: 'superToken',
       created_at: new Date(),

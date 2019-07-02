@@ -47,6 +47,9 @@ testConfig(MONGO_PASSWORD, 'MONGO_PASSWORD');
 const MONGO_DB_NAME = process.env.MONGO_DB_NAME;
 testConfig(MONGO_DB_NAME, 'MONGO_DB_NAME');
 
+const PUBLIC_URL = process.env.PUBLIC_URL;
+testConfig(PUBLIC_URL, 'PUBLIC_URL');
+
 const AUTH_SECRET = process.env.AUTH_SECRET;
 testConfig(AUTH_SECRET, 'AUTH_SECRET');
 
@@ -69,6 +72,7 @@ module.exports = {
   MONGO_USERNAME,
   MONGO_PASSWORD,
   MONGO_DB_NAME,
+  PUBLIC_URL,
   AUTH_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,

@@ -4,6 +4,7 @@ const parseApi = require('./middleware/parse');
 const parseDashboard = require('./middleware/parseDashboard');
 const path = require('path');
 const api = require('./api');
+const logger = require('./logger');
 
 const app = express();
 
@@ -28,5 +29,5 @@ app.get('*', (_, res) => {
 const port = APP_PORT || 1337;
 
 app.listen(port, function() {
-  console.log('parse-server-example running on port ' + port + '.');
+  logger('connect running on port ' + port + '.');
 });

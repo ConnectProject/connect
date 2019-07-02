@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { setAuthToken } from '../../services/auth';
 import { ROUTES } from '../../component/Router';
+import Page from '../../component/Page';
 
 class Github extends React.Component {
   constructor(props) {
