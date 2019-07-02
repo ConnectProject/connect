@@ -1,5 +1,5 @@
 const debug = require('debug');
 
-const runtrackerServerLog = debug('connect');
+const connectServerLog = debug('connect');
 
-module.exports = runtrackerServerLog;
+module.exports = connectServerLog;
