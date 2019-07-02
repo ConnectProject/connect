@@ -31,6 +31,12 @@ Then start the docker compose to get a mongo db ready to use
 docker-compose -d up
 ```
 
+Build the react application
+
+```
+yarn build
+```
+
 The project is ready to run
 
 ```
