@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/index.js",
     "build": "webpack --config webpack.conf.js",
-    "watch": "DEBUG=connect* nodemon --inspect --exec \"yarn build && yarn start\"",
+    "watch": "DEBUG=*,-babel* nodemon --inspect --exec \"yarn build && yarn start\"",
     "db.install": "node src/db/install.js",
     "tslint.check": "tslint",
     "tslint.fix": "tslint --fix",

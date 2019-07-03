@@ -1,8 +1,10 @@
 import * as Cookie from 'js-cookie';
 import * as jwtDecode from 'jwt-decode';
 
+const COOKIENAME = 'jwt-connect';
+
 export const logout = () => {
-  Cookie.remove('jwt');
+  Cookie.remove(COOKIENAME);
 };
 
 export const setAuthToken = token => {
@@ -10,7 +12,7 @@ export const setAuthToken = token => {
     return false;
   }
 
-  Cookie.set('jwt', token);
+  Cookie.set(COOKIENAME, token);
   return true;
 };
 
@@ -38,7 +40,7 @@ const isJwtValid = jwt => {
 };
 
 export const getJwt = () => {
-  const jwt = Cookie.get('jwt');
+  const jwt = Cookie.get(COOKIENAME);
   return jwt && isJwtValid(jwt) ? jwt : null;
 };
 

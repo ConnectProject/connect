@@ -12,7 +12,7 @@ class Naming {
   }
 
   async isUniqName(name) {
-    const application = await Application.findOne({ parseName: name }).exec();
+    const application = await Application.findOne({ parse_name: name }).exec();
 
     return application === null;
   }
