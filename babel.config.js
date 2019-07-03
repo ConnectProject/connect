@@ -8,5 +8,13 @@ module.exports = function(api) {
 
   api.cache.never();
 
-  return { presets, plugins };
+  return {
+    presets,
+    plugins,
+    env: {
+      development: {
+        compact: true,
+      },
+    },
+  };
 };

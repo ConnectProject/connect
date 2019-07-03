@@ -12,7 +12,7 @@ class Application {
     const parseName = await naming.getUniqName(input.name);
 
     let application = new ApplicationModel({
-      developer_d: developer._id,
+      developer_id: developer._id,
       name: input.name,
       description: input.description,
       parse_name: parseName,
@@ -26,8 +26,6 @@ class Application {
 
     application = await application.save();
 
-    console.log(application);
-
     var user = new Parse.User();
     user.set('username', parseName);
     user.set('password', token);
@@ -37,6 +35,25 @@ class Application {
     } catch (error) {
       logger('Error: ' + error.code + ' ' + error.message);
     }
+
+    return application;
+  }
+
+  async update(id, developer, input) {
+    const application = await ApplicationModel.findOneAndUpdate(
+      {
+        _id: id,
+        developer_id: developer._id,
+      },
+      {
+        name: input.name,
+        description: input.description,
+        apple_store_link: input.appleStoreLink,
+        google_market_link: input.googleMarketLink,
+        updated_at: new Date(),
+      },
+      { new: true },
+    ).exec();
 
     return application;
   }

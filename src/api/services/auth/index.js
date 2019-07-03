@@ -7,7 +7,9 @@ const Developer = require('./../../../db/model/developer');
 class Auth {
   // Generate a token and send connect link by email
   async createUserIfNotExist(userGithub) {
-    let developer = await Developer.findOne({ githubId: userGithub.id }).exec();
+    let developer = await Developer.findOne({
+      github_id: userGithub.id,
+    }).exec();
 
     if (!developer) {
       developer = new Developer({
