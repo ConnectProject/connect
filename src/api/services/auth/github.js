@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('./../../config');
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('./../../../config');
 
 class Github {
   async getAccessToken(code) {

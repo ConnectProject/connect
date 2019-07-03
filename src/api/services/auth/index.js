@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-const { AUTH_SECRET } = require('../../config');
+const { AUTH_SECRET } = require('../../../config');
 const github = require('./github');
-const Developer = require('./../../db/model/developer');
+const Developer = require('./../../../db/model/developer');
 
 class Auth {
   // Generate a token and send connect link by email
@@ -12,8 +12,8 @@ class Auth {
     if (!developer) {
       developer = new Developer({
         login: userGithub.login,
-        githubId: userGithub.id,
-        companyName: userGithub.company,
+        github_id: userGithub.id,
+        company_name: userGithub.company,
         email: userGithub.email,
         created_at: new Date(),
         updated_at: new Date(),
@@ -35,6 +35,7 @@ class Auth {
       {
         login: developer.login,
         name: userGithub.name,
+        id: developer.github_id,
         iat: moment().valueOf(),
         exp: moment()
           .add(1, 'days')
