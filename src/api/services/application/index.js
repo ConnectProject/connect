@@ -5,6 +5,14 @@ const uuidv4 = require('uuid/v4');
 const logger = require('./../../../logger');
 
 class Application {
+  async list(developer) {
+    return ApplicationModel.find({ developer_id: developer._id });
+  }
+
+  async get(developer, id) {
+    return ApplicationModel.findOne({ developer_id: developer._id, _id: id });
+  }
+
   async create(developer, input) {
     const token = uuidv4();
     const tokenSandbox = uuidv4();

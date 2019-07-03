@@ -1,0 +1,18 @@
+const logger = require('./../../logger');
+
+module.exports = async (req, res, next) => {
+  try {
+    if (req.url.match('/api/auth')) {
+      return next();
+    }
+
+    if (req.auth.developer && req.auth.developer._id) {
+      return next();
+    }
+
+    return res.sendStatus(403);
+  } catch (err) {
+    logger(err);
+    return res.sendStatus(500);
+  }
+};

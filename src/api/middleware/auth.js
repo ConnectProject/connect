@@ -41,8 +41,6 @@ module.exports = async (req, res, next) => {
       developer = await Developer.findOne({
         github_id: jwtDeveloper.id,
       }).exec();
-    } else {
-      developer = new Developer();
     }
 
     req.auth = {
@@ -50,9 +48,9 @@ module.exports = async (req, res, next) => {
       developer,
     };
 
-    next();
+    return next();
   } catch (err) {
     logger(err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 };
