@@ -32,10 +32,10 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      const valid = createValidator(req.body);
+      const validatorErrors = createValidator(req.body);
 
-      if (valid) {
-        return res.status(400).send(valid);
+      if (validatorErrors) {
+        return res.status(400).send(validatorErrors);
       }
 
       const application = await applicationService.create(
@@ -51,10 +51,10 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-      const valid = createValidator(req.body);
+      const validatorErrors = createValidator(req.body);
 
-      if (valid) {
-        return res.status(400).send(valid);
+      if (validatorErrors) {
+        return res.status(400).send(validatorErrors);
       }
 
       const application = await applicationService.update(
