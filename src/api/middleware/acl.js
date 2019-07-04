@@ -2,7 +2,7 @@ const logger = require('./../../logger');
 
 module.exports = async (req, res, next) => {
   try {
-    if (req.url.match('/api/auth')) {
+    if (req.baseUrl.match('/api/auth')) {
       return next();
     }
 

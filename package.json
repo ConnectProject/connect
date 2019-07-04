@@ -6,7 +6,6 @@
     "start": "node src/index.js",
     "build": "webpack --config webpack.conf.js",
     "watch": "DEBUG=*,-babel* nodemon --inspect --exec \"yarn build && yarn start\"",
-    "db.install": "node src/db/install.js",
     "tslint.check": "tslint",
     "tslint.fix": "tslint --fix",
     "prettier.check": "prettier '{src,../common}/**/*.{js}' --list-different",

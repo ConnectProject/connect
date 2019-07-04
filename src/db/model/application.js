@@ -1,7 +1,10 @@
 const mongoose = require('../apiClient');
 
 const applicationSchema = new mongoose.Schema({
-  developer_id: String,
+  developer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Developer',
+  },
   name: String,
   description: String,
   parse_name: { type: String, unique: true },
