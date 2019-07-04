@@ -5,6 +5,14 @@ const uuidv4 = require('uuid/v4');
 const logger = require('./../../../logger');
 
 class Application {
+  async list(developer) {
+    return ApplicationModel.find({ developer });
+  }
+
+  async get(developer, id) {
+    return ApplicationModel.findOne({ developer, _id: id });
+  }
+
   async create(developer, input) {
     const token = uuidv4();
     const tokenSandbox = uuidv4();
@@ -12,7 +20,7 @@ class Application {
     const parseName = await naming.getUniqName(input.name);
 
     let application = new ApplicationModel({
-      developer_id: developer._id,
+      developer,
       name: input.name,
       description: input.description,
       parse_name: parseName,
@@ -43,7 +51,7 @@ class Application {
     const application = await ApplicationModel.findOneAndUpdate(
       {
         _id: id,
-        developer_id: developer._id,
+        developer,
       },
       {
         name: input.name,

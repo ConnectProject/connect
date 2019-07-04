@@ -14,6 +14,8 @@ mongoose.connect(
 );
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
 
 const db = mongoose.connection;
 

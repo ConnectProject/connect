@@ -9,7 +9,7 @@ const logger = require('./logger');
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 // Serve the Parse API at /parse URL prefix
 app.use('/parse', parseApi);
