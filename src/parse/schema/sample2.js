@@ -1,9 +1,10 @@
 module.exports = {
-  className: 'Product',
+  className: 'Sample2',
   fields: {
     name: { type: 'String' },
-    activationDate: { type: 'Date' },
-    isActive: { type: 'Boolean' },
+    fieldBoolean: { type: 'Boolean' },
+    updateName: { type: 'String' },
+    another: { type: 'Number' },
     owner: { type: 'Pointer', targetClass: '_User' },
   },
   classLevelPermissions: {
@@ -12,7 +13,7 @@ module.exports = {
     create: { '*': true },
     update: { '*': true },
     delete: { '*': true },
-    addField: { '*': false },
+    addField: { '*': true },
     protectedFields: { '*': [] },
   },
 };
