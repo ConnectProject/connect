@@ -26,6 +26,7 @@
 ## <a name="api-usage">Api usage</a>
 
 This part of the documentation will explain how to consume the connect api.
+A swagger documentation to explain each accessible endpoint can be found at `/swagger`.
 
 ### <a name="authentification">Authentification</a>
 
