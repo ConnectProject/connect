@@ -2,6 +2,10 @@
 
 An open platform to save anonymous data coming from any application using this API
 
+## Usage
+
+If you want to use the connect api service see the full [usage guide](./doc/usage.md) to learn more about it.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.

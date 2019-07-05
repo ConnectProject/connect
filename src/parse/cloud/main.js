@@ -1,6 +1,6 @@
 const logger = require('./../../logger');
-const schemaSynch = require('../schema');
+const schemaSync = require('../schemaSync');
 
-schemaSynch()
-  .then(() => logger('Schema correctly loaded'))
+schemaSync()
+  .then(() => logger('Schema correctly sync'))
   .catch(err => logger(`Issue to load schema : ${err}`));
