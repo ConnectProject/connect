@@ -1,0 +1,61 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Connect API",
+    "description": "Full API documentation of the connect api",
+    "version": "1.0.0"
+  },
+  "schemes": ["http", "https"],
+  "securityDefinitions": {
+    "ParseAppId": {
+      "type": "apiKey",
+      "name": "X-Parse-Application-Id",
+      "in": "header"
+    },
+    "ParseSessionId": {
+      "type": "apiKey",
+      "name": "X-Parse-Session-Token",
+      "in": "header"
+    }
+  },
+  "basePath": "/",
+  "produces": ["application/json"],
+  "components": {
+    "schemas": {
+      "Batch": {
+        "type": "object",
+        "properties": {
+          "requests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "body": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "notfound": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {}
+}
