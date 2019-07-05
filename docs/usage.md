@@ -1,37 +1,52 @@
 # Usage Documentations
 
-​ This documentations is write in purpose to explain who to use the connect application and who to contribute.
+​ This documentations is write in purpose to explain how to use the connect application and how to contribute.
+
+## Sommaire
+
+- [Api usage](#api-usage)
+  - [Authentification](#authentification)
+  - [Get object](#get-object)
+  - [Create object](#create-object)
+  - [Update object](#update-object)
+  - [Delete object](#delete-object)
+- [Schema Contribute](#schema-contribute)
+  - [Add a new Class](#add-class)
+  - [Update an existing Class](#update-class)
+    - [Add new field](#add-field)
+    - [Change field type](#update-field-type)
+    - [Remove field](#remove-field)
 
 ## Lexique
 
-​ User : It's the developer how want to consume the connect api
+​ User : It's the developer who want to consume the connect api
 
-​ CRI : It's the organisme how manage the connect api and controle who it run and evolve.
+​ CRI : It's the organisation who manage the "connect" api and manage how it run and evolve.
 
-## Api usage
+## <a name="api-usage">Api usage</a>
 
-This part of the documentation will explain who to consume the connect api.
+This part of the documentation will explain how to consume the connect api.
 
-### Authentification
+### <a name="authentification">Authentification</a>
 
-### Get object
+### <a name="get-object">Get object</a>
 
-### Create object
+### <a name="create-object">Create object</a>
 
-### Update object
+### <a name="update-object">Update object</a>
 
-### Delete object
+### <a name="delete-object">Delete object</a>
 
-## Schema Contribute
+## <a name="schema-contribute">Schema Contribute</a>
 
 The schema is a database model that will be use by everyone to get and set object.
 Any User can contribute to the schema using Pull Request system. The CRI will accept or refuse the Pull Request after review of it.
 
 When a Pull Request is accepted, the change (add or update) will be apply at the next deployment of the connect api (except for some specific change).
 
-### Add a new Class
+### <a name="add-class">Add a new Class</a>
 
-A schema is the group of classes. A class is compose of a name, a list of field and a permission.
+A schema is a group of classes. A class have a name, a list of fields and some permissions.
 
 You can create a Pull Request with for title `[Schema][New] ClassName`.
 Write your schema file on `src/parse/schema` folder with name `YOUR_CLASS_NAME.js`. A schema file should look like that :
@@ -63,21 +78,21 @@ Add your file to the schema class list on `src/parse/schema/index.js` to make th
 module.exports = [require('./sample'), require('./YOUR_CLASS_NAME')];
 ```
 
-### Update an existing Class
+### <a name="update-class">Update an existing Class</a>
 
-#### Add new field
+#### <a name="add-field">Add new field</a>
 
 Like for the creation you can do a Pull Request with title `[Schema][Add-Field] ClassName`.
 
 You can only add new field. For that edit the schema of the class and add the field you want.
 
-#### Change field type
+#### <a name="update-field-type">Change field type</a>
 
 Same as before do a Pull Request with title `[Schema][Type-Field] ClassName`.
 
 **The system will not do the update automatically.** Only the CRI can do the manipulation because it mean to delete the field data include and recreate the field with the new type. This update have a risk to loose data and should be avoid.
 
-#### Remove field
+#### <a name="remove-field">Remove field</a>
 
 Same as before do a Pull Request with title `[Schema][Delete-Field] ClassName`.
 
