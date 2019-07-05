@@ -1,8 +1,12 @@
-var express = require('express');
-var swaggerUi = require('swagger-ui-express');
-var request = require('request-promise');
-var parseSchemaToSwagger = require('./schema-to-swagger').parseSchemaToSwagger;
-var parseBaseSwaggerSpec = require('./parse-swagger-base.json');
+// All credit to https://github.com/bhtz/parse-server-swagger
+// the code is adapted for our use case
+
+const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const request = require('request-promise');
+const parseSchemaToSwagger = require('./schema-to-swagger')
+  .parseSchemaToSwagger;
+const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
 
 /**
  * constructor
@@ -11,9 +15,9 @@ var parseBaseSwaggerSpec = require('./parse-swagger-base.json');
 function ParseSwagger(options) {
   this.config = options;
 
-  var app = express();
+  const app = express();
 
-  var swagOpts = { swaggerUrl: this.config.host + '/api-docs' };
+  const swagOpts = { swaggerUrl: this.config.host + '/api-docs' };
   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(null, swagOpts));
   app.use('/api-docs', this.renderSwaggerSpec.bind(this));
 
@@ -23,8 +27,8 @@ function ParseSwagger(options) {
 /**
  * Get parse compatible api swagger.json base
  */
-ParseSwagger.prototype.renderSwaggerSpec = function(req, res) {
-  var options = {
+ParseSwagger.prototype.renderSwaggerSpec = function(_, res) {
+  const options = {
     url: this.config.host + this.config.apiRoot + '/schemas',
     method: 'GET',
     json: true,
@@ -34,11 +38,15 @@ ParseSwagger.prototype.renderSwaggerSpec = function(req, res) {
     },
   };
 
-  var excludes = this.config.excludes || []
+  const excludes = this.config.excludes || [];
 
   request(options)
     .then(data => {
-      var swagger = parseSchemaToSwagger(parseBaseSwaggerSpec, data.results, excludes);
+      const swagger = parseSchemaToSwagger(
+        parseBaseSwaggerSpec,
+        data.results,
+        excludes,
+      );
       res.json(swagger);
     })
     .catch(error => {
