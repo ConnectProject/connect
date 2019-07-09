@@ -19,4 +19,7 @@ module.exports = new ParseServer({
   fileKey: PARSE_FILE_KEY,
   masterKey: PARSE_MASTER_KEY,
   appName: PARSE_APP_NAME,
+  allowClientClassCreation: false,
+  enableAnonymousUsers: false,
+  maxLimit: 100,
 });

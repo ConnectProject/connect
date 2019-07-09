@@ -50,33 +50,23 @@ When a Pull Request is accepted, the change (add or update) will be apply at the
 A schema is a group of classes. A class have a name, a list of fields and some permissions.
 
 You can create a Pull Request with for title `[Schema][New] ClassName`.
-Write your schema file on `src/parse/schema` folder with name `YOUR_CLASS_NAME.js`. A schema file should look like that :
+Write your schema file on `src/parse/schema/classes` folder with name `YOUR_CLASS_NAME.js`. A schema file should look like that :
 
 ```javascript
 module.exports = {
   className: YOUR_CLASS_NAME,
   fields: {
-    name: { type: 'String' },
-    activationDate: { type: 'Date' },
-    isActive: { type: 'Boolean' },
-    owner: { type: 'Pointer', targetClass: '_User' },
-  },
-  classLevelPermissions: {
-    find: { '*': true },
-    get: { '*': true },
-    create: { '*': true },
-    update: { '*': true },
-    delete: { '*': true },
-    addField: {},
-    protectedFields: { '*': [] },
+    aNumber: { type: 'Number' },
+    aString: { type: 'String' },
+    aBool: { type: 'Boolean' },
+    aDate: { type: 'Date' },
+    aObject: { type: 'Object' },
+    aArray: { type: 'Array' },
+    aGeoPoint: { type: 'GeoPoint' },
+    aPolygon: { type: 'Polygon' },
+    aFile: { type: 'File' },
   },
 };
-```
-
-Add your file to the schema class list on `src/parse/schema/index.js` to make the synch system aknowledge of it's presence :
-
-```javascript
-module.exports = [require('./sample'), require('./YOUR_CLASS_NAME')];
 ```
 
 ### <a name="update-class">Update an existing Class</a>
