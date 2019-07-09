@@ -2,6 +2,7 @@ const { APP_PORT } = require('./config');
 const express = require('express');
 const parseApi = require('./middleware/parse');
 const parseDashboard = require('./middleware/parseDashboard');
+const parseSwagger = require('./middleware/parseSwagger');
 const path = require('path');
 const api = require('./api');
 const logger = require('./logger');
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve the Parse API at /parse URL prefix
 app.use('/parse', parseApi);
 app.use('/dashboard', parseDashboard);
+app.use(parseSwagger);
 
 // handle all routing for /api/*
 api(app);
