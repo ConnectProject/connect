@@ -3,6 +3,8 @@ const schemaSync = require('../schema/sync');
 const roleInstall = require('../role/install');
 const roleGet = require('../role/get');
 const setBeforeSave = require('./setBeforeSave');
+const setAfterSave = require('./setAfterSave');
+const setAfterFind = require('./setAfterFind');
 
 async function init(Parse) {
   await roleInstall();
@@ -12,6 +14,8 @@ async function init(Parse) {
   logger('Schema correctly sync');
 
   await setBeforeSave(Parse);
+  await setAfterSave(Parse);
+  await setAfterFind(Parse);
 }
 
 init(Parse)
