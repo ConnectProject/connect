@@ -1,6 +1,6 @@
 # Usage Documentations
 
-​ This documentations is write in purpose to explain how to use the connect application and how to contribute.
+ This documentations is write in purpose to explain how to use the connect application and how to contribute.
 
 ## Sommaire
 
@@ -19,24 +19,239 @@
 
 ## Lexique
 
-​ User : It's the developer who want to consume the connect api
+ User : It's the developer who want to consume the connect api
 
-​ CRI : It's the organisation who manage the "connect" api and manage how it run and evolve.
+ CRI : It's the organisation who manage the "connect" api and manage how it run and evolve.
 
 ## <a name="api-usage">Api usage</a>
 
 This part of the documentation will explain how to consume the connect api.
 A swagger documentation to explain each accessible endpoint can be found at `/swagger`.
 
+Any request you do should have the following header : `x-parse-application-id: connect`
+And for any authentified endpoint add the header : `x-parse-session-token: r:xxxxxx` (see [Authentification](#authentification) section to get the sessionToken).
+
 ### <a name="authentification">Authentification</a>
+
+In order to manipulate the connect api you need to identify each of your request with a `sessionToken`.
+
+To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_NAME like this :
+
+```bash
+curl --request GET \
+  --url 'https://www.connect.com/parse/login?password=APP_TOKEN&username=APP_NAME&=' \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-revocable-session: 1'
+  
+Reponse : {
+  "objectId": "xxxxx",
+  "username": "j93mt7-xxxx",
+  "createdAt": "2019-07-12T15:08:56.813Z",
+  "updatedAt": "2019-07-12T15:08:57.120Z",
+  "ACL": {
+    "xxxx": {
+      "read": true
+    }
+  },
+  "sessionToken": "r:b003aae18ee536c94aeb07562a4af8e2"
+}
+```
 
 ### <a name="get-object">Get object</a>
 
+You can retrieve a specific object using the GET endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+
+```bash
+curl --request GET \
+  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  
+Response :
+{
+  "score": 1338,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T15:04:42.884Z",
+  "objectId": "DFwP7JXoa0"
+}
+```
+
+To retrieve a list of an object you can directly call the GET endpoint `/parse/classes/:OBJECTNAME` :
+
+```bash
+curl --request GET \
+  --url https://www.connect.com/parse/classes/GameScore \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  
+Response :
+{
+  "results": [
+    {
+      "score": 9999,
+      "playerName": "top1",
+      "cheatMode": true,
+      "createdAt": "2019-07-14T15:14:30.680Z",
+      "updatedAt": "2019-07-14T15:14:30.680Z",
+      "objectId": "sfevQqRbHn"
+    },
+    {
+      "score": 1338,
+      "playerName": "sample",
+      "cheatMode": false,
+      "createdAt": "2019-07-15T14:06:53.659Z",
+      "updatedAt": "2019-07-15T15:04:42.884Z",
+      "objectId": "DFwP7JXoa0"
+    },
+    ...
+  ]
+}
+```
+
+There are several ways to put constraints on the objects found, using the `where` URL parameter. The value of the `where` parameter should be encoded JSON. Thus, if you look at the actual URL requested, it would be JSON-encoded, then URL-encoded. The simplest use of the `where` parameter is constraining the value for keys. For example, if we wanted to retrieve Sean Plott's scores that were not in cheat mode, we could do:
+
+```bash
+curl --request GET \
+  --url https://www.connect.com/parse/classes/GameScore \
+  --header "X-Parse-Application-Id: connect" \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  --get \
+  --data-urlencode 'where={"playerName":"Sean Plott","cheatMode":false}'
+```
+
+The values of the `where` parameter also support comparisons besides exact matching. Instead of an exact value, provide a hash with keys corresponding to the comparisons to do. The `where` parameter supports these options:
+
+| Key         | Operation                        |
+|------------------------------------------------|
+| $lt         | Less Than                        |
+| $lte        | Less Than Or Equal To            |
+| $gt         | Greater Than                     |
+| $gte        | Greater Than Or Equal To         |
+| $ne         | Not Equal To                     |
+| $in         | Contained In                     |
+| $nin        | Not Contained in                 |
+| $exists     | A value is set for the key       |
+| $select     | This matches a value for a key in the result of a different query |
+| $dontSelect | Requires that a key's value not match a value for a key in the result of a different query |
+| $all        | Contains all of the given values |
+| $regex      | Requires that a key's value match a regular expression |
+| $text       | Performs a full text search on indexed fields |
+
+In addition to `where`, there are several parameters you can use to configure what types of results are returned by the query.
+
+| Parameter   | Use                                               |
+|-----------------------------------------------------------------|-----------------------------------------------------------------|
+| order       | Specify a field to sort by                        |
+| limit       | Limit the number of objects returned by the query (it can't be above 100 items) |
+| skip        | Use with limit to paginate through results        |
+| keys        | Restrict the fields returned by the query         |
+| include     | Use on Pointer columns to return the full object  |
+
+You can use the `order` parameter to specify a field to sort by. Prefixing with a negative sign reverses the order. Thus, to retrieve scores in ascending order:
+
+```bash
+curl --request GET \
+  --url https://www.connect.com/parse/classes/GameScore \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --get \
+  --data-urlencode 'order=score'
+```
+
+If you are limiting your query, or if there are a very large number of results, and you want to know how many total results there are without returning them all, you can use the `count` parameter. For example, if you only care about the number of games played by a particular player:
+
+```bash
+curl --request GET \
+  --url https://www.connect.com/parse/classes/GameScore \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --get \
+  --data-urlencode 'where={"playerName":"Jonathan Walsh"}' \
+  --data-urlencode 'count=1' \
+  --data-urlencode 'limit=0'
+  
+Response:
+{
+  "results": [],
+  "count": 1337
+}
+```
+
+Since this requests a count as well as limiting to zero results, there will be a count but no results in the response. With a nonzero limit, that request would return results as well as the count.
+
 ### <a name="create-object">Create object</a>
+
+To create new object send a POST request to the endpoint `/parse/classes/:OBJECTNAME` :
+
+```bash
+curl --request POST \
+  --url https://www.connect.com/parse/classes/GameScore \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --data '{
+	"score":1337,
+	"playerName":"sample",
+	"cheatMode":false
+}'
+
+Response :
+{
+  "score": 1337,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T14:06:53.659Z",
+  "objectId": "DFwP7JXoa0"
+}
+```
 
 ### <a name="update-object">Update object</a>
 
+To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+
+```bash
+curl --request PUT \
+  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --data '{
+	"score":1338,
+	"playerName":"sample",
+	"cheatMode":false
+}'
+
+Response :
+{
+  "score": 1338,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T15:04:42.884Z",
+  "objectId": "DFwP7JXoa0"
+}
+```
+
+⚠️ **Only the owner of the data can update an object. If you did not create this object you will have an error message** ⚠️
+
 ### <a name="delete-object">Delete object</a>
+
+To delete an object send a DELETE request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+
+```bash
+curl --request DELETE \
+  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+
+Response:
+{}
+```
+
+⚠️ **Like for update, only the owner of the data can delete an object. If you did not create this object you will have an error message** ⚠️
 
 ## <a name="schema-contribute">Schema Contribute</a>
 
