@@ -6,13 +6,4 @@ module.exports = {
     isActive: { type: 'Boolean' },
     owner: { type: 'Pointer', targetClass: '_User' },
   },
-  classLevelPermissions: {
-    find: { '*': true },
-    get: { '*': true },
-    create: { '*': true },
-    update: { '*': true },
-    delete: { '*': true },
-    addField: {},
-    protectedFields: { '*': [] },
-  },
 };

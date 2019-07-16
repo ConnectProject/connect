@@ -34,12 +34,11 @@ class Application {
 
     application = await application.save();
 
-    var user = new Parse.User();
-    user.set('username', parseName);
-    user.set('password', token);
-
     try {
-      await user.signUp();
+      const user = new Parse.User();
+      user.set('username', parseName);
+      user.set('password', token);
+      await user.signUp({}, { useMasterKey: true });
     } catch (error) {
       logger('Error: ' + error.code + ' ' + error.message);
     }
