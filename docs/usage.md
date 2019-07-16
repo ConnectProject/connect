@@ -10,6 +10,7 @@
   - [Create object](#create-object)
   - [Update object](#update-object)
   - [Delete object](#delete-object)
+  - [Batch operations](#batch-operations)
 - [Schema Contribute](#schema-contribute)
   - [Add a new Class](#add-class)
   - [Update an existing Class](#update-class)
@@ -252,6 +253,57 @@ Response:
 ```
 
 ⚠️ **Like for update, only the owner of the data can delete an object. If you did not create this object you will have an error message** ⚠️
+
+### <a name="batch-operations">Batch Operations</a>
+
+To reduce the amount of time spent on network round trips, you can create, update, or delete up to 50 objects in one call, using the batch endpoint.
+
+Each command in a batch has `method`, `path`, and `body` parameters that specify the HTTP command that would normally be used for that command. The commands are run in the order they are given.
+
+```bash
+curl --request POST \
+  --url https://www.connect.com/parse/batch \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: connect' \
+  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --data '{
+	"requests": [
+		{
+			"method": "POST",
+			"path": "/parse/classes/GameScore",
+			"body": {
+				"score": 1337,
+				"playerName": "Sean Plott"
+			}
+		},
+		{
+			"method": "PUT",
+			"path": "/parse/classes/GameScore/JhKvT9HrWJ",
+			"body": {
+				"score": 1337,
+				"playerName": "Sean Plott 2"
+			}
+		},
+		{
+			"method": "DELETE",
+			"path": "/parse/classes/GameScore/RAdL53JiZV",
+			"body": {}
+		},
+		{
+			"method": "GET",
+			"path": "/parse/classes/GameScore/JhKvT9HrWJ",
+			"body": {}
+		},
+		{
+			"method": "GET",
+			"path": "/parse/classes/GameScore",
+			"body": {}
+		}
+	]
+}'
+```
+
+The response from batch will be a list with the same number of elements as the input list. Each item in the list with be a dictionary with either the `success` or `error` field set. The value of `success` will be the normal response to the equivalent REST command. The value of `error` will be an object with a numeric `code` and `error` string.
 
 ## <a name="schema-contribute">Schema Contribute</a>
 
