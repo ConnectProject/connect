@@ -43,6 +43,6 @@ app.get('*', (_, res) => {
 
 const port = APP_PORT || 1337;
 
-app.listen(port, function() {
-  logger('connect running on port ' + port + '.');
+app.listen(port, () => {
+  logger(`connect running on port ${port}.`);
 });
