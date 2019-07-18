@@ -4,6 +4,10 @@ module.exports = async function(Parse) {
   const schemaClasses = await getClasses();
   for (const schemaClass of schemaClasses) {
     Parse.Cloud.afterFind(schemaClass.className, function(req) {
+      if (req.master) {
+        return;
+      }
+
       const objects = [];
 
       for (const object of req.objects) {
