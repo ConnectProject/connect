@@ -6,7 +6,7 @@ const api = require('./api');
 const logger = require('./logger');
 const { APP_PORT, FRONT_URL } = require('./config');
 const parseApi = require('./middleware/parse');
-const parseSandbox = require('./middleware/parseSandbox');
+// const parseSandbox = require('./middleware/parseSandbox');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
 
@@ -25,7 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve the Parse API at /parse URL prefix
 app.use('/parse', parseApi);
-app.use('/parse-sandbox', parseSandbox);
+// Disable don't work correctly with parseApi for the moment
+// app.use('/parse-sandbox', parseSandbox);
 app.use('/dashboard', parseDashboard);
 app.use(parseSwagger);
 

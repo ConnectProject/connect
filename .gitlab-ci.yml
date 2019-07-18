@@ -1,0 +1,72 @@
+image: node:12-alpine
+
+cache:
+  key: ci-cache-$CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - test
+
+####
+####
+#### TEMPLATES
+####
+####
+
+.back_job:
+  except:
+    - schedules
+  tags:
+    - k8s
+  only:
+    refs:
+      - merge_requests
+      - master
+      - tags
+    changes:
+      - src/**/*
+      - .kubernetes/**/*
+      - package.json
+      - .gitlab-ci.yml
+      - .dockerignore
+  variables:
+    GIT_STRATEGY: none
+
+####
+####
+#### BUILD STAGE
+####
+####
+
+build:
+  extends: .back_job
+  stage: build
+  script:
+    - yarn install
+
+####
+####
+#### LINT STAGE
+####
+####
+
+lint:
+  extends: .back_job
+  stage: test
+  script:
+    - yarn install
+    - yarn tslint.check
+    - yarn prettier.check
+  cache:
+    policy: pull
+
+test:
+  extends: .back_job
+  stage: test
+  script:
+    - yarn install
+    - yarn test
+  cache:
+    policy: pull
