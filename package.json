@@ -10,7 +10,7 @@
     "tslint.fix": "tslint --fix",
     "prettier.check": "prettier '{src,../common}/**/*.{js}' --list-different",
     "prettier.fix": "prettier '{src,../common}/**/*.{js}' --write",
-    "test": "jest -c jest.config.integration.js --detectOpenHandles --forceExit"
+    "test": "jest --config spec/jest.config.js"
   },
   "nodemonConfig": {
     "restartable": "rs",

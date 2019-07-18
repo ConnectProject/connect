@@ -1,4 +1,4 @@
-const mongoose = require('../apiClient');
+const mongoose = require('../client');
 
 const developerSchema = new mongoose.Schema({
   login: String,

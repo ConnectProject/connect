@@ -1,4 +1,3 @@
-const Developer = require('./../../db/model/developer');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const logger = require('./../../logger');
@@ -38,9 +37,11 @@ module.exports = async (req, res, next) => {
     let developer;
 
     if (jwtDeveloper) {
-      developer = await Developer.findOne({
-        github_id: jwtDeveloper.id,
-      }).exec();
+      developer = await req.model.developer
+        .findOne({
+          github_id: jwtDeveloper.id,
+        })
+        .exec();
     }
 
     req.auth = {

@@ -1,9 +1,13 @@
-const developerService = require('../services/developer');
+const DeveloperService = require('../services/developer');
 const logger = require('./../../logger');
 
 module.exports = {
   delete: async (req, res) => {
     try {
+      const developerService = new DeveloperService({
+        applicationModel: req.model.application,
+        developerModel: req.model.developer,
+      });
       const application = await developerService.delete(req.auth.developer);
 
       return res.send(application);

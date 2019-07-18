@@ -1,10 +1,13 @@
-const applicationService = require('../services/application');
+const ApplicationService = require('../services/application');
 const createValidator = require('./validator/applicationCreate');
 const logger = require('./../../logger');
 
 module.exports = {
   list: async (req, res) => {
     try {
+      const applicationService = new ApplicationService({
+        applicationModel: req.model.application,
+      });
       const applications = await applicationService.list(req.auth.developer);
 
       return res.send(applications);
@@ -15,6 +18,9 @@ module.exports = {
   },
   get: async (req, res) => {
     try {
+      const applicationService = new ApplicationService({
+        applicationModel: req.model.application,
+      });
       const application = await applicationService.get(
         req.auth.developer,
         req.params.id,
@@ -38,6 +44,9 @@ module.exports = {
         return res.status(400).send(validatorErrors);
       }
 
+      const applicationService = new ApplicationService({
+        applicationModel: req.model.application,
+      });
       const application = await applicationService.create(
         req.auth.developer,
         req.body,
@@ -57,6 +66,9 @@ module.exports = {
         return res.status(400).send(validatorErrors);
       }
 
+      const applicationService = new ApplicationService({
+        applicationModel: req.model.application,
+      });
       const application = await applicationService.update(
         req.params.id,
         req.auth.developer,

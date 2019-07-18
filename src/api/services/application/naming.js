@@ -1,6 +1,8 @@
-const Application = require('./../../../db/model/application');
-
 class Naming {
+  constructor({ applicationModel }) {
+    this.applicationModel = applicationModel;
+  }
+
   async getUniqName(name) {
     let genName = this.genParseName(name);
 
@@ -12,7 +14,9 @@ class Naming {
   }
 
   async isUniqName(name) {
-    const application = await Application.findOne({ parse_name: name }).exec();
+    const application = await this.applicationModel
+      .findOne({ parse_name: name })
+      .exec();
 
     return application === null;
   }
@@ -33,4 +37,4 @@ class Naming {
   }
 }
 
-module.exports = new Naming();
+module.exports = Naming;

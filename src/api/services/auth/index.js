@@ -2,17 +2,22 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { AUTH_SECRET } = require('../../../config');
 const github = require('./github');
-const Developer = require('./../../../db/model/developer');
 
 class Auth {
+  constructor({ developerModel }) {
+    this.developerModel = developerModel;
+  }
+
   // Generate a token and send connect link by email
   async createUserIfNotExist(userGithub) {
-    let developer = await Developer.findOne({
-      github_id: userGithub.id,
-    }).exec();
+    let developer = await this.developerModel
+      .findOne({
+        github_id: userGithub.id,
+      })
+      .exec();
 
     if (!developer) {
-      developer = new Developer({
+      developer = new this.developerModel({
         login: userGithub.login,
         github_id: userGithub.id,
         company_name: userGithub.company,
@@ -50,4 +55,4 @@ class Auth {
   }
 }
 
-module.exports = new Auth();
+module.exports = Auth;

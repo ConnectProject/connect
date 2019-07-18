@@ -1,4 +1,4 @@
-const mongoose = require('../apiClient');
+const mongoose = require('../client');
 
 const applicationSchema = new mongoose.Schema({
   developer: {
