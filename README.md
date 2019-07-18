@@ -22,7 +22,8 @@ docker-compose v1.23+
 
 ### Installing
 
-Setup env variable
+Setup env variable.
+The parse dashboard password have to be bcrypt hash (see https://bcrypt-generator.com/)
 
 ```
 cp .env.dist .env
