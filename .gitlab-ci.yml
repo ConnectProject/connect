@@ -5,6 +5,9 @@ cache:
   paths:
     - node_modules/
 
+script:
+  - apk --no-cache add --virtual builds-deps build-base python
+
 stages:
   - build
   - test
