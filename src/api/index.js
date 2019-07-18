@@ -1,4 +1,3 @@
-const modelMiddleware = require('./middleware/model');
 const authMiddleware = require('./middleware/auth');
 const aclMiddleware = require('./middleware/acl');
 const authController = require('./controller/auth');
@@ -6,7 +5,6 @@ const applicationController = require('./controller/application');
 const developerController = require('./controller/developer');
 
 module.exports = srv => {
-  srv.use('/api/*', modelMiddleware);
   srv.use('/api/*', authMiddleware);
   srv.use('/api/*', aclMiddleware);
 

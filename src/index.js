@@ -41,8 +41,6 @@ app.get('*', (_, res) => {
   res.sendFile(path.join(__dirname, './../build', 'index.html'));
 });
 
-const port = APP_PORT || 1337;
-
-app.listen(port, () => {
-  logger(`connect running on port ${port}.`);
+app.listen(APP_PORT, () => {
+  logger(`connect running on port ${APP_PORT}.`);
 });

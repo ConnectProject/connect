@@ -1,8 +1,10 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 const glob = require('glob');
 
 module.exports = function getClasses() {
-  return new Promise(function(resolve, reject) {
-    glob(__dirname + '/classes/**/*.js', {}, function(err, files) {
+  return new Promise((resolve, reject) => {
+    glob(`${__dirname}/classes/**/*.js`, {}, (err, files) => {
       if (err) {
         reject(err);
       } else {

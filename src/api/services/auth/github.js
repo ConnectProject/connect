@@ -2,7 +2,7 @@ const axios = require('axios');
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('./../../../config');
 
 class Github {
-  async getAccessToken(code) {
+  static async getAccessToken(code) {
     const response = await axios({
       method: 'post',
       url: 'https://github.com/login/oauth/access_token',
@@ -19,7 +19,7 @@ class Github {
     return response.data.access_token;
   }
 
-  async getUser(token) {
+  static async getUser(token) {
     const response = await axios({
       method: 'get',
       url: 'https://api.github.com/user',
