@@ -1,11 +1,13 @@
-const ApplicationModel = require('../../../db/model/application');
-const DeveloperModel = require('../../../db/model/developer');
-
 class Developer {
+  constructor({ applicationModel, developerModel }) {
+    this.applicationModel = applicationModel;
+    this.developerModel = developerModel;
+  }
+
   async delete(developer) {
-    await ApplicationModel.deleteMany({ developer });
-    return DeveloperModel.deleteOne({ _id: developer._id });
+    await this.applicationModel.deleteMany({ developer });
+    return this.developerModel.deleteOne({ _id: developer._id });
   }
 }
 
-module.exports = new Developer();
+module.exports = Developer;

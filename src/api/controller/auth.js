@@ -1,10 +1,11 @@
-const auth = require('./../services/auth');
+const Auth = require('./../services/auth');
 const logger = require('./../../logger');
 
 module.exports = {
   github: async (req, res) => {
     try {
-      const jwt = await auth.connectUser(req.body.code);
+      const authService = new Auth({ developerModel: req.model.developer });
+      const jwt = await authService.connectUser(req.body.code);
 
       res.send(jwt);
     } catch (err) {

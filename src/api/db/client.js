@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const logger = require('../logger');
+const logger = require('../../logger');
 const {
   MONGO_DB_NAME,
   MONGO_HOST,
   MONGO_USERNAME,
   MONGO_PASSWORD,
   MONGO_PORT,
-} = require('../config');
+} = require('../../config');
 
 mongoose.connect(
   `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}-api`,
