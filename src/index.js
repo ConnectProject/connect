@@ -23,11 +23,11 @@ app.use(parseSwagger);
 api(app);
 
 // Serve any static files
-app.use(express.static(path.join(__dirname, './front/build')));
+app.use(express.static(path.join(__dirname, './../build')));
 
 // Handle React routing, return all requests to React app
 app.get('*', (_, res) => {
-  res.sendFile(path.join(__dirname, './front/build', 'index.html'));
+  res.sendFile(path.join(__dirname, './../build', 'index.html'));
 });
 
 const port = APP_PORT || 1337;

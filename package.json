@@ -5,12 +5,15 @@
   "scripts": {
     "start": "node src/index.js",
     "build": "webpack --config webpack.conf.js",
-    "watch": "DEBUG=*,-babel* nodemon --inspect --exec \"yarn build && yarn start\"",
-    "tslint.check": "tslint",
-    "tslint.fix": "tslint --fix",
-    "prettier.check": "prettier '{src,../common}/**/*.{js}' --list-different",
-    "prettier.fix": "prettier '{src,../common}/**/*.{js}' --write",
+    "watch": "webpack-dev-server --config webpack.conf.js",
+    "eslint.check":  "eslint src/**/*.{js,jsx}",
+    "eslint.fix": "eslint src/**/*.{js,jsx} --fix",
+    "prettier.check": "prettier src/**/*.{js,jsx} --list-different",
+    "prettier.fix": "prettier src/**/*.{js,jsx} --write",
     "test": "jest --config spec/jest.config.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "nodemonConfig": {
     "restartable": "rs",
@@ -35,9 +38,11 @@
   "author": "Matters",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.2.1",
     "axios": "0.19.0",
     "debug": "4.1.1",
     "dotenv": "8.0.0",
+    "eslint-plugin-import": "^2.18.0",
     "express": "4.17.1",
     "glob": "7.1.4",
     "jsonwebtoken": "8.5.1",
@@ -61,6 +66,11 @@
     "copy-webpack-plugin": "5.0.3",
     "core-js": "3.1.4",
     "css-loader": "3.0.0",
+    "eslint": "6.0.1",
+    "eslint-config-airbnb": "17.1.1",
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
     "html-webpack-plugin": "3.2.0",
     "jest": "24.8.0",
     "js-cookie": "2.2.0",
@@ -73,11 +83,9 @@
     "react-dom": "16.8.6",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
-    "tslint": "5.18.0",
-    "tslint-config-airbnb": "5.11.1",
-    "tslint-config-prettier": "1.18.0",
     "url-loader": "2.0.1",
     "webpack": "4.35.2",
-    "webpack-cli": "3.3.5"
+    "webpack-cli": "3.3.5",
+    "webpack-dev-server": "^3.7.2"
   }
 }
