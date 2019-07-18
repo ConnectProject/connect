@@ -45,7 +45,7 @@ lint:
   stage: test
   script:
     - yarn install
-    - yarn tslint.check
+    - yarn eslint.check
     - yarn prettier.check
   cache:
     policy: pull

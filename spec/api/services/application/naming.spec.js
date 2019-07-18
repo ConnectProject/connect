@@ -9,7 +9,7 @@ test('gen a parse name', () => {
 });
 
 test('gen an uniq parse name', async () => {
-  applicationModelMock.exec = jest.mockImplementationOnce(() =>
+  applicationModelMock.exec.mockImplementationOnce(() =>
     Promise.resolve('first call'),
   );
 
