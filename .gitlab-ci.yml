@@ -15,24 +15,9 @@ stages:
 ####
 ####
 
-.back_job:
-  except:
-    - schedules
+.base_job:
   tags:
     - k8s
-  only:
-    refs:
-      - merge_requests
-      - master
-      - tags
-    changes:
-      - src/**/*
-      - .kubernetes/**/*
-      - package.json
-      - .gitlab-ci.yml
-      - .dockerignore
-  variables:
-    GIT_STRATEGY: none
 
 ####
 ####
@@ -41,7 +26,7 @@ stages:
 ####
 
 build:
-  extends: .back_job
+  extends: .base_job
   stage: build
   script:
     - yarn install
@@ -53,7 +38,7 @@ build:
 ####
 
 lint:
-  extends: .back_job
+  extends: .base_job
   stage: test
   script:
     - yarn install
@@ -63,7 +48,7 @@ lint:
     policy: pull
 
 test:
-  extends: .back_job
+  extends: .base_job
   stage: test
   script:
     - yarn install
