@@ -11,6 +11,9 @@ function testConfig(config, name) {
   }
 }
 
+const FRONT_PORT = process.env.FRONT_PORT;
+testConfig(FRONT_PORT, 'FRONT_PORT');
+
 const APP_PORT = process.env.APP_PORT;
 testConfig(APP_PORT, 'APP_PORT');
 
@@ -69,6 +72,7 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
+  FRONT_PORT,
   APP_PORT,
   APP_PROTOCOL,
   APP_HOST,

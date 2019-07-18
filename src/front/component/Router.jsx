@@ -4,19 +4,26 @@ import { Route } from 'react-router-dom';
 export const ROUTES = {
   HOME: '/',
   LOGIN_GITHUB: '/login/github',
+  CONNECTED_HOME: '/home'
 };
 
 const routesConfig = [
   {
-    component: ROUTES.HOME,
-    path: ROUTES.HOME,
+    component: '/',
+    path: '/',
     exact: true,
   },
   {
-    component: ROUTES.LOGIN_GITHUB,
-    path: ROUTES.LOGIN_GITHUB,
+    component: 'login/github',
+    path: '/login/github',
     exact: true,
   },
+  {
+    component: 'home/home',
+    path: '/home',
+    exact: true,
+  },
+
 ];
 
 class Routes extends React.Component {

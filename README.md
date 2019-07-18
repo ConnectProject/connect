@@ -33,7 +33,7 @@ Edit the .env file to set your custom values.
 Then start the docker compose to get a mongo db ready to use
 
 ```
-docker-compose -d up
+docker-compose up -d
 ```
 
 Build the react application

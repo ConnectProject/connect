@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,7 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const getPath = path.join.bind(path, __dirname);
 
 const sources = getPath('src/front');
-const dist = getPath('src/front/build');
+const dist = getPath('build');
 const indexTemplate = getPath('src/front/public/index.html');
 
 const EXTRACT_CSS = process.env.NODE_ENV === 'production';
@@ -30,6 +31,10 @@ module.exports = {
     path: dist,
     publicPath: '/',
     filename: '[name].[contenthash].js',
+  },
+  devServer: {
+    inline:true,
+    port: process.env.FRONT_PORT
   },
   module: {
     rules: [
