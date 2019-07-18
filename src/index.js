@@ -1,16 +1,26 @@
-const { APP_PORT } = require('./config');
 const express = require('express');
+const path = require('path');
+const cors = require('cors');
+
+const api = require('./api');
+const logger = require('./logger');
+const { APP_PORT, FRONT_URL } = require('./config');
 const parseApi = require('./middleware/parse');
 const parseSandbox = require('./middleware/parseSandbox');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
-const path = require('path');
-const api = require('./api');
-const logger = require('./logger');
 
 const app = express();
 
+
 app.use(express.json());
+
+const corsOptions = {
+  origin: FRONT_URL,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve the Parse API at /parse URL prefix

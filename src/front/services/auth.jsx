@@ -1,19 +1,12 @@
 import * as Cookie from 'js-cookie';
 import * as jwtDecode from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
 
 const COOKIENAME = 'jwt-connect';
+export const connectedState = new BehaviorSubject(false);
 
 export const logout = () => {
   Cookie.remove(COOKIENAME);
-};
-
-export const setAuthToken = token => {
-  if (!isJwtValid(token)) {
-    return false;
-  }
-
-  Cookie.set(COOKIENAME, token);
-  return true;
 };
 
 const isJwtValid = jwt => {
@@ -39,9 +32,26 @@ const isJwtValid = jwt => {
   return now < exp;
 };
 
+
+export const setAuthToken = token => {
+  if (!isJwtValid(token)) {
+    connectedState.next(false);
+    return false;
+  }
+
+  Cookie.set(COOKIENAME, token);
+  connectedState.next(true);
+  return true;
+};
+
+
 export const getJwt = () => {
   const jwt = Cookie.get(COOKIENAME);
-  return jwt && isJwtValid(jwt) ? jwt : null;
+  const valid = jwt && isJwtValid(jwt) ? jwt : null;
+  connectedState.next(!!valid);
+  return valid;
 };
 
 export const hasJwt = () => !!getJwt();
+
+hasJwt();

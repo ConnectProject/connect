@@ -1,7 +1,8 @@
+/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
+import PropTypes from 'prop-types'; // ES6
+
 import { setAuthToken } from '../../services/auth';
-import { ROUTES } from '../../component/Router';
-import Page from '../../component/Page';
 
 class Github extends React.Component {
   constructor(props) {
@@ -11,9 +12,10 @@ class Github extends React.Component {
   }
 
   async componentDidMount() {
-    let params = new URLSearchParams(this.props.location.search);
+    const { location, history } = this.props;
+    const params = new URLSearchParams(location.search);
 
-    const responses = await fetch(`/api/auth`, {
+    const responses = await fetch(`${process.env.API_URL}/api/auth`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -22,18 +24,24 @@ class Github extends React.Component {
       body: JSON.stringify({ code: params.get('code') }),
     });
 
-    if ((await responses.code) !== 200) {
-      this.props.history.push(ROUTES.HOME);
+    if (await responses.status !== 200) {
+      return history.push('/');
     }
 
     setAuthToken(await responses.text());
 
-    this.props.history.push(ROUTES.HOME);
+    return history.push('/');
   }
 
   render() {
-    return <Page isPublic>Happy to see you back</Page>;
+    return <p>Redirection</p>;
   }
 }
+
+Github.propTypes = {
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
+
 
 export default Github;

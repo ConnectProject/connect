@@ -1,13 +1,20 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { ROUTES } from './Router';
+import PropTypes from 'prop-types'; // ES6
+
 import { hasJwt } from '../services/auth';
 
-class Page extends React.Component {
-  state = { redirectToReferrer: false };
+
+class Page extends React.PureComponent {
+
+  constructor() {
+    super();
+    this.state = { redirectToReferrer: false };
+  }
 
   async componentDidMount() {
-    if (!this.props.isPublic && !hasJwt()) {
+    const { isPublic } = this.props;
+    if (!isPublic && !hasJwt()) {
       this.setState({ redirectToReferrer: true });
     }
   }
@@ -16,11 +23,19 @@ class Page extends React.Component {
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
-      return <Redirect to={ROUTES.HOME} />;
+      return <Redirect to='/' />;
     }
+    const { children } = this.props;
 
-    return <div>{this.props.children}</div>;
+    return <div>{ children }</div>;
   }
 }
+
+Page.propTypes = {
+  isPublic: PropTypes.bool.isRequired,
+  children: PropTypes.element.isRequired
+};
+
+
 
 export default Page;

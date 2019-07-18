@@ -1,9 +1,11 @@
+/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
-import { hasJwt } from '../../services/auth';
-import Page from '../../component/Page';
-
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types'; // ES6
+
+import { hasJwt } from '../../services/auth';
+
 
 const styles = {
   card: {
@@ -20,16 +22,19 @@ const styles = {
 };
 
 
-class ConnectedHome extends React.Component {
+class HomePage extends React.PureComponent {
   render() {
-
-    const { classes } = this.props; 
     return (
-      <Page>
-        {hasJwt() && <div>Your are authorize to see this</div>}
-      </Page>
+      <p>Coucou</p>
     );
   }
 }
 
-export default withRouter(withStyles(styles)(ConnectedHome));
+HomePage.propTypes = {
+  history: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+};
+
+
+
+export default withRouter(withStyles(styles)(HomePage));
