@@ -36,7 +36,6 @@ class DetailsPage extends React.PureComponent {
     super();
     this.state = {
       loading: true,
-      editing: false,
       application: {
         name: "Name",
         description: "Description",
@@ -166,7 +165,7 @@ class DetailsPage extends React.PureComponent {
 
 DetailsPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
 

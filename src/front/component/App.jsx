@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
 
-import Routes from "./Router";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import { hasJwt, logout, connectedState } from '../services/auth';
+import { logout, connectedState } from '../services/auth';
+import Routes from "./Router";
 
 
 class App extends React.PureComponent {
@@ -19,16 +19,13 @@ class App extends React.PureComponent {
   }
   
   componentDidMount() {
-
     connectedState.subscribe((userConnected) => {
-      console.log(`Connected State: ${userConnected}`);
       this.setState({userConnected});
     })
   }
 
   render() {
     const { userConnected } = this.state;
-    const { history } = this.props;
 
     return (
       <div>
