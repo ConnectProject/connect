@@ -83,3 +83,48 @@ export const deleteUser = async() => {
     logout();
     return responses.json();
 }
+
+export const getUser = async () => {
+    const jwt = getJwt();
+    if (!jwt) { return {}; }
+
+    // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
+    //     headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${jwt}`
+    //     },
+    //     method: 'GET',
+    // });
+    // return responses.json();
+
+    return {
+        lastName: 'Bernos',
+        firstName: 'Guillaume',
+        email: 'guillaume.bernos@matters.tech',
+    }
+}
+
+export const updateUser = async () => {
+    const jwt = getJwt();
+    if (!jwt) { return {}; }
+
+    // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
+    //     headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${jwt}`
+    //     },
+    //     method: 'GET',
+    // });
+    // return responses.json();
+
+    // TODO: WAITING FOR BACKEND
+
+    return {
+        lastName: 'Bernos',
+        firstName: 'Guillaume',
+        email: 'guillaume.bernos@matters.tech',
+    }
+}
+

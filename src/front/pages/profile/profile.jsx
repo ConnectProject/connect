@@ -10,7 +10,7 @@ import { green } from '@material-ui/core/colors';
 
 import PropTypes from 'prop-types'; // ES6
 
-import { getApplication, updateApplication } from '../../services/api';
+import { getUser, updateUser } from '../../services/api';
 
 
 const styles = {
@@ -34,7 +34,7 @@ const styles = {
   },
   button: {
     margin: 8,
-    width: 120
+    width: 180
   },
   buttonContainer: {
     display: "flex",
@@ -53,36 +53,39 @@ const styles = {
     margin: 0,
     position: 'relative',
   },
+  nameContainer: {
+    display: 'flex',
+    width: "100%",
+  }
 
  
 };
 
 
-class DetailsPage extends React.PureComponent {
+class ProfilePage extends React.PureComponent {
   constructor() {
     super();
     this.state = {
       loading: true,
       updateLoading: false,
-      application: {}
+      user: {}
     }
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    getApplication(match.params.appId).then((res) => {
+    getUser().then((res) => {
       this.setState({
         loading: false,
-        application: res
+        user: res
       });
     });
   }
 
   handleChange(name, event) {
-    const { application } = this.state;
+    const { user } = this.state;
     this.setState({
-      application: {
-        ...application,
+      user: {
+        ...user,
         [name]: event.target.value
       } 
     });
@@ -98,16 +101,16 @@ class DetailsPage extends React.PureComponent {
     this.setState({
       updateLoading: true
     })
-    const response = await updateApplication(application._id, application);
+    const response = await updateUser(application._id, application);
     this.setState({
       updateLoading: false,
-      application: response
+      user: response
     })
   }
 
   render() {
     const { classes } = this.props;
-    const { application, loading, updateLoading } = this.state;
+    const { user, loading, updateLoading } = this.state;
     return (
       <>
         <div className={classes.root}>
@@ -116,54 +119,51 @@ class DetailsPage extends React.PureComponent {
           {!loading &&
           (
             <>
-              <TextField
-                id="name"
-                label="Name"
-                className={classes.textField}
-                fullWidth
-                value={application.name}
-                onChange={(event) => this.handleChange('name', event)}
-                margin="normal"
-                variant="outlined"
-              />
+              <div className={classes.nameContainer}>
+                <TextField
+                  id="firstName"
+                  label="First Name"
+                  className={classes.textField}
+                  fullWidth
+                  value={user.firstName}
+                  onChange={(event) => this.handleChange('firstName', event)}
+                  margin="normal"
+                  variant="outlined"
+                />
 
-
-              <TextField
-                id="description"
-                label="Description"
-                className={classes.textField}
-                fullWidth
-                value={application.description}
-                onChange={(event) => this.handleChange('description', event)}
-                margin="normal"
-                variant="outlined"
-                multiline
-                rows="4"        
-              />
-
-              <TextField
-                id="apple_store_link"
-                label="App Store Link"
-                className={classes.textField}
-                fullWidth
-                value={application.apple_store_link || ''}
-                onChange={(event) => this.handleChange('apple_store_link', event)}
-                margin="normal"
-                variant="outlined"
-              />
+                <TextField
+                  id="lastName"
+                  label="Last Name"
+                  className={classes.textField}
+                  fullWidth
+                  value={user.lastName}
+                  onChange={(event) => this.handleChange('lastName', event)}
+                  margin="normal"
+                  variant="outlined"
+                />
+              </div>
 
               <TextField
-                id="google_market_link"
-                label="Play Store Link"
+                id="email"
+                label="Email"
                 className={classes.textField}
                 fullWidth
-                value={application.google_market_link || ''}
-                onChange={(event) => this.handleChange('google_market_link', event)}
+                value={user.email}
+                onChange={(event) => this.handleChange('email', event)}
                 margin="normal"
                 variant="outlined"
               />
 
               <div className={classes.buttonContainer}>
+                <Button 
+                  variant="outlined" 
+                  color="secondary" 
+                  className={classes.button}
+                  onClick={() => this.goBack()}
+                >
+                  Delete Profile
+                </Button>
+
                 <div className={classes.wrapper}>
                   <Button 
                     variant="contained" 
@@ -178,31 +178,6 @@ class DetailsPage extends React.PureComponent {
                 </div>
               </div>
 
-              <TextField
-                disabled
-                id="token"
-                label="Token"
-                className={classes.textField}
-                fullWidth
-                value={application.token}
-                onChange={(event) => this.handleChange('token', event)}
-                margin="normal"
-                variant="outlined"
-              />
-
-
-              <TextField
-                disabled
-                id="token_sandbox"
-                label="Token Sandbox"
-                className={classes.textField}
-                fullWidth
-                value={application.token_sandbox}
-                onChange={(event) => this.handleChange('token_sandbox', event)}
-                margin="normal"
-                variant="outlined"
-              />
-
             </>
           )
           }
@@ -213,11 +188,11 @@ class DetailsPage extends React.PureComponent {
   }
 }
 
-DetailsPage.propTypes = {
+ProfilePage.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
 
 
-export default withRouter(withStyles(styles)(DetailsPage));
+export default withRouter(withStyles(styles)(ProfilePage));

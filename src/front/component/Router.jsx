@@ -5,6 +5,7 @@ import LoginPage from '../pages/login/login';
 import Github from '../pages/login/github';
 import HomePage from '../pages/home/home';
 import DetailsPage from '../pages/details/details';
+import ProfilePage from '../pages/profile/profile';
 
 export const ROUTES = {
   HOME: '/',
@@ -28,6 +29,12 @@ class Routes extends React.PureComponent {
           component={DetailsPage}
         />
 
+        <Route
+          exact
+          path='/profile'
+          component={ProfilePage}
+        />
+
 
         <Route
           exact
@@ -41,8 +48,6 @@ class Routes extends React.PureComponent {
           path='/'
           component={LoginPage}
         />
-
-
 
       </>
     );
