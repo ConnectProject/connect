@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import LoginPage from '../pages/login/login';
 import Github from '../pages/login/github';
 import HomePage from '../pages/home/home';
+import DetailsPage from '../pages/details/details';
 
 export const ROUTES = {
   HOME: '/',
@@ -20,6 +21,13 @@ class Routes extends React.PureComponent {
           path='/login/github'
           component={Github}
         />
+
+        <Route
+          exact
+          path='/application/:appId'
+          component={DetailsPage}
+        />
+
 
         <Route
           exact
