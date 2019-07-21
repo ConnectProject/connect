@@ -1,15 +1,15 @@
 /* eslint-disable */
 const applicationModelMock = require('./../../../__mock__/applicationModel');
-const quibble = require('quibble');
+
+jest.mock('./../../../../src/api//db/model', () => {
+  return {
+    Application: applicationModelMock,
+  };
+});
+const Naming = require('./../../../../src/api/services/application/naming');
 
 describe('Application Naming Service', () => {
-  let Naming;
-  beforeEach(() => {
-    quibble('./../../../../src/api/db/model', {
-      Application: applicationModelMock,
-    });
-    Naming = require('./../../../../src/api/services/application/naming');
-  });
+  beforeEach(() => {});
 
   afterEach(() => {});
 
@@ -28,7 +28,6 @@ describe('Application Naming Service', () => {
     const parseName = await namingService.getUniqName('toto');
 
     expect(parseName.length).toBe(11);
-    // have to make quibble work, it don't seem to alter the required
-    // expect(applicationModelMock.exec).toHaveBeenCalledTimes(2);
+    expect(applicationModelMock.exec).toHaveBeenCalledTimes(2);
   });
 });
