@@ -211,7 +211,7 @@ class ProfilePage extends React.PureComponent {
           open={dialogOpen}
           onClose={() => this.handleClose(false)}
         >
-          <DialogTitle>{"Delete your profile?"}</DialogTitle>
+          <DialogTitle>Delete your profile?</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Your profile will be deleted forever and your applications will stop working.

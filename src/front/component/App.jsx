@@ -44,7 +44,7 @@ class App extends React.PureComponent {
     if (history.location.pathname !== '/home' && history.location.pathname !== '/') {
       this.setState({canBack: true});
     }
-    history.listen((location, action) => {
+    history.listen((location) => {
       if (location.pathname !== '/home' && location.pathname !== '/') {
         this.setState({canBack: true});
       } else {
