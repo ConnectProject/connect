@@ -1,6 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
-import { BrowserRouter as Router, withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types'; // ES6
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,8 +19,6 @@ import MenuList from '@material-ui/core/MenuList';
 
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-
-
 
 import { logout, connectedState } from '../services/auth';
 import Routes from "./Router";
@@ -46,7 +45,6 @@ class App extends React.PureComponent {
       this.setState({canBack: true});
     }
     history.listen((location, action) => {
-      console.log(location);
       if (location.pathname !== '/home' && location.pathname !== '/') {
         this.setState({canBack: true});
       } else {
@@ -56,6 +54,9 @@ class App extends React.PureComponent {
 
 
     connectedState.subscribe((userConnected) => {
+      if(!userConnected) {
+        history.push('/');
+      }
       this.setState({userConnected});
     });
 
@@ -111,7 +112,7 @@ class App extends React.PureComponent {
             >
               <ArrowBack />
             </IconButton>
-)}
+            )}
 
             <Typography variant="h6" color="inherit">
               Connect
@@ -177,6 +178,11 @@ class App extends React.PureComponent {
     );
   }
 }
+
+App.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
+};
+
 
 
 export default withRouter(App);
