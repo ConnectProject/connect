@@ -1,50 +1,49 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 
+import LoginPage from '../pages/login/login';
+import Github from '../pages/login/github';
+import HomePage from '../pages/home/home';
+import DetailsPage from '../pages/details/details';
+
 export const ROUTES = {
   HOME: '/',
   LOGIN_GITHUB: '/login/github',
   CONNECTED_HOME: '/home'
 };
 
-const routesConfig = [
-  {
-    component: '/',
-    path: '/',
-    exact: true,
-  },
-  {
-    component: 'login/github',
-    path: '/login/github',
-    exact: true,
-  },
-  {
-    component: 'home/home',
-    path: '/home',
-    exact: true,
-  },
-
-];
-
-class Routes extends React.Component {
+class Routes extends React.PureComponent {
   render() {
     return (
       <>
-        {routesConfig.map((route, i) => {
-          const path =
-            route.component.charAt(0) === '/'
-              ? route.component.substr(1)
-              : route.component;
-          const component = require(`./../pages/${path}`).default;
-          return (
-            <Route
-              exact={route.exact}
-              path={route.path}
-              component={component}
-              key={i}
-            />
-          );
-        })}
+        <Route
+          exact
+          path='/login/github'
+          component={Github}
+        />
+
+        <Route
+          exact
+          path='/application/:appId'
+          component={DetailsPage}
+        />
+
+
+        <Route
+          exact
+          path='/home'
+          component={HomePage}
+        />
+
+
+        <Route
+          exact
+          path='/'
+          component={LoginPage}
+        />
+
+
+
       </>
     );
   }
