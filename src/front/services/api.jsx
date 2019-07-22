@@ -1,16 +1,23 @@
 import { getJwt, logout } from './auth';
 
 
-export const listOfApplications = async () => {
+const headersWithJWT = () => {
     const jwt = getJwt();
-    if (!jwt) { return []; }
+    if (!jwt) { return null; }
+    return {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`
+    };
+}
+
+
+export const listOfApplications = async () => {
+    const headers = headersWithJWT();
+    if (!headers) { return []; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'GET',
     });
     return responses.json();
@@ -18,15 +25,11 @@ export const listOfApplications = async () => {
 
 
 export const getApplication = async (appId) => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'GET',
     });
     return responses.json();
@@ -34,15 +37,11 @@ export const getApplication = async (appId) => {
 
 
 export const createApplication = async(newApplication) => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'POST',
         body: JSON.stringify(newApplication)
     });
@@ -51,15 +50,11 @@ export const createApplication = async(newApplication) => {
 }
 
 export const updateApplication = async(appId, application) => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'PUT',
         body: JSON.stringify(application)
     });
@@ -68,15 +63,11 @@ export const updateApplication = async(appId, application) => {
 }
 
 export const deleteUser = async() => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/developer`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'DELETE',
     });
 
@@ -85,15 +76,11 @@ export const deleteUser = async() => {
 }
 
 export const getUser = async () => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-    //     headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${jwt}`
-    //     },
+    //     headers,
     //     method: 'GET',
     // });
     // return responses.json();
@@ -106,15 +93,11 @@ export const getUser = async () => {
 }
 
 export const updateUser = async () => {
-    const jwt = getJwt();
-    if (!jwt) { return {}; }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-    //     headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${jwt}`
-    //     },
+    //     headers,
     //     method: 'GET',
     // });
     // return responses.json();

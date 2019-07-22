@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,9 +7,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import PropTypes from 'prop-types'; // ES6
 
-import { getUser, updateUser } from '../../services/api';
+import { getUser, updateUser, deleteUser } from '../../services/api';
 
 
 const styles = {
@@ -68,7 +73,8 @@ class ProfilePage extends React.PureComponent {
     this.state = {
       loading: true,
       updateLoading: false,
-      user: {}
+      user: {},
+      dialogOpen: false,
     }
   }
 
@@ -108,9 +114,27 @@ class ProfilePage extends React.PureComponent {
     })
   }
 
+  confirmationDialog() {
+    this.setState({
+      dialogOpen: true
+    });
+  }
+
+  async handleClose(userToBeDeleted) {
+    if (userToBeDeleted){
+      await deleteUser();
+      const { history } = this.props;
+      history.push('/');
+    } else {
+      this.setState({
+        dialogOpen: false
+      });  
+    }
+  }
+
   render() {
     const { classes } = this.props;
-    const { user, loading, updateLoading } = this.state;
+    const { user, loading, updateLoading, dialogOpen } = this.state;
     return (
       <>
         <div className={classes.root}>
@@ -159,7 +183,7 @@ class ProfilePage extends React.PureComponent {
                   variant="outlined" 
                   color="secondary" 
                   className={classes.button}
-                  onClick={() => this.goBack()}
+                  onClick={() => this.confirmationDialog()}
                 >
                   Delete Profile
                 </Button>
@@ -183,15 +207,35 @@ class ProfilePage extends React.PureComponent {
           }
         </div>
 
+        <Dialog
+          open={dialogOpen}
+          onClose={() => this.handleClose(false)}
+        >
+          <DialogTitle>{"Delete your profile?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Your profile will be deleted forever and your applications will stop working.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleClose(true)} color="secondary">
+              Delete
+            </Button>
+            <Button onClick={() => this.handleClose(false)} color="primary" autoFocus>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+
       </>
     );
   }
 }
 
 ProfilePage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  classes: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
 };
 
 
