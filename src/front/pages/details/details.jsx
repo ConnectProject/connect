@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,10 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
-
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import FileCopy from '@material-ui/icons/FileCopy';
 import PropTypes from 'prop-types'; // ES6
+import Snackbar from '@material-ui/core/Snackbar';
 
 import { getApplication, updateApplication } from '../../services/api';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 
 const styles = {
@@ -64,29 +67,63 @@ class DetailsPage extends React.PureComponent {
     this.state = {
       loading: true,
       updateLoading: false,
-      application: {}
+      application: {},
+      snackBarOpen: false,
+      errors: {
+        name: false,
+        description: false,
+        apple_store_link: false,
+        google_market_link: false,
+      }
     }
   }
 
   componentDidMount() {
     const { match } = this.props;
     getApplication(match.params.appId).then((res) => {
-      this.setState({
-        loading: false,
-        application: res
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          loading: false,
+          application: res  
+        }
       });
     });
   }
 
   handleChange(name, event) {
-    const { application } = this.state;
+    const { application, errors } = this.state;
+    const { value } = event.target;
+
+    const validated = validateFormField(value, name);
     this.setState({
       application: {
         ...application,
-        [name]: event.target.value
-      } 
+        [name]: value
+      },
+      errors: {
+        ...errors,
+        [name]: !validated
+      }
     });
   }
+
+  handleClick() {
+    this.setState({
+      snackBarOpen: true
+    });
+  }
+
+  handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({
+      snackBarOpen: false
+    });
+  }
+
 
   goBack() {
     const { history } = this.props;
@@ -105,9 +142,19 @@ class DetailsPage extends React.PureComponent {
     })
   }
 
+  copyToClipboard(key) {
+    const { application } = this.state;
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+      if (result.state === "granted" || result.state === "prompt") {
+        navigator.clipboard.writeText(application[key]);
+        this.setState({snackBarOpen: true});
+      }
+    });
+  }
+
   render() {
     const { classes } = this.props;
-    const { application, loading, updateLoading } = this.state;
+    const { application, errors, loading, updateLoading, snackBarOpen } = this.state;
     return (
       <>
         <div className={classes.root}>
@@ -125,6 +172,7 @@ class DetailsPage extends React.PureComponent {
                 onChange={(event) => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
+                error={errors.name}
               />
 
 
@@ -138,7 +186,8 @@ class DetailsPage extends React.PureComponent {
                 margin="normal"
                 variant="outlined"
                 multiline
-                rows="4"        
+                rows="4"  
+                error={errors.name}      
               />
 
               <TextField
@@ -150,6 +199,7 @@ class DetailsPage extends React.PureComponent {
                 onChange={(event) => this.handleChange('apple_store_link', event)}
                 margin="normal"
                 variant="outlined"
+                error={errors.apple_store_link}
               />
 
               <TextField
@@ -161,6 +211,7 @@ class DetailsPage extends React.PureComponent {
                 onChange={(event) => this.handleChange('google_market_link', event)}
                 margin="normal"
                 variant="outlined"
+                error={errors.google_market_link}
               />
 
               <div className={classes.buttonContainer}>
@@ -168,8 +219,8 @@ class DetailsPage extends React.PureComponent {
                   <Button 
                     variant="contained" 
                     color="primary" 
+                    disabled={updateLoading || (!checkValid(errors))}
                     className={classes.button}
-                    disabled={updateLoading}
                     onClick={() => this.clickUpdateApplication()}
                   >
                     Save
@@ -185,9 +236,17 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.token}
-                onChange={(event) => this.handleChange('token', event)}
                 margin="normal"
                 variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => {this.copyToClipboard('token')}}>
+                        <FileCopy />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
 
 
@@ -198,9 +257,28 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.token_sandbox}
-                onChange={(event) => this.handleChange('token_sandbox', event)}
                 margin="normal"
                 variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => {this.copyToClipboard('token_sandbox')}}>
+                        <FileCopy />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                open={snackBarOpen}
+                autoHideDuration={1000}
+                onClose={() => {this.handleClose()}}
+                message={<span>Copied!</span>}
               />
 
             </>
@@ -214,9 +292,9 @@ class DetailsPage extends React.PureComponent {
 }
 
 DetailsPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired
+  classes: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
+  match: PropTypes.instanceOf(Object).isRequired
 };
 
 

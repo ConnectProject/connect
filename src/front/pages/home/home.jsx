@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,7 +9,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
-import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
 
@@ -30,6 +28,7 @@ import Moment from 'react-moment';
 import PropTypes from 'prop-types'; // ES6
 
 import { listOfApplications, createApplication } from '../../services/api';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 
 const styles = {
@@ -134,38 +133,7 @@ class HomePage extends React.PureComponent {
     const { newApplication, errors } = this.state;
     const { value } = event.target;
 
-    function validateFormField(field) {
-      let validated = false;
-      const urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
-      switch(field) {
-        case 'name':
-        case 'description':
-          if (value.length === 0) {
-            validated = false;
-          } else {
-            validated = true;
-          }
-          break;
-
-        case 'apple_store_link':
-        case 'google_market_link':
-          if (value.match(urlRegex)) {
-            validated = true;
-          } else {
-            validated = false;
-          }
-          break;
-      
-
-        default:
-          validated = false;
-          break;
-      }
-
-      return validated;
-    }
-
-    const validated = validateFormField(name);
+    const validated = validateFormField(value, name);
     this.setState({
       newApplication: {
         ...newApplication,
@@ -183,6 +151,7 @@ class HomePage extends React.PureComponent {
     const response = await createApplication(newApplication);
     this.handleClose();
 
+    const { history } = this.props;
     history.push(`/application/${response._id}`);
   }
 
@@ -228,7 +197,7 @@ class HomePage extends React.PureComponent {
         </List>
 
         {
-          developerApplications.length === 0 && 
+          developerApplications.length === 0 && !loading && 
           (
             <Card className={classes.card}>
               <CardContent>
@@ -327,7 +296,7 @@ class HomePage extends React.PureComponent {
             <Button onClick={() => this.handleClose()} color="primary">
               Cancel
             </Button>
-            <Button disabled={!newApplication.name || !newApplication.description} onClick={() => this.clickCreateApplication()} color="primary">
+            <Button disabled={!checkValid(errors) || !newApplication.name || !newApplication.description} onClick={() => this.clickCreateApplication()} color="primary">
               Create application
             </Button>
           </DialogActions>
@@ -339,9 +308,9 @@ class HomePage extends React.PureComponent {
 }
 
 HomePage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  classes: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
 };
 
 
-export default withStyles(styles)(HomePage);
+export default withRouter(withStyles(styles)(HomePage));
