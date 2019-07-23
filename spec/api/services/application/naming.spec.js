@@ -1,7 +1,7 @@
 /* eslint-disable */
 const applicationModelMock = require('./../../../__mock__/applicationModel');
 
-jest.mock('./../../../../src/api//db/model', () => {
+jest.mock('./../../../../src/api/db/model', () => {
   return {
     Application: applicationModelMock,
   };
@@ -9,9 +9,9 @@ jest.mock('./../../../../src/api//db/model', () => {
 const Naming = require('./../../../../src/api/services/application/naming');
 
 describe('Application Naming Service', () => {
-  beforeEach(() => {});
+  beforeEach(() => { });
 
-  afterEach(() => {});
+  afterEach(() => { });
 
   it('gen a parse name', () => {
     const parseName = Naming.genParseName('toto');

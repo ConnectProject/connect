@@ -1,5 +1,6 @@
 const { ParseServer } = require('parse-server');
 const {
+  API_URL,
   MONGO_DB_NAME,
   MONGO_HOST,
   MONGO_USERNAME,
@@ -23,4 +24,5 @@ module.exports = new ParseServer({
   allowClientClassCreation: false,
   enableAnonymousUsers: false,
   maxLimit: 100,
+  serverURL: `${API_URL}/parse`,
 });
