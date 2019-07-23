@@ -1,4 +1,7 @@
+const Developer = require('./developer');
+const Application = require('./application');
+
 module.exports = {
-  developer: require('./developer'),
-  application: require('./application'),
+  Developer,
+  Application,
 };

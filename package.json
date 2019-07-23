@@ -10,30 +10,21 @@
     "eslint.fix": "eslint src/**/*.{js,jsx} --fix",
     "prettier.check": "prettier src/**/*.{js,jsx} --list-different",
     "prettier.fix": "prettier src/**/*.{js,jsx} --write",
-    "test": "jest --config spec/jest.config.js"
+    "test": "jest --config spec/jest.config.js --force-exit"
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "nodemonConfig": {
-    "restartable": "rs",
-    "watch": [
-      "src/"
-    ],
-    "env": {
-      "NODE_ENV": "development"
-    },
-    "ext": "js,jsx,json,css",
-    "ignore": [
-      "src/front/build/*"
-    ],
-    "delay": "2500"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all",
     "semi": true,
     "printWidth": 80
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn eslint.check && yarn prettier.check"
+    }
   },
   "author": "Matters",
   "license": "ISC",
@@ -44,7 +35,6 @@
     "cors": "^2.8.5",
     "debug": "4.1.1",
     "dotenv": "8.0.0",
-    "eslint-plugin-import": "^2.18.0",
     "express": "4.17.1",
     "glob": "7.1.4",
     "js-cookie": "2.2.0",
@@ -52,6 +42,7 @@
     "jwt-decode": "2.2.0",
     "moment": "^2.24.0",
     "mongoose": "5.6.4",
+    "parse": "2.5.1",
     "parse-dashboard": "1.3.3",
     "parse-server": "https://github.com/brunoMaurice/parse-server/releases/download/3.6.0-bis/parse-server-v3.6.0-bis.tgz",
     "prop-types": "^15.7.2",
@@ -80,13 +71,14 @@
     "eslint": "6.0.1",
     "eslint-config-airbnb": "17.1.1",
     "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
     "html-webpack-plugin": "3.2.0",
+    "husky": "3.0.1",
     "jest": "24.8.0",
     "mini-css-extract-plugin": "0.7.0",
     "node-sass": "4.12.0",
-    "nodemon": "1.19.1",
     "prettier": "1.18.2",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",

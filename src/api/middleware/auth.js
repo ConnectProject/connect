@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const logger = require('./../../logger');
 const { AUTH_SECRET } = require('./../../config');
+const mongoModel = require('./../db/model');
 
 const jwtVerify = promisify(jwt.verify);
 
@@ -37,11 +38,9 @@ module.exports = async (req, res, next) => {
     let developer;
 
     if (jwtDeveloper) {
-      developer = await req.model.developer
-        .findOne({
-          github_id: jwtDeveloper.id,
-        })
-        .exec();
+      developer = await mongoModel.Developer.findOne({
+        github_id: jwtDeveloper.id,
+      }).exec();
     }
 
     req.auth = {

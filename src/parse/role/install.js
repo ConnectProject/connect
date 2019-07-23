@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { getOne } = require('./get');
 
 module.exports = async () => {

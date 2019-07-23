@@ -1,38 +1,43 @@
+const mongoModel = require('./../../db/model');
+
 class Naming {
-  constructor({ applicationModel }) {
-    this.applicationModel = applicationModel;
+  constructor() {
+    this.model = mongoModel;
   }
 
   async getUniqName(name) {
-    let genName = this.genParseName(name);
+    let genName = Naming.genParseName(name);
 
+    // eslint-disable-next-line no-await-in-loop
     while (!(await this.isUniqName(genName))) {
-      genName = this.genParseName(name);
+      genName = Naming.genParseName(name);
     }
 
     return genName;
   }
 
   async isUniqName(name) {
-    const application = await this.applicationModel
-      .findOne({ parse_name: name })
-      .exec();
+    const application = await this.model.Application.findOne({
+      parse_name: name,
+    }).exec();
 
     return application === null;
   }
 
-  genParseName(name) {
+  static genParseName(name) {
     const clearName = name.replace(/[^a-zA-Z0-9 ]/g, '');
-    const uid = this.generateUID();
+    const uid = Naming.generateUID();
 
     return `${uid}-${clearName}`;
   }
 
-  generateUID() {
+  static generateUID() {
+    // eslint-disable-next-line no-bitwise
     let firstPart = (Math.random() * 46656) | 0;
+    // eslint-disable-next-line no-bitwise
     let secondPart = (Math.random() * 46656) | 0;
-    firstPart = ('000' + firstPart.toString(36)).slice(-3);
-    secondPart = ('000' + secondPart.toString(36)).slice(-3);
+    firstPart = `000${firstPart.toString(36)}`.slice(-3);
+    secondPart = `000${secondPart.toString(36)}`.slice(-3);
     return firstPart + secondPart;
   }
 }

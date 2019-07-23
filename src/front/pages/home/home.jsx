@@ -30,21 +30,20 @@ import PropTypes from 'prop-types'; // ES6
 import { listOfApplications, createApplication } from '../../services/api';
 import { validateFormField, checkValid } from '../../services/formValidator';
 
-
 const styles = {
   root: {
     width: '100%',
     maxWidth: 720,
-    margin: "0 auto",
-    display: "flex",
+    margin: '0 auto',
+    display: 'flex',
     flexWrap: 'wrap',
   },
   progress: {
-    margin: "0 auto",
-    "margin-top": 140
+    margin: '0 auto',
+    'margin-top': 140,
   },
   listContainer: {
-    width: "100%"
+    width: '100%',
   },
   inline: {
     display: 'inline',
@@ -60,12 +59,10 @@ const styles = {
 
   card: {
     maxWidth: 720,
-    margin: "0 auto",
-    marginTop: 120
-  }
-
+    margin: '0 auto',
+    marginTop: 120,
+  },
 };
-
 
 class HomePage extends React.PureComponent {
   constructor() {
@@ -78,22 +75,22 @@ class HomePage extends React.PureComponent {
         name: '',
         description: '',
         apple_store_link: '',
-        google_market_link: ''
+        google_market_link: '',
       },
       errors: {
         name: false,
         description: false,
         apple_store_link: false,
         google_market_link: false,
-      }
-    }
+      },
+    };
   }
 
   componentDidMount() {
-    listOfApplications().then((res) => {
+    listOfApplications().then(res => {
       this.setState({
         loading: false,
-        developerApplications: res
+        developerApplications: res,
       });
     });
   }
@@ -105,7 +102,7 @@ class HomePage extends React.PureComponent {
 
   handleClickOpen() {
     this.setState({
-      dialogNewApplicationOpen: true
+      dialogNewApplicationOpen: true,
     });
   }
 
@@ -116,18 +113,16 @@ class HomePage extends React.PureComponent {
         name: '',
         description: '',
         apple_store_link: '',
-        google_market_link: ''
+        google_market_link: '',
       },
       errors: {
         name: false,
         description: false,
         apple_store_link: false,
         google_market_link: false,
-      }
+      },
     });
   }
-
-  
 
   handleChange(name, event) {
     const { newApplication, errors } = this.state;
@@ -137,12 +132,12 @@ class HomePage extends React.PureComponent {
     this.setState({
       newApplication: {
         ...newApplication,
-        [name]: value
+        [name]: value,
       },
       errors: {
         ...errors,
-        [name]: !validated
-      }
+        [name]: !validated,
+      },
     });
   }
 
@@ -157,7 +152,13 @@ class HomePage extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    const { developerApplications, loading, dialogNewApplicationOpen, newApplication, errors } = this.state;
+    const {
+      developerApplications,
+      loading,
+      dialogNewApplicationOpen,
+      newApplication,
+      errors,
+    } = this.state;
     return (
       <>
         <List className={classes.root}>
@@ -166,56 +167,52 @@ class HomePage extends React.PureComponent {
           {!loading &&
             developerApplications.map(application => (
               <div key={application._id} className={classes.listContainer}>
-                <ListItem alignItems="flex-start" button onClick={() => this.rowClick(application)}>
+                <ListItem
+                  alignItems="flex-start"
+                  button
+                  onClick={() => this.rowClick(application)}
+                >
                   <ListItemText
                     primary={
-                      (
-                        <React.Fragment>
-                          {application.name}
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {" - "} 
-                            <Moment format="YYYY-MM-DD HH:mm">
-                              {application.updated_at}
-                            </Moment>
-                           
-                          </Typography>
-  
-                        </React.Fragment>
-                        )}
+                      <React.Fragment>
+                        {application.name}
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          {' - '}
+                          <Moment format="YYYY-MM-DD HH:mm">
+                            {application.updated_at}
+                          </Moment>
+                        </Typography>
+                      </React.Fragment>
+                    }
                     secondary={application.description}
                   />
                 </ListItem>
                 <Divider component="li" />
               </div>
-            ))
-          }
+            ))}
         </List>
 
-        {
-          developerApplications.length === 0 && !loading && 
-          (
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography variant="h5" component="h2">
-                  <DeveloperModeIcon /> 
-                  {"  "} Welcome
-                </Typography>
-                <Typography variant="body1" component="p">
-                  Add your first application with the bottom right button.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Go to documentation</Button>
-              </CardActions>
-            </Card>
-          
-          )
-        }
+        {developerApplications.length === 0 && !loading && (
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                <DeveloperModeIcon />
+                {'  '} Welcome
+              </Typography>
+              <Typography variant="body1" component="p">
+                Add your first application with the bottom right button.
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Go to documentation</Button>
+            </CardActions>
+          </Card>
+        )}
 
         <Fab
           variant="extended"
@@ -229,12 +226,16 @@ class HomePage extends React.PureComponent {
           New application
         </Fab>
 
-
-        <Dialog open={dialogNewApplicationOpen} onClose={() => this.handleClose()} aria-labelledby="form-dialog-title">
+        <Dialog
+          open={dialogNewApplicationOpen}
+          onClose={() => this.handleClose()}
+          aria-labelledby="form-dialog-title"
+        >
           <DialogTitle id="form-dialog-title">New Application</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Fill in the required fields to create a new application. It will allow you to get Token to use Connect API.
+              Fill in the required fields to create a new application. It will
+              allow you to get Token to use Connect API.
             </DialogContentText>
             <TextField
               autoFocus
@@ -244,26 +245,25 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.name}
-              onChange={(event) => this.handleChange('name', event)}
+              onChange={event => this.handleChange('name', event)}
               margin="normal"
               variant="outlined"
               error={errors.name}
             />
 
-
             <TextField
-              required  
+              required
               id="description"
               label="Description"
               className={classes.textField}
               fullWidth
               value={newApplication.description}
-              onChange={(event) => this.handleChange('description', event)}
+              onChange={event => this.handleChange('description', event)}
               margin="normal"
               variant="outlined"
               multiline
-              rows="4"    
-              error={errors.description}    
+              rows="4"
+              error={errors.description}
             />
 
             <TextField
@@ -272,12 +272,11 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.apple_store_link}
-              onChange={(event) => this.handleChange('apple_store_link', event)}
+              onChange={event => this.handleChange('apple_store_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.apple_store_link}
             />
-
 
             <TextField
               id="google_market_link"
@@ -285,23 +284,29 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.google_market_link}
-              onChange={(event) => this.handleChange('google_market_link', event)}
+              onChange={event => this.handleChange('google_market_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.google_market_link}
             />
-
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleClose()} color="primary">
               Cancel
             </Button>
-            <Button disabled={!checkValid(errors) || !newApplication.name || !newApplication.description} onClick={() => this.clickCreateApplication()} color="primary">
+            <Button
+              disabled={
+                !checkValid(errors) ||
+                !newApplication.name ||
+                !newApplication.description
+              }
+              onClick={() => this.clickCreateApplication()}
+              color="primary"
+            >
               Create application
             </Button>
           </DialogActions>
         </Dialog>
-
       </>
     );
   }
@@ -311,6 +316,5 @@ HomePage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
-
 
 export default withRouter(withStyles(styles)(HomePage));

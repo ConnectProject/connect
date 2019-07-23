@@ -1,40 +1,4 @@
 /**
- * Transform Parse Server schema.json to swagger.json
- */
-exports.parseSchemaToSwagger = function(spec, schemas, excludes) {
-  for (const classes of schemas) {
-    if (excludes.includes(classes.className)) {
-      continue;
-    }
-    spec.components.schemas[classes.className] = transformClasseToSchema(
-      classes,
-    );
-    spec.paths['/parse/classes/' + classes.className] = getPath(classes);
-    spec.paths['/parse/classes/' + classes.className + '/{id}'] = getPathById(
-      classes,
-    );
-  }
-
-  return spec;
-};
-
-/**
- *
- * @param {classe} parse server classes
- */
-function transformClasseToSchema(classe) {
-  const schema = { type: 'object', properties: {} };
-  for (const key in classe.fields) {
-    const element = classe.fields[key];
-    if (key != 'ACL') {
-      schema.properties[key] = schemaTypeToSwaggerType(element.type);
-    }
-  }
-
-  return schema;
-}
-
-/**
  * Cast parse type to swagger type
  * @param {Parse type} type
  */
@@ -269,3 +233,40 @@ function getPathById(classes) {
     },
   };
 }
+
+/**
+ *
+ * @param {classe} parse server classes
+ */
+function transformClasseToSchema(classe) {
+  const schema = { type: 'object', properties: {} };
+
+  classe.forEach((element, key) => {
+    if (key !== 'ACL') {
+      schema.properties[key] = schemaTypeToSwaggerType(element.type);
+    }
+  });
+
+  return schema;
+}
+
+/**
+ * Transform Parse Server schema.json to swagger.json
+ */
+exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
+  const newSpec = spec;
+
+  for (const classes of schemas) {
+    if (!excludes.includes(classes.className)) {
+      newSpec.components.schemas[classes.className] = transformClasseToSchema(
+        classes,
+      );
+      newSpec.paths[`/parse/classes/${classes.className}`] = getPath(classes);
+      newSpec.paths[`/parse/classes/${classes.className}/{id}`] = getPathById(
+        classes,
+      );
+    }
+  }
+
+  return spec;
+};

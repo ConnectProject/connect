@@ -1,20 +1,21 @@
+const uuidv4 = require('uuid/v4');
 const Parse = require('./../../../parse');
 const Naming = require('./naming');
-const uuidv4 = require('uuid/v4');
 const logger = require('./../../../logger');
+const mongoModel = require('./../../db/model');
 
 class Application {
-  constructor({ applicationModel }) {
-    this.applicationModel = applicationModel;
-    this.namingService = new Naming({ applicationModel });
+  constructor() {
+    this.model = mongoModel;
+    this.namingService = new Naming();
   }
 
   async list(developer) {
-    return this.applicationModel.find({ developer });
+    return this.model.Application.find({ developer });
   }
 
   async get(developer, id) {
-    return this.applicationModel.findOne({ developer, _id: id });
+    return this.model.Application.findOne({ developer, _id: id });
   }
 
   async create(developer, input) {
@@ -23,7 +24,7 @@ class Application {
 
     const parseName = await this.namingService.getUniqName(input.name);
 
-    let application = new this.applicationModel({
+    let application = new this.model.Application({
       developer,
       name: input.name,
       description: input.description,
@@ -44,7 +45,7 @@ class Application {
       user.set('password', token);
       await user.signUp({}, { useMasterKey: true });
     } catch (error) {
-      logger('Error: ' + error.code + ' ' + error.message);
+      logger(`Error: ${error.code} ${error.message}`);
     }
 
     return application;
