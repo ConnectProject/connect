@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -73,8 +71,8 @@ class LoginPage extends React.PureComponent {
 }
 
 LoginPage.propTypes = {
-  history: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
 };
 
 

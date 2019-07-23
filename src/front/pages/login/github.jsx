@@ -30,7 +30,7 @@ class Github extends React.Component {
 
     setAuthToken(await responses.text());
 
-    return history.push('/');
+    return history.push('/home');
   }
 
   render() {

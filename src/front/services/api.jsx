@@ -1,62 +1,113 @@
-import { getJwt } from './auth';
+import { getJwt, logout } from './auth';
+
+
+const headersWithJWT = () => {
+    const jwt = getJwt();
+    if (!jwt) { return null; }
+    return {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`
+    };
+}
 
 
 export const listOfApplications = async () => {
-    const jwt = getJwt();
-    if (!jwt) {
-        return [];
-    }
+    const headers = headersWithJWT();
+    if (!headers) { return []; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'GET',
     });
-
-
     return responses.json();
 }
 
 
 export const getApplication = async (appId) => {
-    const jwt = getJwt();
-    if (!jwt) {
-        return {};
-    }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'GET',
     });
-
-
     return responses.json();
 }
 
 
 export const createApplication = async(newApplication) => {
-    const jwt = getJwt();
-    if (!jwt) {
-        return {};
-    }
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
 
     const responses = await fetch(`${process.env.API_URL}/api/application`, {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`
-        },
+        headers,
         method: 'POST',
         body: JSON.stringify(newApplication)
     });
 
+    return responses.json();
+}
+
+export const updateApplication = async(appId, application) => {
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
+
+    const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
+        headers,
+        method: 'PUT',
+        body: JSON.stringify(application)
+    });
 
     return responses.json();
 }
+
+export const deleteUser = async() => {
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
+
+    const responses = await fetch(`${process.env.API_URL}/api/developer`, {
+        headers,
+        method: 'DELETE',
+    });
+
+    logout();
+    return responses.json();
+}
+
+export const getUser = async () => {
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
+
+    // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
+    //     headers,
+    //     method: 'GET',
+    // });
+    // return responses.json();
+
+    return {
+        lastName: 'Bernos',
+        firstName: 'Guillaume',
+        email: 'guillaume.bernos@matters.tech',
+    }
+}
+
+export const updateUser = async () => {
+    const headers = headersWithJWT();
+    if (!headers) { return {}; }
+
+    // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
+    //     headers,
+    //     method: 'GET',
+    // });
+    // return responses.json();
+
+    // TODO: WAITING FOR BACKEND
+
+    return {
+        lastName: 'Bernos',
+        firstName: 'Guillaume',
+        email: 'guillaume.bernos@matters.tech',
+    }
+}
+
