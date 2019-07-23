@@ -7,6 +7,7 @@ module.exports = {
   rules: {
     // Disable rules handled by prettier
     'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-wrap-multilines': 'off',
 
     // Disables rules we choose not to apply
     'import/prefer-default-export': 'off',
