@@ -15,34 +15,33 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { getApplication, updateApplication } from '../../services/api';
 import { validateFormField, checkValid } from '../../services/formValidator';
 
-
 const styles = {
   root: {
     width: '100%',
     maxWidth: 720,
-    margin: "0 auto",
+    margin: '0 auto',
     display: 'flex',
     flexWrap: 'wrap',
-    "margin-top": 16
+    'margin-top': 16,
   },
   progress: {
-    margin: "0 auto",
-    "margin-top": 140
+    margin: '0 auto',
+    'margin-top': 140,
   },
   listContainer: {
-    width: "100%"
+    width: '100%',
   },
   textField: {
-    margin: 16
+    margin: 16,
   },
   button: {
     margin: 8,
-    width: 120
+    width: 120,
   },
   buttonContainer: {
-    display: "flex",
-    width: "100%",
-    "justify-content": "flex-end",
+    display: 'flex',
+    width: '100%',
+    'justify-content': 'flex-end',
   },
   buttonProgress: {
     color: green[500],
@@ -56,10 +55,7 @@ const styles = {
     margin: 0,
     position: 'relative',
   },
-
- 
 };
-
 
 class DetailsPage extends React.PureComponent {
   constructor() {
@@ -74,19 +70,19 @@ class DetailsPage extends React.PureComponent {
         description: false,
         apple_store_link: false,
         google_market_link: false,
-      }
-    }
+      },
+    };
   }
 
   componentDidMount() {
     const { match } = this.props;
-    getApplication(match.params.appId).then((res) => {
-      this.setState((prevState) => {
+    getApplication(match.params.appId).then(res => {
+      this.setState(prevState => {
         return {
           ...prevState,
           loading: false,
-          application: res  
-        }
+          application: res,
+        };
       });
     });
   }
@@ -99,18 +95,18 @@ class DetailsPage extends React.PureComponent {
     this.setState({
       application: {
         ...application,
-        [name]: value
+        [name]: value,
       },
       errors: {
         ...errors,
-        [name]: !validated
-      }
+        [name]: !validated,
+      },
     });
   }
 
   handleClick() {
     this.setState({
-      snackBarOpen: true
+      snackBarOpen: true,
     });
   }
 
@@ -120,10 +116,9 @@ class DetailsPage extends React.PureComponent {
     }
 
     this.setState({
-      snackBarOpen: false
+      snackBarOpen: false,
     });
   }
-
 
   goBack() {
     const { history } = this.props;
@@ -133,35 +128,40 @@ class DetailsPage extends React.PureComponent {
   async clickUpdateApplication() {
     const { application } = this.state;
     this.setState({
-      updateLoading: true
-    })
+      updateLoading: true,
+    });
     const response = await updateApplication(application._id, application);
     this.setState({
       updateLoading: false,
-      application: response
-    })
+      application: response,
+    });
   }
 
   copyToClipboard(key) {
     const { application } = this.state;
-    navigator.permissions.query({name: "clipboard-write"}).then(result => {
-      if (result.state === "granted" || result.state === "prompt") {
+    navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
+      if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(application[key]);
-        this.setState({snackBarOpen: true});
+        this.setState({ snackBarOpen: true });
       }
     });
   }
 
   render() {
     const { classes } = this.props;
-    const { application, errors, loading, updateLoading, snackBarOpen } = this.state;
+    const {
+      application,
+      errors,
+      loading,
+      updateLoading,
+      snackBarOpen,
+    } = this.state;
     return (
       <>
         <div className={classes.root}>
           {loading && <CircularProgress className={classes.progress} />}
 
-          {!loading &&
-          (
+          {!loading && (
             <>
               <TextField
                 id="name"
@@ -169,12 +169,11 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.name}
-                onChange={(event) => this.handleChange('name', event)}
+                onChange={event => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.name}
               />
-
 
               <TextField
                 id="description"
@@ -182,12 +181,12 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.description}
-                onChange={(event) => this.handleChange('description', event)}
+                onChange={event => this.handleChange('description', event)}
                 margin="normal"
                 variant="outlined"
                 multiline
-                rows="4"  
-                error={errors.name}      
+                rows="4"
+                error={errors.name}
               />
 
               <TextField
@@ -196,7 +195,7 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.apple_store_link || ''}
-                onChange={(event) => this.handleChange('apple_store_link', event)}
+                onChange={event => this.handleChange('apple_store_link', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.apple_store_link}
@@ -208,7 +207,9 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.google_market_link || ''}
-                onChange={(event) => this.handleChange('google_market_link', event)}
+                onChange={event =>
+                  this.handleChange('google_market_link', event)
+                }
                 margin="normal"
                 variant="outlined"
                 error={errors.google_market_link}
@@ -216,16 +217,21 @@ class DetailsPage extends React.PureComponent {
 
               <div className={classes.buttonContainer}>
                 <div className={classes.wrapper}>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    disabled={updateLoading || (!checkValid(errors))}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={updateLoading || !checkValid(errors)}
                     className={classes.button}
                     onClick={() => this.clickUpdateApplication()}
                   >
                     Save
                   </Button>
-                  {updateLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                  {updateLoading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -241,14 +247,17 @@ class DetailsPage extends React.PureComponent {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={() => {this.copyToClipboard('token')}}>
+                      <IconButton
+                        onClick={() => {
+                          this.copyToClipboard('token');
+                        }}
+                      >
                         <FileCopy />
                       </IconButton>
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
-
 
               <TextField
                 disabled
@@ -262,11 +271,15 @@ class DetailsPage extends React.PureComponent {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={() => {this.copyToClipboard('token_sandbox')}}>
+                      <IconButton
+                        onClick={() => {
+                          this.copyToClipboard('token_sandbox');
+                        }}
+                      >
                         <FileCopy />
                       </IconButton>
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
 
@@ -277,15 +290,14 @@ class DetailsPage extends React.PureComponent {
                 }}
                 open={snackBarOpen}
                 autoHideDuration={1000}
-                onClose={() => {this.handleClose()}}
+                onClose={() => {
+                  this.handleClose();
+                }}
                 message={<span>Copied!</span>}
               />
-
             </>
-          )
-          }
+          )}
         </div>
-
       </>
     );
   }
@@ -294,8 +306,7 @@ class DetailsPage extends React.PureComponent {
 DetailsPage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
-  match: PropTypes.instanceOf(Object).isRequired
+  match: PropTypes.instanceOf(Object).isRequired,
 };
-
 
 export default withRouter(withStyles(styles)(DetailsPage));

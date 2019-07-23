@@ -42,24 +42,26 @@ module.exports = async () => {
   const schema = await Config.get(PARSE_APP_ID).database.loadSchema();
 
   try {
+    const schemaSyncs = [];
     for (const schemaClass of initClasses) {
-      await applySchemaSync(schema, schemaClass);
+      schemaSyncs.push(applySchemaSync(schema, schemaClass));
     }
 
     for (const schemaClass of schemaClasses) {
       // a schemaClass should have at least a className and a field
-      if (!schemaClass.className && !schemaClass.fields) {
-        continue;
+      if (schemaClass.className || schemaClass.fields) {
+        schemaSyncs.push(applySchemaSync(schema, sanitizeClass(schemaClass)));
       }
-
-      sanitizeClass(schemaClass);
-      await applySchemaSync(schema, schemaClass);
     }
+
+    return Promise.all(schemaSyncs);
   } catch (err) {
     if (err.code === 103) {
       logger(err.message);
     } else {
       throw err;
     }
+
+    return err;
   }
 };

@@ -32,7 +32,6 @@ const isJwtValid = jwt => {
   return now < exp;
 };
 
-
 export const setAuthToken = token => {
   if (!isJwtValid(token)) {
     connectedState.next(false);
@@ -43,7 +42,6 @@ export const setAuthToken = token => {
   connectedState.next(true);
   return true;
 };
-
 
 export const getJwt = () => {
   const jwt = Cookie.get(COOKIENAME);
@@ -60,8 +58,7 @@ export const getUser = () => {
   } catch (e) {
     return null;
   }
-  
-}
+};
 
 export const hasJwt = () => !!getJwt();
 

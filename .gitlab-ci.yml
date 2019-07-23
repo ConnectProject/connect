@@ -1,0 +1,60 @@
+image: node:12-alpine
+
+cache:
+  key: ci-cache-$CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+before_script:
+  - apk --no-cache add --virtual builds-deps build-base python
+
+stages:
+  - build
+  - test
+
+####
+####
+#### TEMPLATES
+####
+####
+
+.base_job:
+  tags:
+    - k8s
+
+####
+####
+#### BUILD STAGE
+####
+####
+
+build:
+  extends: .base_job
+  stage: build
+  script:
+    - yarn install
+
+####
+####
+#### LINT STAGE
+####
+####
+
+lint:
+  extends: .base_job
+  stage: test
+  script:
+    - yarn install
+    - yarn eslint.check
+    - yarn prettier.check
+  cache:
+    policy: pull
+
+test:
+  extends: .base_job
+  stage: test
+  script:
+    - yarn install
+    - yarn test
+  cache:
+    policy: pull
