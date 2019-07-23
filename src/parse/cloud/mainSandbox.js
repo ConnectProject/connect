@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const logger = require('./../../logger');
 const schemaSync = require('../schema/sync');
 const roleInstall = require('../role/install');
@@ -22,9 +23,9 @@ init(Parse)
   .then(() => logger(`Parse correctly init`))
   .catch(err => logger(`Issue to init Parse : ${err}`));
 
-Parse.Cloud.afterSave(Parse.User, async function(req) {
+Parse.Cloud.afterSave(Parse.User, async req => {
   if (req.object.existed()) {
-    return;
+    return null;
   }
 
   const user = req.object;

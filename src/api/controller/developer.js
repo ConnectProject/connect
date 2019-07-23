@@ -4,10 +4,7 @@ const logger = require('./../../logger');
 module.exports = {
   delete: async (req, res) => {
     try {
-      const developerService = new DeveloperService({
-        applicationModel: req.model.application,
-        developerModel: req.model.developer,
-      });
+      const developerService = new DeveloperService();
       const application = await developerService.delete(req.auth.developer);
 
       return res.send(application);

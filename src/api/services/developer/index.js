@@ -1,12 +1,13 @@
+const mongoModel = require('./../../db/model');
+
 class Developer {
-  constructor({ applicationModel, developerModel }) {
-    this.applicationModel = applicationModel;
-    this.developerModel = developerModel;
+  constructor() {
+    this.model = mongoModel;
   }
 
   async delete(developer) {
-    await this.applicationModel.deleteMany({ developer });
-    return this.developerModel.deleteOne({ _id: developer._id });
+    await this.model.Application.deleteMany({ developer });
+    return this.model.Developer.deleteOne({ _id: developer._id });
   }
 }
 

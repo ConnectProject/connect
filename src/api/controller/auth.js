@@ -4,7 +4,7 @@ const logger = require('./../../logger');
 module.exports = {
   github: async (req, res) => {
     try {
-      const authService = new Auth({ developerModel: req.model.developer });
+      const authService = new Auth();
       const jwt = await authService.connectUser(req.body.code);
 
       res.send(jwt);

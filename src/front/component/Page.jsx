@@ -4,9 +4,7 @@ import PropTypes from 'prop-types'; // ES6
 
 import { hasJwt } from '../services/auth';
 
-
 class Page extends React.PureComponent {
-
   constructor() {
     super();
     this.state = { redirectToReferrer: false };
@@ -23,19 +21,17 @@ class Page extends React.PureComponent {
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
-      return <Redirect to='/' />;
+      return <Redirect to="/" />;
     }
     const { children } = this.props;
 
-    return <div>{ children }</div>;
+    return <div>{children}</div>;
   }
 }
 
 Page.propTypes = {
   isPublic: PropTypes.bool.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.element.isRequired,
 };
-
-
 
 export default Page;

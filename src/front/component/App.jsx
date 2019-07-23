@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'; // ES6
 
 import AppBar from '@material-ui/core/AppBar';
@@ -20,62 +20,60 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import { logout, connectedState } from '../services/auth';
-import Routes from "./Router";
+import Routes from './Router';
 
-
-const options = ['Documentation','My Profile'];
+const options = ['Documentation', 'My Profile'];
 
 class App extends React.PureComponent {
-
   constructor() {
-    super();    
+    super();
     this.state = {
       canBack: false,
-      userConnected : false,
-       anchorRef: {current: null}, 
-       selectedIndex: 0, 
-       open: false
+      userConnected: false,
+      anchorRef: { current: null },
+      selectedIndex: 0,
+      open: false,
     };
   }
-  
+
   componentDidMount() {
     const { history } = this.props;
-    if (history.location.pathname !== '/home' && history.location.pathname !== '/') {
-      this.setState({canBack: true});
+    if (
+      history.location.pathname !== '/home' &&
+      history.location.pathname !== '/'
+    ) {
+      this.setState({ canBack: true });
     }
-    history.listen((location) => {
+    history.listen(location => {
       if (location.pathname !== '/home' && location.pathname !== '/') {
-        this.setState({canBack: true});
+        this.setState({ canBack: true });
       } else {
-        this.setState({canBack: false});
+        this.setState({ canBack: false });
       }
     });
 
-
-    connectedState.subscribe((userConnected) => {
-      if(!userConnected) {
+    connectedState.subscribe(userConnected => {
+      if (!userConnected) {
         history.push('/');
       }
-      this.setState({userConnected});
+      this.setState({ userConnected });
     });
-
   }
 
   async handleMenuItemClick(event, index) {
     const { history } = this.props;
     if (index === 1) {
-      history.push('/profile')
+      history.push('/profile');
     }
 
-    this.handleToggle()
-    
+    this.handleToggle();
   }
 
   handleToggle() {
     const { open } = this.state;
     this.setState({
-      open: !open
-    })
+      open: !open,
+    });
   }
 
   handleClose(event) {
@@ -85,8 +83,8 @@ class App extends React.PureComponent {
     }
 
     this.setState({
-      open: false
-    })
+      open: false,
+    });
   }
 
   goBack() {
@@ -94,23 +92,30 @@ class App extends React.PureComponent {
     history.goBack();
   }
 
-
   render() {
-    const { userConnected, anchorRef, selectedIndex, open, canBack } = this.state;
+    const {
+      userConnected,
+      anchorRef,
+      selectedIndex,
+      open,
+      canBack,
+    } = this.state;
 
     return (
       <div>
         <AppBar position="static" color="default">
           <Toolbar>
             {canBack && (
-            <IconButton 
-              edge="start" 
-              className="margin-right': 16"
-              color="inherit"
-              onClick={() => {this.goBack()}}
-            >
-              <ArrowBack />
-            </IconButton>
+              <IconButton
+                edge="start"
+                className="margin-right': 16"
+                color="inherit"
+                onClick={() => {
+                  this.goBack();
+                }}
+              >
+                <ArrowBack />
+              </IconButton>
             )}
 
             <Typography variant="h6" color="inherit">
@@ -118,13 +123,15 @@ class App extends React.PureComponent {
             </Typography>
             <div className="spacer" />
 
-            {userConnected && 
-            (
+            {userConnected && (
               <>
                 <ButtonGroup ref={anchorRef} aria-label="Split button">
-                  <Button 
-                    color="inherit" 
-                    onClick={() => {logout(); window.location.href = '/'}}
+                  <Button
+                    color="inherit"
+                    onClick={() => {
+                      logout();
+                      window.location.href = '/';
+                    }}
                   >
                     Logout
                   </Button>
@@ -139,23 +146,35 @@ class App extends React.PureComponent {
                     <ArrowDropDownIcon />
                   </Button>
                 </ButtonGroup>
-                <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
+                <Popper
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  transition
+                  disablePortal
+                >
                   {({ TransitionProps, placement }) => (
                     <Grow
                       {...TransitionProps}
                       style={{
-                        transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                        transformOrigin:
+                          placement === 'bottom'
+                            ? 'center top'
+                            : 'center bottom',
                       }}
                     >
                       <Paper id="menu-list-grow">
-                        <ClickAwayListener onClickAway={() => this.handleClose()}>
+                        <ClickAwayListener
+                          onClickAway={() => this.handleClose()}
+                        >
                           <MenuList>
                             {options.map((option, index) => (
                               <MenuItem
                                 key={option}
                                 disabled={index === 2}
                                 selected={index === selectedIndex}
-                                onClick={event => this.handleMenuItemClick(event, index)}
+                                onClick={event =>
+                                  this.handleMenuItemClick(event, index)
+                                }
                               >
                                 {option}
                               </MenuItem>
@@ -167,8 +186,7 @@ class App extends React.PureComponent {
                   )}
                 </Popper>
               </>
-            )
-            }
+            )}
           </Toolbar>
         </AppBar>
 
@@ -181,7 +199,5 @@ class App extends React.PureComponent {
 App.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
 };
-
-
 
 export default withRouter(App);
