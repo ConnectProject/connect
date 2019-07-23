@@ -1,13 +1,14 @@
-/* eslint-disable func-names */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-undef */
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
-conn = new Mongo(MONGO_HOST);
+const listCollection = JSON.parse(process.argv[2]);
 
-dbSandbox = conn.getDB('connect-sandbox');
-dbSandbox.auth(MONGO_USERNAME, MONGO_PASSWORD);
-dbSandbox.getCollection('_Role').drop();
-dbSandbox.getCollection('_SCHEMA').drop();
-print("\nDelete previous collections")
+listCollection.forEach(async (collection) => {
+    if (collection !== '_Session' && collection !== '_User') {
+        const resultDump = await exec(`mongodump -d connect -c ${collection} --username connect --password connect`);
+        console.log(`${collection}/resultDump:`, resultDump);
+        const resutlRestore = await exec(`mongorestore -d connect-sandbox -c ${collection} dump/connect/${collection}.bson --username connect --password connect`);
+        console.log(`${collection}/resutlRestore:`, resutlRestore);
+    }
 
-dbSandbox.logout();
+});
