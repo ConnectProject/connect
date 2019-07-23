@@ -30,21 +30,20 @@ import PropTypes from 'prop-types'; // ES6
 import { listOfApplications, createApplication } from '../../services/api';
 import { validateFormField, checkValid } from '../../services/formValidator';
 
-
 const styles = {
   root: {
     width: '100%',
     maxWidth: 720,
-    margin: "0 auto",
-    display: "flex",
+    margin: '0 auto',
+    display: 'flex',
     flexWrap: 'wrap',
   },
   progress: {
-    margin: "0 auto",
-    "margin-top": 140
+    margin: '0 auto',
+    'margin-top': 140,
   },
   listContainer: {
-    width: "100%"
+    width: '100%',
   },
   inline: {
     display: 'inline',
@@ -65,7 +64,6 @@ const styles = {
   }
 
 };
-
 
 class HomePage extends React.PureComponent {
   constructor() {
@@ -90,10 +88,10 @@ class HomePage extends React.PureComponent {
   }
 
   componentDidMount() {
-    listOfApplications().then((res) => {
+    listOfApplications().then(res => {
       this.setState({
         loading: false,
-        developerApplications: res
+        developerApplications: res,
       });
     });
   }
@@ -105,7 +103,7 @@ class HomePage extends React.PureComponent {
 
   handleClickOpen() {
     this.setState({
-      dialogNewApplicationOpen: true
+      dialogNewApplicationOpen: true,
     });
   }
 
@@ -166,34 +164,34 @@ class HomePage extends React.PureComponent {
           {!loading &&
             developerApplications.map(application => (
               <div key={application._id} className={classes.listContainer}>
-                <ListItem alignItems="flex-start" button onClick={() => this.rowClick(application)}>
+                <ListItem
+                  alignItems="flex-start"
+                  button
+                  onClick={() => this.rowClick(application)}
+                >
                   <ListItemText
                     primary={
-                      (
-                        <React.Fragment>
-                          {application.name}
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {" - "}
-                            <Moment format="YYYY-MM-DD HH:mm">
-                              {application.updated_at}
-                            </Moment>
-
-                          </Typography>
-
-                        </React.Fragment>
-                      )}
+                      <React.Fragment>
+                        {application.name}
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          {' - '}
+                          <Moment format="YYYY-MM-DD HH:mm">
+                            {application.updated_at}
+                          </Moment>
+                        </Typography>
+                      </React.Fragment>
+                    }
                     secondary={application.description}
                   />
                 </ListItem>
                 <Divider component="li" />
               </div>
-            ))
-          }
+            ))}
         </List>
 
         {
@@ -229,12 +227,16 @@ class HomePage extends React.PureComponent {
           New application
         </Fab>
 
-
-        <Dialog open={dialogNewApplicationOpen} onClose={() => this.handleClose()} aria-labelledby="form-dialog-title">
+        <Dialog
+          open={dialogNewApplicationOpen}
+          onClose={() => this.handleClose()}
+          aria-labelledby="form-dialog-title"
+        >
           <DialogTitle id="form-dialog-title">New Application</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Fill in the required fields to create a new application. It will allow you to get Token to use Connect API.
+              Fill in the required fields to create a new application. It will
+              allow you to get Token to use Connect API.
             </DialogContentText>
             <TextField
               autoFocus
@@ -244,12 +246,11 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.name}
-              onChange={(event) => this.handleChange('name', event)}
+              onChange={event => this.handleChange('name', event)}
               margin="normal"
               variant="outlined"
               error={errors.name}
             />
-
 
             <TextField
               required
@@ -258,7 +259,7 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.description}
-              onChange={(event) => this.handleChange('description', event)}
+              onChange={event => this.handleChange('description', event)}
               margin="normal"
               variant="outlined"
               multiline
@@ -272,12 +273,11 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.apple_store_link}
-              onChange={(event) => this.handleChange('apple_store_link', event)}
+              onChange={event => this.handleChange('apple_store_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.apple_store_link}
             />
-
 
             <TextField
               id="google_market_link"
@@ -285,12 +285,11 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.google_market_link}
-              onChange={(event) => this.handleChange('google_market_link', event)}
+              onChange={event => this.handleChange('google_market_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.google_market_link}
             />
-
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleClose()} color="primary">
@@ -301,7 +300,6 @@ class HomePage extends React.PureComponent {
             </Button>
           </DialogActions>
         </Dialog>
-
       </>
     );
   }
@@ -311,6 +309,5 @@ HomePage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
-
 
 export default withRouter(withStyles(styles)(HomePage));

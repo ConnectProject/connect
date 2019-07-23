@@ -15,22 +15,21 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { getApplication, updateApplication } from '../../services/api';
 import { validateFormField, checkValid } from '../../services/formValidator';
 
-
 const styles = {
   root: {
     width: '100%',
     maxWidth: 720,
-    margin: "0 auto",
+    margin: '0 auto',
     display: 'flex',
     flexWrap: 'wrap',
     "margin-top": 16
   },
   progress: {
-    margin: "0 auto",
-    "margin-top": 140
+    margin: '0 auto',
+    'margin-top': 140,
   },
   listContainer: {
-    width: "100%"
+    width: '100%',
   },
   textField: {
     margin: 16
@@ -59,7 +58,6 @@ const styles = {
 
  
 };
-
 
 class DetailsPage extends React.PureComponent {
   constructor() {
@@ -160,8 +158,7 @@ class DetailsPage extends React.PureComponent {
         <div className={classes.root}>
           {loading && <CircularProgress className={classes.progress} />}
 
-          {!loading &&
-          (
+          {!loading && (
             <>
               <TextField
                 id="name"
@@ -169,12 +166,11 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.name}
-                onChange={(event) => this.handleChange('name', event)}
+                onChange={event => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.name}
               />
-
 
               <TextField
                 id="description"
@@ -182,7 +178,7 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.description}
-                onChange={(event) => this.handleChange('description', event)}
+                onChange={event => this.handleChange('description', event)}
                 margin="normal"
                 variant="outlined"
                 multiline
@@ -249,7 +245,6 @@ class DetailsPage extends React.PureComponent {
                 }}
               />
 
-
               <TextField
                 disabled
                 id="token_sandbox"
@@ -280,12 +275,9 @@ class DetailsPage extends React.PureComponent {
                 onClose={() => {this.handleClose()}}
                 message={<span>Copied!</span>}
               />
-
             </>
-          )
-          }
+          )}
         </div>
-
       </>
     );
   }
@@ -296,6 +288,5 @@ DetailsPage.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
   match: PropTypes.instanceOf(Object).isRequired
 };
-
 
 export default withRouter(withStyles(styles)(DetailsPage));

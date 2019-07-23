@@ -24,7 +24,7 @@ class Github extends React.Component {
       body: JSON.stringify({ code: params.get('code') }),
     });
 
-    if (await responses.status !== 200) {
+    if ((await responses.status) !== 200) {
       return history.push('/');
     }
 
@@ -40,8 +40,7 @@ class Github extends React.Component {
 
 Github.propTypes = {
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
-
 
 export default Github;

@@ -10,7 +10,7 @@ import ProfilePage from '../pages/profile/profile';
 export const ROUTES = {
   HOME: '/',
   LOGIN_GITHUB: '/login/github',
-  CONNECTED_HOME: '/home'
+  CONNECTED_HOME: '/home',
 };
 
 class Routes extends React.PureComponent {

@@ -12,13 +12,12 @@ const parseSwagger = require('./middleware/parseSwagger');
 
 const app = express();
 
-
 app.use(express.json());
 
 const corsOptions = {
   origin: FRONT_URL,
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));

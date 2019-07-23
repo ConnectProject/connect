@@ -11,21 +11,19 @@ import PropTypes from 'prop-types'; // ES6
 import * as React from 'react';
 import { hasJwt } from '../../services/auth';
 
-
 const styles = {
   card: {
     maxWidth: 345,
-    margin: "0 auto",
-    "margin-top": "10%",
+    margin: '0 auto',
+    'margin-top': '10%',
   },
   media: {
     height: 140,
   },
   buttonContainer: {
-    "justify-content": "center",
-  }
+    'justify-content': 'center',
+  },
 };
-
 
 class LoginPage extends React.PureComponent {
   componentDidMount() {
@@ -35,9 +33,8 @@ class LoginPage extends React.PureComponent {
     }
   }
 
-
   render() {
-    const { classes } = this.props; 
+    const { classes } = this.props;
     return (
       <Card className={classes.card}>
         <CardContent>
@@ -74,7 +71,5 @@ LoginPage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
-
-
 
 export default withRouter(withStyles(styles)(LoginPage));
