@@ -15,7 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import PropTypes from 'prop-types'; // ES6
 
-import { getUser, updateUser, deleteUser } from '../../services/api';
+import { updateUser, deleteUser } from '../../services/api';
+import { getUser } from '../../services/auth';
 
 
 const styles = {
@@ -79,21 +80,10 @@ class ProfilePage extends React.PureComponent {
   }
 
   componentDidMount() {
-    getUser().then((res) => {
-      this.setState({
-        loading: false,
-        user: res
-      });
-    });
-  }
-
-  handleChange(name, event) {
-    const { user } = this.state;
+    const user = getUser();
     this.setState({
-      user: {
-        ...user,
-        [name]: event.target.value
-      } 
+      loading: false,
+      user
     });
   }
 
@@ -145,38 +135,29 @@ class ProfilePage extends React.PureComponent {
             <>
               <div className={classes.nameContainer}>
                 <TextField
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  disabled
+                  label="Full Name"
                   className={classes.textField}
                   fullWidth
-                  value={user.firstName}
-                  onChange={(event) => this.handleChange('firstName', event)}
+                  value={user.name}
+                  onChange={(event) => this.handleChange('name', event)}
                   margin="normal"
                   variant="outlined"
                 />
 
                 <TextField
-                  id="lastName"
-                  label="Last Name"
+                  id="githubLogin"
+                  disabled
+                  label="GitHub Username"
                   className={classes.textField}
                   fullWidth
-                  value={user.lastName}
-                  onChange={(event) => this.handleChange('lastName', event)}
+                  value={user.login}
+                  onChange={(event) => this.handleChange('githubLogin', event)}
                   margin="normal"
                   variant="outlined"
                 />
               </div>
-
-              <TextField
-                id="email"
-                label="Email"
-                className={classes.textField}
-                fullWidth
-                value={user.email}
-                onChange={(event) => this.handleChange('email', event)}
-                margin="normal"
-                variant="outlined"
-              />
 
               <div className={classes.buttonContainer}>
                 <Button 
@@ -187,19 +168,6 @@ class ProfilePage extends React.PureComponent {
                 >
                   Delete Profile
                 </Button>
-
-                <div className={classes.wrapper}>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    className={classes.button}
-                    disabled={updateLoading}
-                    onClick={() => this.clickUpdateApplication()}
-                  >
-                    Save
-                  </Button>
-                  {updateLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
-                </div>
               </div>
 
             </>

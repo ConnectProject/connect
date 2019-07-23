@@ -52,6 +52,17 @@ export const getJwt = () => {
   return valid;
 };
 
+export const getUser = () => {
+  const jwt = getJwt();
+  try {
+    const decoded = jwtDecode(jwt);
+    return decoded;
+  } catch (e) {
+    return null;
+  }
+  
+}
+
 export const hasJwt = () => !!getJwt();
 
 hasJwt();
