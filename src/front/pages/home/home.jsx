@@ -178,15 +178,15 @@ class HomePage extends React.PureComponent {
                             className={classes.inline}
                             color="textPrimary"
                           >
-                            {" - "} 
+                            {" - "}
                             <Moment format="YYYY-MM-DD HH:mm">
                               {application.updated_at}
                             </Moment>
-                           
+
                           </Typography>
-  
+
                         </React.Fragment>
-                        )}
+                      )}
                     secondary={application.description}
                   />
                 </ListItem>
@@ -252,7 +252,7 @@ class HomePage extends React.PureComponent {
 
 
             <TextField
-              required  
+              required
               id="description"
               label="Description"
               className={classes.textField}

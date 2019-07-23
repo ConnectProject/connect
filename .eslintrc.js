@@ -11,16 +11,7 @@ module.exports = {
     // Disables rules we choose not to apply
     'import/prefer-default-export': 'off',
     'react/sort-comp': 'off',
-
-    // Disables rules not compatible / useful with typescript
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
-
-    // Allow importing devDependencies in storybook
-    'import/no-extraneous-dependencies': [
-      'error',
-      { devDependencies: ['**/*.stories.{js,jsx}'] },
-    ],
-
     'no-restricted-syntax': [
       'error',
       'ForInStatement',
@@ -36,11 +27,12 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.js', '.ts', '.jsx'],
+        extensions: ['.js', '.jsx'],
       },
     },
-    "env": {
-      "browser": true
-    }
+  },
+  env: {
+    browser: true,
+    node: true
   }
 }
