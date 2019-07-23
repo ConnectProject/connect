@@ -10,7 +10,8 @@
     "eslint.fix": "eslint src/**/*.{js,jsx} --fix",
     "prettier.check": "prettier src/**/*.{js,jsx} --list-different",
     "prettier.fix": "prettier src/**/*.{js,jsx} --write",
-    "test": "jest --config spec/jest.config.js"
+    "test": "jest --config spec/jest.config.js",
+    "copyToSandbox": "./bin/migration.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
