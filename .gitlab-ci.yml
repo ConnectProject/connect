@@ -55,6 +55,7 @@ test:
   stage: test
   script:
     - yarn install
+    - cp .env.dist .env
     - yarn test
   cache:
     policy: pull
