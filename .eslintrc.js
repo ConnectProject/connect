@@ -11,6 +11,8 @@ module.exports = {
       // Disables rules we choose not to apply
       'import/prefer-default-export': 'off',
       'react/sort-comp': 'off',
+      'react/forbid-prop-types': 'off',
+
   
       // Disables rules not compatible / useful with typescript
       'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
