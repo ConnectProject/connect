@@ -58,8 +58,7 @@ export const getUser = () => {
   } catch (e) {
     return null;
   }
-  
-}
+};
 
 export const hasJwt = () => !!getJwt();
 

@@ -59,10 +59,9 @@ const styles = {
 
   card: {
     maxWidth: 720,
-    margin: "0 auto",
-    marginTop: 120
-  }
-
+    margin: '0 auto',
+    marginTop: 120,
+  },
 };
 
 class HomePage extends React.PureComponent {
@@ -76,15 +75,15 @@ class HomePage extends React.PureComponent {
         name: '',
         description: '',
         apple_store_link: '',
-        google_market_link: ''
+        google_market_link: '',
       },
       errors: {
         name: false,
         description: false,
         apple_store_link: false,
         google_market_link: false,
-      }
-    }
+      },
+    };
   }
 
   componentDidMount() {
@@ -114,18 +113,16 @@ class HomePage extends React.PureComponent {
         name: '',
         description: '',
         apple_store_link: '',
-        google_market_link: ''
+        google_market_link: '',
       },
       errors: {
         name: false,
         description: false,
         apple_store_link: false,
         google_market_link: false,
-      }
+      },
     });
   }
-
-  
 
   handleChange(name, event) {
     const { newApplication, errors } = this.state;
@@ -135,12 +132,12 @@ class HomePage extends React.PureComponent {
     this.setState({
       newApplication: {
         ...newApplication,
-        [name]: value
+        [name]: value,
       },
       errors: {
         ...errors,
-        [name]: !validated
-      }
+        [name]: !validated,
+      },
     });
   }
 
@@ -155,7 +152,13 @@ class HomePage extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    const { developerApplications, loading, dialogNewApplicationOpen, newApplication, errors } = this.state;
+    const {
+      developerApplications,
+      loading,
+      dialogNewApplicationOpen,
+      newApplication,
+      errors,
+    } = this.state;
     return (
       <>
         <List className={classes.root}>
@@ -194,26 +197,22 @@ class HomePage extends React.PureComponent {
             ))}
         </List>
 
-        {
-          developerApplications.length === 0 && !loading && 
-          (
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography variant="h5" component="h2">
-                  <DeveloperModeIcon /> 
-                  {"  "} Welcome
-                </Typography>
-                <Typography variant="body1" component="p">
-                  Add your first application with the bottom right button.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Go to documentation</Button>
-              </CardActions>
-            </Card>
-          
-          )
-        }
+        {developerApplications.length === 0 && !loading && (
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                <DeveloperModeIcon />
+                {'  '} Welcome
+              </Typography>
+              <Typography variant="body1" component="p">
+                Add your first application with the bottom right button.
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Go to documentation</Button>
+            </CardActions>
+          </Card>
+        )}
 
         <Fab
           variant="extended"
@@ -263,8 +262,8 @@ class HomePage extends React.PureComponent {
               margin="normal"
               variant="outlined"
               multiline
-              rows="4"    
-              error={errors.description}    
+              rows="4"
+              error={errors.description}
             />
 
             <TextField
@@ -295,7 +294,15 @@ class HomePage extends React.PureComponent {
             <Button onClick={() => this.handleClose()} color="primary">
               Cancel
             </Button>
-            <Button disabled={!checkValid(errors) || !newApplication.name || !newApplication.description} onClick={() => this.clickCreateApplication()} color="primary">
+            <Button
+              disabled={
+                !checkValid(errors) ||
+                !newApplication.name ||
+                !newApplication.description
+              }
+              onClick={() => this.clickCreateApplication()}
+              color="primary"
+            >
               Create application
             </Button>
           </DialogActions>

@@ -18,34 +18,33 @@ import PropTypes from 'prop-types'; // ES6
 import { updateUser, deleteUser } from '../../services/api';
 import { getUser } from '../../services/auth';
 
-
 const styles = {
   root: {
     width: '100%',
     maxWidth: 720,
-    margin: "0 auto",
+    margin: '0 auto',
     display: 'flex',
     flexWrap: 'wrap',
-    "margin-top": 16
+    'margin-top': 16,
   },
   progress: {
-    margin: "0 auto",
-    "margin-top": 140
+    margin: '0 auto',
+    'margin-top': 140,
   },
   listContainer: {
-    width: "100%"
+    width: '100%',
   },
   textField: {
-    margin: 16
+    margin: 16,
   },
   button: {
     margin: 8,
-    width: 180
+    width: 180,
   },
   buttonContainer: {
-    display: "flex",
-    width: "100%",
-    "justify-content": "flex-end",
+    display: 'flex',
+    width: '100%',
+    'justify-content': 'flex-end',
   },
   buttonProgress: {
     color: green[500],
@@ -61,29 +60,25 @@ const styles = {
   },
   nameContainer: {
     display: 'flex',
-    width: "100%",
-  }
-
- 
+    width: '100%',
+  },
 };
-
 
 class ProfilePage extends React.PureComponent {
   constructor() {
     super();
     this.state = {
       loading: true,
-      updateLoading: false,
       user: {},
       dialogOpen: false,
-    }
+    };
   }
 
   componentDidMount() {
     const user = getUser();
     this.setState({
       loading: false,
-      user
+      user,
     });
   }
 
@@ -94,44 +89,39 @@ class ProfilePage extends React.PureComponent {
 
   async clickUpdateApplication() {
     const { application } = this.state;
-    this.setState({
-      updateLoading: true
-    })
     const response = await updateUser(application._id, application);
     this.setState({
-      updateLoading: false,
-      user: response
-    })
+      user: response,
+    });
   }
 
   confirmationDialog() {
     this.setState({
-      dialogOpen: true
+      dialogOpen: true,
     });
   }
 
   async handleClose(userToBeDeleted) {
-    if (userToBeDeleted){
+    if (userToBeDeleted) {
       await deleteUser();
       const { history } = this.props;
       history.push('/');
     } else {
       this.setState({
-        dialogOpen: false
-      });  
+        dialogOpen: false,
+      });
     }
   }
 
   render() {
     const { classes } = this.props;
-    const { user, loading, updateLoading, dialogOpen } = this.state;
+    const { user, loading, dialogOpen } = this.state;
     return (
       <>
         <div className={classes.root}>
           {loading && <CircularProgress className={classes.progress} />}
 
-          {!loading &&
-          (
+          {!loading && (
             <>
               <div className={classes.nameContainer}>
                 <TextField
@@ -141,7 +131,7 @@ class ProfilePage extends React.PureComponent {
                   className={classes.textField}
                   fullWidth
                   value={user.name}
-                  onChange={(event) => this.handleChange('name', event)}
+                  onChange={event => this.handleChange('name', event)}
                   margin="normal"
                   variant="outlined"
                 />
@@ -153,49 +143,47 @@ class ProfilePage extends React.PureComponent {
                   className={classes.textField}
                   fullWidth
                   value={user.login}
-                  onChange={(event) => this.handleChange('githubLogin', event)}
+                  onChange={event => this.handleChange('githubLogin', event)}
                   margin="normal"
                   variant="outlined"
                 />
               </div>
 
               <div className={classes.buttonContainer}>
-                <Button 
-                  variant="outlined" 
-                  color="secondary" 
+                <Button
+                  variant="outlined"
+                  color="secondary"
                   className={classes.button}
                   onClick={() => this.confirmationDialog()}
                 >
                   Delete Profile
                 </Button>
               </div>
-
             </>
-          )
-          }
+          )}
         </div>
 
-        <Dialog
-          open={dialogOpen}
-          onClose={() => this.handleClose(false)}
-        >
+        <Dialog open={dialogOpen} onClose={() => this.handleClose(false)}>
           <DialogTitle>Delete your profile?</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Your profile will be deleted forever and your applications will stop working.
+              Your profile will be deleted forever and your applications will
+              stop working.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleClose(true)} color="secondary">
               Delete
             </Button>
-            <Button onClick={() => this.handleClose(false)} color="primary" autoFocus>
+            <Button
+              onClick={() => this.handleClose(false)}
+              color="primary"
+              autoFocus
+            >
               Cancel
             </Button>
           </DialogActions>
         </Dialog>
-
-
       </>
     );
   }
@@ -205,6 +193,5 @@ ProfilePage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
-
 
 export default withRouter(withStyles(styles)(ProfilePage));
