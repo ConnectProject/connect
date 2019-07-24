@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'; // ES6

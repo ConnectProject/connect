@@ -125,7 +125,7 @@ curl --request GET \
 The values of the `where` parameter also support comparisons besides exact matching. Instead of an exact value, provide a hash with keys corresponding to the comparisons to do. The `where` parameter supports these options:
 
 | Key         | Operation                        |
-|------------------------------------------------|
+|-------------|----------------------------------|
 | $lt         | Less Than                        |
 | $lte        | Less Than Or Equal To            |
 | $gt         | Greater Than                     |
