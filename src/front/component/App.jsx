@@ -62,7 +62,12 @@ class App extends React.PureComponent {
 
   async handleMenuItemClick(event, index) {
     const { history } = this.props;
-    if (index === 1) {
+    if (index === 0) {
+      window.open(
+        'https://help.github.com/en/articles/basic-writing-and-formatting-syntax',
+        '_blank',
+      );
+    } else if (index === 1) {
       history.push('/profile');
     }
 

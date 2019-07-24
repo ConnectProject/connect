@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FileCopy from '@material-ui/icons/FileCopy';
 import PropTypes from 'prop-types'; // ES6
 import Snackbar from '@material-ui/core/Snackbar';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { getApplication, updateApplication } from '../../services/api';
 import { validateFormField, checkValid } from '../../services/formValidator';
@@ -241,19 +242,22 @@ class DetailsPage extends React.PureComponent {
                 label="App ID"
                 className={classes.textField}
                 fullWidth
+                helperText="Used to identify your application with the API"
                 value={application.parse_name}
                 margin="normal"
                 variant="outlined"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.copyToClipboard('parse_name');
-                        }}
-                      >
-                        <FileCopy />
-                      </IconButton>
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('parse_name');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
                     </InputAdornment>
                   ),
                 }}
@@ -265,19 +269,22 @@ class DetailsPage extends React.PureComponent {
                 label="Token"
                 className={classes.textField}
                 fullWidth
+                helperText="Production environment"
                 value={application.token}
                 margin="normal"
                 variant="outlined"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.copyToClipboard('token');
-                        }}
-                      >
-                        <FileCopy />
-                      </IconButton>
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('token');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
                     </InputAdornment>
                   ),
                 }}
@@ -289,19 +296,22 @@ class DetailsPage extends React.PureComponent {
                 label="Token Sandbox"
                 className={classes.textField}
                 fullWidth
+                helperText="Test environment"
                 value={application.token_sandbox}
                 margin="normal"
                 variant="outlined"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.copyToClipboard('token_sandbox');
-                        }}
-                      >
-                        <FileCopy />
-                      </IconButton>
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('token_sandbox');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
                     </InputAdornment>
                   ),
                 }}

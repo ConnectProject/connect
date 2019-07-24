@@ -3,6 +3,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 
+/*
+This file is directly executed by MongoDB and drops the previous tables of connect-sandbox.
+*/
+
 conn = new Mongo(MONGO_HOST);
 
 dbSandbox = conn.getDB('connect-sandbox');
