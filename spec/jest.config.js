@@ -7,4 +7,7 @@ module.exports = {
     '!<rootDir>/src/front/**/*.js',
     '<rootDir>/src/**/*.js',
   ],
+  "globals": {
+    "SPEC_PATH": __dirname
+  }
 };

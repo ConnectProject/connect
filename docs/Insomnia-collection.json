@@ -1,1 +1,482 @@
-{"_type":"export","__export_format":4,"__export_date":"2019-07-15T15:47:26.943Z","__export_source":"insomnia.desktop.app:v6.5.4","resources":[{"_id":"req_330e0ea2e6574412bd009b97291b4a67","authentication":{},"body":{"mimeType":"application/json","text":"{\n\t\"score\":1337,\n\t\"playerName\":\"test9\",\n\t\"cheatMode\":false\n}"},"created":1563204561443,"description":"","headers":[{"id":"pair_b35ee3ebce734e4aae43f7c1a6abc0d7","name":"Content-Type","value":"application/json"},{"id":"pair_ca6fa3ff2a444743b67c9b0e4b8ff732","name":"x-parse-application-id","value":"connect"},{"id":"pair_719fffdbdfba4d0aaf56ac1034bedfc9","name":"x-parse-session-token","value":"{{ SESSION_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562676981222,"method":"POST","modified":1563205249490,"name":"Create item","parameters":[],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/classes/GameScore","_type":"request"},{"_id":"fld_8e1d883c854f458680fe45af87243e05","created":1563204561426,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1559084633840,"modified":1563204567476,"name":"Parse","parentId":"wrk_10843ce41b184af992bd131b59a63989","_type":"request_group"},{"_id":"wrk_10843ce41b184af992bd131b59a63989","created":1563204550527,"description":"","modified":1563204550527,"name":"Connect","parentId":null,"_type":"workspace"},{"_id":"req_8b57b12e129041e2bd3e09e594ed6c56","authentication":{},"body":{"mimeType":"application/json","text":"{\n\t\"score\":1338,\n\t\"playerName\":\"test9\",\n\t\"cheatMode\":false\n}"},"created":1563204561448,"description":"","headers":[{"id":"pair_b35ee3ebce734e4aae43f7c1a6abc0d7","name":"Content-Type","value":"application/json"},{"id":"pair_ca6fa3ff2a444743b67c9b0e4b8ff732","name":"x-parse-application-id","value":"connect"},{"id":"pair_719fffdbdfba4d0aaf56ac1034bedfc9","name":"x-parse-session-token","value":"{{ SESSION_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562676782265,"method":"PUT","modified":1563205255194,"name":"Update item","parameters":[],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/classes/GameScore/DFwP7JXoa0","_type":"request"},{"_id":"req_d805c79504564629868c6cde72c586a3","authentication":{},"body":{},"created":1563204561452,"description":"","headers":[{"id":"pair_ca6fa3ff2a444743b67c9b0e4b8ff732","name":"x-parse-application-id","value":"connect"},{"id":"pair_719fffdbdfba4d0aaf56ac1034bedfc9","name":"x-parse-session-token","value":"{{ SESSION_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562676682786.5,"method":"DELETE","modified":1563205257498,"name":"Delete item","parameters":[],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/classes/GameScore/1M17BD98aA","_type":"request"},{"_id":"req_de608ee1f68b414d803c82f201e16d78","authentication":{},"body":{},"created":1563204561455,"description":"","headers":[{"id":"pair_ca6fa3ff2a444743b67c9b0e4b8ff732","name":"x-parse-application-id","value":"connect"},{"id":"pair_719fffdbdfba4d0aaf56ac1034bedfc9","name":"x-parse-session-token","value":"{{ SESSION_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562676633047.25,"method":"GET","modified":1563205259666,"name":"Get item","parameters":[],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/classes/GameScore/DFwP7JXoa0","_type":"request"},{"_id":"req_8a6ec602f1ec48558cffdc011c9ceca3","authentication":{},"body":{},"created":1563204561462,"description":"","headers":[{"id":"pair_ca6fa3ff2a444743b67c9b0e4b8ff732","name":"x-parse-application-id","value":"connect"},{"id":"pair_719fffdbdfba4d0aaf56ac1034bedfc9","name":"x-parse-session-token","value":"{{ SESSION_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562676608177.625,"method":"GET","modified":1563205264162,"name":"Get items","parameters":[],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/classes/GameScore","_type":"request"},{"_id":"req_b762de04bc504fff8624f92cdb8b32f0","authentication":{},"body":{},"created":1563204561435,"description":"","headers":[{"id":"pair_ae0d0be78b414481a616bf49c910c9cd","name":"x-parse-application-id","value":"connect"},{"id":"pair_0c9005d162934a7b9d8913a5a77f328f","name":"x-parse-revocable-session","value":"1"}],"isPrivate":false,"metaSortKey":-1562676583308,"method":"GET","modified":1563204561435,"name":"Get token","parameters":[{"id":"pair_8a978069cbb64506bff1f037b25c9179","name":"password","value":"1006fb19-f2b5-4a41-acf8-fefcc5706209"},{"id":"pair_5cd809ccf3ce41098cb8927463b331c6","name":"username","value":"j93mt7-toto"},{"id":"pair_647dda3e77bd44289432d94a413a4a78","name":"","value":""}],"parentId":"fld_8e1d883c854f458680fe45af87243e05","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/parse/login","_type":"request"},{"_id":"req_0b003556c07b4c5eb001e12bfae433c0","authentication":{},"body":{},"created":1563204561419,"description":"","headers":[{"disabled":false,"id":"pair_0e5ee93816214d4e873e073d441434d8","name":"Authorization","value":"Bearer {{ JWT_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562418002856.5,"method":"DELETE","modified":1563205324893,"name":"Delete Developer","parameters":[],"parentId":"fld_64254d6e70df486ebaea65935d5895a3","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/api/developer","_type":"request"},{"_id":"fld_64254d6e70df486ebaea65935d5895a3","created":1563204561401,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1559084633815,"modified":1563204569062,"name":"Api","parentId":"wrk_10843ce41b184af992bd131b59a63989","_type":"request_group"},{"_id":"req_102f0b2c08784459ac365b0c2ab9b537","authentication":{},"body":{},"created":1563204561416,"description":"","headers":[{"disabled":false,"id":"pair_0e5ee93816214d4e873e073d441434d8","name":"Authorization","value":"Bearer {{ JWT_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562418002806.5,"method":"GET","modified":1563205330703,"name":"Get Application","parameters":[],"parentId":"fld_64254d6e70df486ebaea65935d5895a3","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/api/application/5d1d0b6cb4592d54bf10bba8","_type":"request"},{"_id":"req_46204050c6d34e1cae5233f97019874a","authentication":{},"body":{},"created":1563204561410,"description":"","headers":[{"id":"pair_0e5ee93816214d4e873e073d441434d8","name":"Authorization","value":"Bearer {{ JWT_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562418002756.5,"method":"GET","modified":1563205333219,"name":"List Application","parameters":[],"parentId":"fld_64254d6e70df486ebaea65935d5895a3","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/api/application","_type":"request"},{"_id":"req_0dd56dc293294b9c97ce4e624e94db86","authentication":{},"body":{"mimeType":"application/json","text":"{\n\t\"name\": \"toto\",\n\t\"description\": \"truc\",\n\t\"appleStoreLink\": \"\",\n\t\"googleMarketLink\": \"\"\n}"},"created":1563204561405,"description":"","headers":[{"id":"pair_8efc07eec96a4248a586ee6a041fbc70","name":"Content-Type","value":"application/json"},{"id":"pair_0e5ee93816214d4e873e073d441434d8","name":"Authorization","value":"Bearer {{ JWT_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562418002706.5,"method":"POST","modified":1563205335778,"name":"Create Application","parameters":[],"parentId":"fld_64254d6e70df486ebaea65935d5895a3","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/api/application","_type":"request"},{"_id":"req_9e1215ceb8474a839ed88a1629ee32ed","authentication":{},"body":{"mimeType":"application/json","text":"{\n\t\"name\": \"toti\",\n\t\"description\": \"trucc\",\n\t\"appleStoreLink\": \"\",\n\t\"googleMarketLink\": \"\"\n}"},"created":1563204561407,"description":"","headers":[{"id":"pair_03f148bf24084c0886798e20420f3053","name":"Content-Type","value":"application/json"},{"id":"pair_71d95687106c4b669fa5d2990372b220","name":"Authorization","value":"Bearer {{ JWT_TOKEN  }}"}],"isPrivate":false,"metaSortKey":-1562418002656.5,"method":"PUT","modified":1563205338284,"name":"Update Application","parameters":[],"parentId":"fld_64254d6e70df486ebaea65935d5895a3","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"{{ CONNECT_URI }}/api/application/5d1d0b6cb4592d54bf10bba8","_type":"request"},{"_id":"env_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496","color":null,"created":1563204550618,"data":{"CONNECT_URI":"https://www.connect.com","JWT_TOKEN":"","SESSION_TOKEN":"{% response 'body', 'req_b762de04bc504fff8624f92cdb8b32f0', 'b64::JC5zZXNzaW9uVG9rZW4=::46b', 'always' %}"},"dataPropertyOrder":{"&":["CONNECT_URI","SESSION_TOKEN","JWT_TOKEN"]},"isPrivate":false,"metaSortKey":1563204550618,"modified":1563205304815,"name":"Base Environment","parentId":"wrk_10843ce41b184af992bd131b59a63989","_type":"environment"},{"_id":"jar_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496","cookies":[],"created":1563204550623,"modified":1563204550623,"name":"Default Jar","parentId":"wrk_10843ce41b184af992bd131b59a63989","_type":"cookie_jar"},{"_id":"env_05920053badf448b90ce9941921d6ce2","color":null,"created":1563204620660,"data":{"CONNECT_URI":"http://localhost:1337","JWT_TOKEN":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImJydW5vTWF1cmljZSIsIm5hbWUiOiJCcnVub01hdXJpY2UiLCJpZCI6MjgzODk5OCwiaWF0IjoxNTYyMjI3NzM1OTQwLCJleHAiOjE1NjIzMTQxMzU5NDF9.g-uxZcEFPwqqmG16tA5-Q2fhDlUIYRGXsjnaOzvz7m4"},"dataPropertyOrder":{"&":["CONNECT_URI","JWT_TOKEN"]},"isPrivate":false,"metaSortKey":1563204620660,"modified":1563205315096,"name":"Local","parentId":"env_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496","_type":"environment"}]}
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2019-07-15T15:47:26.943Z",
+  "__export_source": "insomnia.desktop.app:v6.5.4",
+  "resources": [
+    {
+      "_id": "req_330e0ea2e6574412bd009b97291b4a67",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"score\":1337,\n\t\"playerName\":\"test9\",\n\t\"cheatMode\":false\n}"
+      },
+      "created": 1563204561443,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_b35ee3ebce734e4aae43f7c1a6abc0d7",
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "id": "pair_ca6fa3ff2a444743b67c9b0e4b8ff732",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_719fffdbdfba4d0aaf56ac1034bedfc9",
+          "name": "x-parse-session-token",
+          "value": "{{ SESSION_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676981222,
+      "method": "POST",
+      "modified": 1563205249490,
+      "name": "Create item",
+      "parameters": [],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/classes/GameScore",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_8e1d883c854f458680fe45af87243e05",
+      "created": 1563204561426,
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1559084633840,
+      "modified": 1563204567476,
+      "name": "Parse",
+      "parentId": "wrk_10843ce41b184af992bd131b59a63989",
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_10843ce41b184af992bd131b59a63989",
+      "created": 1563204550527,
+      "description": "",
+      "modified": 1563204550527,
+      "name": "Connect",
+      "parentId": null,
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_8b57b12e129041e2bd3e09e594ed6c56",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"score\":1338,\n\t\"playerName\":\"test9\",\n\t\"cheatMode\":false\n}"
+      },
+      "created": 1563204561448,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_b35ee3ebce734e4aae43f7c1a6abc0d7",
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "id": "pair_ca6fa3ff2a444743b67c9b0e4b8ff732",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_719fffdbdfba4d0aaf56ac1034bedfc9",
+          "name": "x-parse-session-token",
+          "value": "{{ SESSION_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676782265,
+      "method": "PUT",
+      "modified": 1563205255194,
+      "name": "Update item",
+      "parameters": [],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/classes/GameScore/DFwP7JXoa0",
+      "_type": "request"
+    },
+    {
+      "_id": "req_d805c79504564629868c6cde72c586a3",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561452,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_ca6fa3ff2a444743b67c9b0e4b8ff732",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_719fffdbdfba4d0aaf56ac1034bedfc9",
+          "name": "x-parse-session-token",
+          "value": "{{ SESSION_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676682786.5,
+      "method": "DELETE",
+      "modified": 1563205257498,
+      "name": "Delete item",
+      "parameters": [],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/classes/GameScore/1M17BD98aA",
+      "_type": "request"
+    },
+    {
+      "_id": "req_de608ee1f68b414d803c82f201e16d78",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561455,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_ca6fa3ff2a444743b67c9b0e4b8ff732",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_719fffdbdfba4d0aaf56ac1034bedfc9",
+          "name": "x-parse-session-token",
+          "value": "{{ SESSION_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676633047.25,
+      "method": "GET",
+      "modified": 1563205259666,
+      "name": "Get item",
+      "parameters": [],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/classes/GameScore/DFwP7JXoa0",
+      "_type": "request"
+    },
+    {
+      "_id": "req_8a6ec602f1ec48558cffdc011c9ceca3",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561462,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_ca6fa3ff2a444743b67c9b0e4b8ff732",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_719fffdbdfba4d0aaf56ac1034bedfc9",
+          "name": "x-parse-session-token",
+          "value": "{{ SESSION_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676608177.625,
+      "method": "GET",
+      "modified": 1563205264162,
+      "name": "Get items",
+      "parameters": [],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/classes/GameScore",
+      "_type": "request"
+    },
+    {
+      "_id": "req_b762de04bc504fff8624f92cdb8b32f0",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561435,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_ae0d0be78b414481a616bf49c910c9cd",
+          "name": "x-parse-application-id",
+          "value": "connect"
+        },
+        {
+          "id": "pair_0c9005d162934a7b9d8913a5a77f328f",
+          "name": "x-parse-revocable-session",
+          "value": "1"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562676583308,
+      "method": "GET",
+      "modified": 1563204561435,
+      "name": "Get token",
+      "parameters": [
+        {
+          "id": "pair_8a978069cbb64506bff1f037b25c9179",
+          "name": "password",
+          "value": "1006fb19-f2b5-4a41-acf8-fefcc5706209"
+        },
+        {
+          "id": "pair_5cd809ccf3ce41098cb8927463b331c6",
+          "name": "username",
+          "value": "j93mt7-toto"
+        },
+        {
+          "id": "pair_647dda3e77bd44289432d94a413a4a78",
+          "name": "",
+          "value": ""
+        }
+      ],
+      "parentId": "fld_8e1d883c854f458680fe45af87243e05",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/parse/login",
+      "_type": "request"
+    },
+    {
+      "_id": "req_0b003556c07b4c5eb001e12bfae433c0",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561419,
+      "description": "",
+      "headers": [
+        {
+          "disabled": false,
+          "id": "pair_0e5ee93816214d4e873e073d441434d8",
+          "name": "Authorization",
+          "value": "Bearer {{ JWT_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562418002856.5,
+      "method": "DELETE",
+      "modified": 1563205324893,
+      "name": "Delete Developer",
+      "parameters": [],
+      "parentId": "fld_64254d6e70df486ebaea65935d5895a3",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/api/developer",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_64254d6e70df486ebaea65935d5895a3",
+      "created": 1563204561401,
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1559084633815,
+      "modified": 1563204569062,
+      "name": "Api",
+      "parentId": "wrk_10843ce41b184af992bd131b59a63989",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_102f0b2c08784459ac365b0c2ab9b537",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561416,
+      "description": "",
+      "headers": [
+        {
+          "disabled": false,
+          "id": "pair_0e5ee93816214d4e873e073d441434d8",
+          "name": "Authorization",
+          "value": "Bearer {{ JWT_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562418002806.5,
+      "method": "GET",
+      "modified": 1563205330703,
+      "name": "Get Application",
+      "parameters": [],
+      "parentId": "fld_64254d6e70df486ebaea65935d5895a3",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/api/application/5d1d0b6cb4592d54bf10bba8",
+      "_type": "request"
+    },
+    {
+      "_id": "req_46204050c6d34e1cae5233f97019874a",
+      "authentication": {},
+      "body": {},
+      "created": 1563204561410,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_0e5ee93816214d4e873e073d441434d8",
+          "name": "Authorization",
+          "value": "Bearer {{ JWT_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562418002756.5,
+      "method": "GET",
+      "modified": 1563205333219,
+      "name": "List Application",
+      "parameters": [],
+      "parentId": "fld_64254d6e70df486ebaea65935d5895a3",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/api/application",
+      "_type": "request"
+    },
+    {
+      "_id": "req_0dd56dc293294b9c97ce4e624e94db86",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"toto\",\n\t\"description\": \"truc\",\n\t\"apple_store_link\": \"\",\n\t\"google_market_link\": \"\"\n}"
+      },
+      "created": 1563204561405,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_8efc07eec96a4248a586ee6a041fbc70",
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "id": "pair_0e5ee93816214d4e873e073d441434d8",
+          "name": "Authorization",
+          "value": "Bearer {{ JWT_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562418002706.5,
+      "method": "POST",
+      "modified": 1563205335778,
+      "name": "Create Application",
+      "parameters": [],
+      "parentId": "fld_64254d6e70df486ebaea65935d5895a3",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/api/application",
+      "_type": "request"
+    },
+    {
+      "_id": "req_9e1215ceb8474a839ed88a1629ee32ed",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"toti\",\n\t\"description\": \"trucc\",\n\t\"apple_store_link\": \"\",\n\t\"google_market_link\": \"\"\n}"
+      },
+      "created": 1563204561407,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_03f148bf24084c0886798e20420f3053",
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "id": "pair_71d95687106c4b669fa5d2990372b220",
+          "name": "Authorization",
+          "value": "Bearer {{ JWT_TOKEN  }}"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1562418002656.5,
+      "method": "PUT",
+      "modified": 1563205338284,
+      "name": "Update Application",
+      "parameters": [],
+      "parentId": "fld_64254d6e70df486ebaea65935d5895a3",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "{{ CONNECT_URI }}/api/application/5d1d0b6cb4592d54bf10bba8",
+      "_type": "request"
+    },
+    {
+      "_id": "env_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496",
+      "color": null,
+      "created": 1563204550618,
+      "data": {
+        "CONNECT_URI": "https://www.connect.com",
+        "JWT_TOKEN": "",
+        "SESSION_TOKEN": "{% response 'body', 'req_b762de04bc504fff8624f92cdb8b32f0', 'b64::JC5zZXNzaW9uVG9rZW4=::46b', 'always' %}"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "CONNECT_URI",
+          "SESSION_TOKEN",
+          "JWT_TOKEN"
+        ]
+      },
+      "isPrivate": false,
+      "metaSortKey": 1563204550618,
+      "modified": 1563205304815,
+      "name": "Base Environment",
+      "parentId": "wrk_10843ce41b184af992bd131b59a63989",
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496",
+      "cookies": [],
+      "created": 1563204550623,
+      "modified": 1563204550623,
+      "name": "Default Jar",
+      "parentId": "wrk_10843ce41b184af992bd131b59a63989",
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "env_05920053badf448b90ce9941921d6ce2",
+      "color": null,
+      "created": 1563204620660,
+      "data": {
+        "CONNECT_URI": "http://localhost:1337",
+        "JWT_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImJydW5vTWF1cmljZSIsIm5hbWUiOiJCcnVub01hdXJpY2UiLCJpZCI6MjgzODk5OCwiaWF0IjoxNTYyMjI3NzM1OTQwLCJleHAiOjE1NjIzMTQxMzU5NDF9.g-uxZcEFPwqqmG16tA5-Q2fhDlUIYRGXsjnaOzvz7m4"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "CONNECT_URI",
+          "JWT_TOKEN"
+        ]
+      },
+      "isPrivate": false,
+      "metaSortKey": 1563204620660,
+      "modified": 1563205315096,
+      "name": "Local",
+      "parentId": "env_23b05cdb5f1e150ed4eda6f2a781b42b31d9d496",
+      "_type": "environment"
+    }
+  ]
+}

@@ -30,4 +30,4 @@ class Github {
   }
 }
 
-module.exports = new Github();
+module.exports = Github;
