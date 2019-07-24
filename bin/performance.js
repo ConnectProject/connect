@@ -1,9 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/*
+Script to monitor the I/O speed of an Application.
+The output will be written in ../perf.csv
+*/
+
 const axios = require('axios');
 const { performance } = require('perf_hooks');
 const fs = require('fs');
 const json2csv = require('json2csv');
 
+// To be changed with the Application to Monitor
 const APP_NAME = "7n3k8m-Test";
 const APP_TOKEN = "f81eda23-3bab-466e-89bb-627a96ba3991";
 
@@ -25,7 +31,7 @@ function writeToCSV(task, quantity, time) {
       time
     };
 
-  fs.stat('perf.csv', (err, stat) => {
+  fs.stat('perf.csv', (err) => {
     if (err === null) {
         // write the actual data and end with newline
         const csv = json2csv.parse(data, {header: false}) + newLine;

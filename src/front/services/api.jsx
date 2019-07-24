@@ -1,5 +1,8 @@
 import { getJwt, logout } from './auth';
 
+/*
+Returns the headers used for any request.
+*/
 const headersWithJWT = () => {
   const jwt = getJwt();
   if (!jwt) {
@@ -12,6 +15,9 @@ const headersWithJWT = () => {
   };
 };
 
+/*
+Returns the list of applications created by the user
+*/
 export const listOfApplications = async () => {
   const headers = headersWithJWT();
   if (!headers) {
@@ -25,6 +31,9 @@ export const listOfApplications = async () => {
   return responses.json();
 };
 
+/*
+Returns details of one application
+*/
 export const getApplication = async appId => {
   const headers = headersWithJWT();
   if (!headers) {
@@ -41,6 +50,9 @@ export const getApplication = async appId => {
   return responses.json();
 };
 
+/*
+Create a new application on the connected user
+*/
 export const createApplication = async newApplication => {
   const headers = headersWithJWT();
   if (!headers) {
@@ -56,6 +68,9 @@ export const createApplication = async newApplication => {
   return responses.json();
 };
 
+/*
+Update the application
+*/
 export const updateApplication = async (appId, application) => {
   const headers = headersWithJWT();
   if (!headers) {
@@ -74,6 +89,9 @@ export const updateApplication = async (appId, application) => {
   return responses.json();
 };
 
+/*
+Delete an user profile and all the associated applications
+*/
 export const deleteUser = async () => {
   const headers = headersWithJWT();
   if (!headers) {
@@ -87,44 +105,4 @@ export const deleteUser = async () => {
 
   logout();
   return responses.json();
-};
-
-export const getUser = async () => {
-  const headers = headersWithJWT();
-  if (!headers) {
-    return {};
-  }
-
-  // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-  //     headers,
-  //     method: 'GET',
-  // });
-  // return responses.json();
-
-  return {
-    lastName: 'Bernos',
-    firstName: 'Guillaume',
-    email: 'guillaume.bernos@matters.tech',
-  };
-};
-
-export const updateUser = async () => {
-  const headers = headersWithJWT();
-  if (!headers) {
-    return {};
-  }
-
-  // const responses = await fetch(`${process.env.API_URL}/api/application/${appId}`, {
-  //     headers,
-  //     method: 'GET',
-  // });
-  // return responses.json();
-
-  // TODO: WAITING FOR BACKEND
-
-  return {
-    lastName: 'Bernos',
-    firstName: 'Guillaume',
-    email: 'guillaume.bernos@matters.tech',
-  };
 };

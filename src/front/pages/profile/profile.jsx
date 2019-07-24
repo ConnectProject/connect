@@ -15,7 +15,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import PropTypes from 'prop-types'; // ES6
 
-import { updateUser, deleteUser } from '../../services/api';
+import { deleteUser } from '../../services/api';
 import { getUser } from '../../services/auth';
 
 const styles = {
@@ -85,14 +85,6 @@ class ProfilePage extends React.PureComponent {
   goBack() {
     const { history } = this.props;
     history.goBack();
-  }
-
-  async clickUpdateApplication() {
-    const { application } = this.state;
-    const response = await updateUser(application._id, application);
-    this.setState({
-      user: response,
-    });
   }
 
   confirmationDialog() {
