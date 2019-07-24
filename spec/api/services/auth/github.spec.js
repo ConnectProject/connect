@@ -1,7 +1,7 @@
 /* eslint-disable */
 const axiosMock = jest.fn()
 jest.mock('axios', () => axiosMock);
-const Github = require('./../../../../src/api/services/auth/github');
+const Github = require(`${SPEC_PATH}/../src/api/services/auth/github`);
 
 describe('Github Service', () => {
   beforeEach(() => { });

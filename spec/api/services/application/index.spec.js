@@ -1,21 +1,21 @@
 /* eslint-disable */
-const applicationModelMock = require('./../../../__mock__/applicationModel');
-const applicationNamingMock = require('./../../../__mock__/applicationNaming');
-const parseUserMock = require('./../../../__mock__/parseUser');
+const applicationModelMock = require(`${SPEC_PATH}/__mock__/applicationModel`);
+const applicationNamingMock = require(`${SPEC_PATH}/__mock__/applicationNaming`);
+const parseUserMock = require(`${SPEC_PATH}/__mock__/parseUser`);
 
-jest.mock('./../../../../src/api/db/model', () => {
+jest.mock(`${SPEC_PATH}/../src/api/db/model`, () => {
   return {
     Application: jest.fn().mockImplementation(() => applicationModelMock),
   };
 });
-jest.mock('./../../../../src/api/services/application/naming', () => jest.fn().mockImplementation(() => applicationNamingMock));
+jest.mock(`${SPEC_PATH}/../src/api/services/application/naming`, () => jest.fn().mockImplementation(() => applicationNamingMock));
 jest.mock('uuid/v4', () => jest.fn().mockReturnValue('uuidv4'));
-jest.mock('./../../../../src/parse', () => {
+jest.mock(`${SPEC_PATH}/../src/parse`, () => {
   return {
     User: jest.fn().mockImplementation(() => parseUserMock)
   }
 })
-const ApplicationService = require('./../../../../src/api/services/application');
+const ApplicationService = require(`${SPEC_PATH}/../src/api/services/application`);
 
 describe('Application Service', () => {
   beforeEach(() => { });
