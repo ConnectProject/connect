@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const api = require('./api');
 const logger = require('./logger');
-const { APP_PORT, FRONT_URL } = require('./config');
+const { APP_PORT, PUBLIC_URL } = require('./config');
 const parseApi = require('./middleware/parse');
 // const parseSandbox = require('./middleware/parseSandbox');
 const parseDashboard = require('./middleware/parseDashboard');
@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: FRONT_URL,
+  origin: PUBLIC_URL,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 

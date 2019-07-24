@@ -237,6 +237,30 @@ class DetailsPage extends React.PureComponent {
 
               <TextField
                 disabled
+                id="parse_name"
+                label="App ID"
+                className={classes.textField}
+                fullWidth
+                value={application.parse_name}
+                margin="normal"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => {
+                          this.copyToClipboard('parse_name');
+                        }}
+                      >
+                        <FileCopy />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                disabled
                 id="token"
                 label="Token"
                 className={classes.textField}

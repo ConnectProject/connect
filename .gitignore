@@ -7,3 +7,4 @@ logs/
 .DS_Store
 spec/coverage
 build
+perf.csv
