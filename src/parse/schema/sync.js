@@ -1,5 +1,4 @@
 const Config = require('parse-server/lib/Config');
-const { PARSE_APP_ID } = require('./../../config');
 const logger = require('./../../logger');
 const getClasses = require('./getClasses');
 const sanitizeClass = require('./sanitizeClass');
@@ -37,9 +36,9 @@ async function applySchemaSync(schema, schemaClass) {
   }
 }
 
-module.exports = async () => {
+module.exports = async appId => {
   const schemaClasses = await getClasses();
-  const schema = await Config.get(PARSE_APP_ID).database.loadSchema();
+  const schema = await Config.get(appId).database.loadSchema();
 
   try {
     const schemaSyncs = [];

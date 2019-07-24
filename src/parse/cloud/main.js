@@ -11,7 +11,7 @@ async function init(Parse) {
   await roleInstall();
   logger('Role correctly setup');
 
-  await schemaSync();
+  await schemaSync(Parse.applicationId);
   logger('Schema correctly sync');
 
   await setBeforeSave(Parse);

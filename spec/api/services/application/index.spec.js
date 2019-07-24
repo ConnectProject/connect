@@ -1,7 +1,7 @@
 /* eslint-disable */
 const applicationModelMock = require(`${SPEC_PATH}/__mock__/applicationModel`);
 const applicationNamingMock = require(`${SPEC_PATH}/__mock__/applicationNaming`);
-const parseUserMock = require(`${SPEC_PATH}/__mock__/parseUser`);
+const parseMock = require(`${SPEC_PATH}/__mock__/parse`);
 
 jest.mock(`${SPEC_PATH}/../src/api/db/model`, () => {
   return {
@@ -10,11 +10,7 @@ jest.mock(`${SPEC_PATH}/../src/api/db/model`, () => {
 });
 jest.mock(`${SPEC_PATH}/../src/api/services/application/naming`, () => jest.fn().mockImplementation(() => applicationNamingMock));
 jest.mock('uuid/v4', () => jest.fn().mockReturnValue('uuidv4'));
-jest.mock(`${SPEC_PATH}/../src/parse`, () => {
-  return {
-    User: jest.fn().mockImplementation(() => parseUserMock)
-  }
-})
+jest.mock(`${SPEC_PATH}/../src/parse`, () => parseMock)
 const ApplicationService = require(`${SPEC_PATH}/../src/api/services/application`);
 
 describe('Application Service', () => {
@@ -47,8 +43,7 @@ describe('Application Service', () => {
     await applicationService.create({ _id: 1 }, input);
 
     expect(applicationModelMock.save).toHaveBeenCalledTimes(1);
-    expect(parseUserMock.set).toBeCalledWith('username', '12345-monapp');
-    expect(parseUserMock.set).toBeCalledWith('password', 'uuidv4');
-    expect(parseUserMock.signUp).toHaveBeenCalledTimes(1);
+    expect(parseMock.signUp).toBeCalledWith('12345-monapp', 'uuidv4');
+    expect(parseMock.signUp).toBeCalledWith('12345-monapp', 'uuidv4', true);
   });
 });
