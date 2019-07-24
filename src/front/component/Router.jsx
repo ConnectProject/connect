@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import LoginPage from '../pages/login/login';
 import Github from '../pages/login/github';
 import HomePage from '../pages/home/home';
 import DetailsPage from '../pages/details/details';
 import ProfilePage from '../pages/profile/profile';
+import NoFound404Page from '../pages/notfound/notfound';
 
 export const ROUTES = {
   HOME: '/',
@@ -16,7 +17,7 @@ export const ROUTES = {
 class Routes extends React.PureComponent {
   render() {
     return (
-      <>
+      <Switch>
         <Route exact path="/login/github" component={Github} />
 
         <Route exact path="/application/:appId" component={DetailsPage} />
@@ -26,7 +27,9 @@ class Routes extends React.PureComponent {
         <Route exact path="/home" component={HomePage} />
 
         <Route exact path="/" component={LoginPage} />
-      </>
+
+        <Route component={NoFound404Page} />
+      </Switch>
     );
   }
 }
