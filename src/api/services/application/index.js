@@ -1,7 +1,7 @@
 const uuidv4 = require('uuid/v4');
 const Parse = require('./../../../parse');
 const Naming = require('./naming');
-const mongoModel = require('./../../db/model');
+const mongoModel = require('./../../../db/model');
 
 class Application {
   constructor() {

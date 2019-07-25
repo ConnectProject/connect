@@ -3,7 +3,7 @@ const applicationModelMock = require(`${SPEC_PATH}/__mock__/applicationModel`);
 const applicationNamingMock = require(`${SPEC_PATH}/__mock__/applicationNaming`);
 const parseMock = require(`${SPEC_PATH}/__mock__/parse`);
 
-jest.mock(`${SPEC_PATH}/../src/api/db/model`, () => {
+jest.mock(`${SPEC_PATH}/../src/db/model`, () => {
   return {
     Application: jest.fn().mockImplementation(() => applicationModelMock),
   };

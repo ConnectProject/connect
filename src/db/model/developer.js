@@ -1,4 +1,5 @@
-const mongoose = require('../client');
+const mongoose = require('mongoose');
+const { apiConnect } = require('../client');
 
 const developerSchema = new mongoose.Schema({
   login: String,
@@ -9,4 +10,4 @@ const developerSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Developer', developerSchema);
+module.exports = apiConnect.model('Developer', developerSchema);

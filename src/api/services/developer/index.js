@@ -1,4 +1,5 @@
-const mongoModel = require('./../../db/model');
+const mongoModel = require('./../../../db/model');
+const clearParseUser = require('./clearParse');
 
 class Developer {
   constructor() {
@@ -6,8 +7,18 @@ class Developer {
   }
 
   async delete(developer) {
-    await this.model.Application.deleteMany({ developer });
-    return this.model.Developer.deleteOne({ _id: developer._id });
+    const deleteOps = [];
+    const applications = await this.model.Application.find({ developer });
+
+    for (const application of applications) {
+      deleteOps.push(clearParseUser(application.parse_name));
+      deleteOps.push(clearParseUser(application.parse_name, true));
+    }
+
+    // deleteOps.push(this.model.Application.deleteMany({ developer }));
+    // deleteOps.push(this.model.Developer.deleteOne({ _id: developer._id }));
+
+    return Promise.all(deleteOps);
   }
 }
 

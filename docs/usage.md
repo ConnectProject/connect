@@ -40,7 +40,7 @@ To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_ID like t
 
 ```bash
 curl --request GET \
-  --url 'https://www.connect.com/parse/login?password=APP_TOKEN&username=APP_ID&=' \
+  --url 'https://connect-project.io/parse/login?password=APP_TOKEN&username=APP_ID&=' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-revocable-session: 1'
   
@@ -64,7 +64,7 @@ You can retrieve a specific object using the GET endpoint `/parse/classes/:OBJEC
 
 ```bash
 curl --request GET \
-  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
   
@@ -83,7 +83,7 @@ To retrieve a list of an object you can directly call the GET endpoint `/parse/c
 
 ```bash
 curl --request GET \
-  --url https://www.connect.com/parse/classes/GameScore \
+  --url https://connect-project.io/parse/classes/GameScore \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
   
@@ -115,7 +115,7 @@ There are several ways to put constraints on the objects found, using the `where
 
 ```bash
 curl --request GET \
-  --url https://www.connect.com/parse/classes/GameScore \
+  --url https://connect-project.io/parse/classes/GameScore \
   --header "X-Parse-Application-Id: connect" \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
   --get \
@@ -154,7 +154,7 @@ You can use the `order` parameter to specify a field to sort by. Prefixing with 
 
 ```bash
 curl --request GET \
-  --url https://www.connect.com/parse/classes/GameScore \
+  --url https://connect-project.io/parse/classes/GameScore \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
   --get \
@@ -165,7 +165,7 @@ If you are limiting your query, or if there are a very large number of results, 
 
 ```bash
 curl --request GET \
-  --url https://www.connect.com/parse/classes/GameScore \
+  --url https://connect-project.io/parse/classes/GameScore \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
   --get \
@@ -188,7 +188,7 @@ To create new object send a POST request to the endpoint `/parse/classes/:OBJECT
 
 ```bash
 curl --request POST \
-  --url https://www.connect.com/parse/classes/GameScore \
+  --url https://connect-project.io/parse/classes/GameScore \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
@@ -215,7 +215,7 @@ To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNA
 
 ```bash
 curl --request PUT \
-  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
@@ -244,7 +244,7 @@ To delete an object send a DELETE request to the endpoint `/parse/classes/:OBJEC
 
 ```bash
 curl --request DELETE \
-  --url https://www.connect.com/parse/classes/GameScore/DFwP7JXoa0 \
+  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
 
@@ -262,7 +262,7 @@ Each command in a batch has `method`, `path`, and `body` parameters that specify
 
 ```bash
 curl --request POST \
-  --url https://www.connect.com/parse/batch \
+  --url https://connect-project.io/parse/batch \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
