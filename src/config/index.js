@@ -11,8 +11,14 @@ function testConfig(config, name) {
   }
 }
 
+const { PUBLIC_URL } = process.env;
+testConfig(PUBLIC_URL, 'PUBLIC_URL');
+
 const { FRONT_PORT } = process.env;
 testConfig(FRONT_PORT, 'FRONT_PORT');
+
+const { API_URL } = process.env;
+testConfig(API_URL, 'API_URL');
 
 const { APP_PORT } = process.env;
 testConfig(APP_PORT, 'APP_PORT');
@@ -22,6 +28,18 @@ testConfig(APP_PROTOCOL, 'APP_PROTOCOL');
 
 const { APP_HOST } = process.env;
 testConfig(APP_HOST, 'APP_HOST');
+
+const { SANDBOX_URL } = process.env;
+testConfig(SANDBOX_URL, 'SANDBOX_URL');
+
+const { SANDBOX_PORT } = process.env;
+testConfig(SANDBOX_PORT, 'SANDBOX_PORT');
+
+const { SANDBOX_PROTOCOL } = process.env;
+testConfig(SANDBOX_PROTOCOL, 'SANDBOX_PROTOCOL');
+
+const { SANDBOX_HOST } = process.env;
+testConfig(SANDBOX_HOST, 'SANDBOX_HOST');
 
 const { PARSE_APP_NAME } = process.env;
 testConfig(PARSE_APP_NAME, 'PARSE_APP_NAME');
@@ -59,12 +77,6 @@ testConfig(MONGO_PASSWORD, 'MONGO_PASSWORD');
 const { MONGO_DB_NAME } = process.env;
 testConfig(MONGO_DB_NAME, 'MONGO_DB_NAME');
 
-const { PUBLIC_URL } = process.env;
-testConfig(PUBLIC_URL, 'PUBLIC_URL');
-
-const { API_URL } = process.env;
-testConfig(API_URL, 'API_URL');
-
 const { AUTH_SECRET } = process.env;
 testConfig(AUTH_SECRET, 'AUTH_SECRET');
 
@@ -75,10 +87,16 @@ const { GITHUB_CLIENT_SECRET } = process.env;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
+  PUBLIC_URL,
   FRONT_PORT,
+  API_URL,
   APP_PORT,
   APP_PROTOCOL,
   APP_HOST,
+  SANDBOX_URL,
+  SANDBOX_PORT,
+  SANDBOX_PROTOCOL,
+  SANDBOX_HOST,
   PARSE_APP_NAME,
   PARSE_APP_ID,
   PARSE_FILE_KEY,
@@ -91,8 +109,6 @@ module.exports = {
   MONGO_USERNAME,
   MONGO_PASSWORD,
   MONGO_DB_NAME,
-  PUBLIC_URL,
-  API_URL,
   AUTH_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,

@@ -36,11 +36,11 @@ And for any authentified endpoint add the header : `x-parse-session-token: r:xxx
 
 In order to manipulate the connect api you need to identify each of your request with a `sessionToken`.
 
-To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_NAME like this :
+To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_ID like this :
 
 ```bash
 curl --request GET \
-  --url 'https://www.connect.com/parse/login?password=APP_TOKEN&username=APP_NAME&=' \
+  --url 'https://www.connect.com/parse/login?password=APP_TOKEN&username=APP_ID&=' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-revocable-session: 1'
   

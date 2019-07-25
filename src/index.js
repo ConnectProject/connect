@@ -4,9 +4,8 @@ const cors = require('cors');
 
 const api = require('./api');
 const logger = require('./logger');
-const { APP_PORT, PUBLIC_URL } = require('./config');
+const { APP_PORT } = require('./config');
 const parseApi = require('./middleware/parse');
-// const parseSandbox = require('./middleware/parseSandbox');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
 
@@ -15,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: PUBLIC_URL,
+  origin: '*',
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -24,8 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve the Parse API at /parse URL prefix
 app.use('/parse', parseApi);
-// Disable don't work correctly with parseApi for the moment
-// app.use('/parse-sandbox', parseSandbox);
 app.use('/dashboard', parseDashboard);
 app.use(parseSwagger);
 

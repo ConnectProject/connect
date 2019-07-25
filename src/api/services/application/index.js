@@ -36,10 +36,8 @@ class Application {
       updated_at: new Date(),
     });
 
-    const user = new Parse.User();
-    user.set('username', parseName);
-    user.set('password', token);
-    await user.signUp({}, { useMasterKey: true });
+    await Parse.signUp(parseName, token);
+    await Parse.signUp(parseName, tokenSandbox, true);
 
     application = await application.save();
 
