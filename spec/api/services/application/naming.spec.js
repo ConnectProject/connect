@@ -1,7 +1,7 @@
 /* eslint-disable */
 const applicationModelMock = require(`${SPEC_PATH}/__mock__/applicationModel`);
 
-jest.mock(`${SPEC_PATH}/../src/api/db/model`, () => {
+jest.mock(`${SPEC_PATH}/../src/db/model`, () => {
   return {
     Application: applicationModelMock,
   };

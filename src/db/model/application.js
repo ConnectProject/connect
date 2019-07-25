@@ -1,4 +1,5 @@
-const mongoose = require('../client');
+const mongoose = require('mongoose');
+const { apiConnect } = require('../client');
 
 const applicationSchema = new mongoose.Schema({
   developer: {
@@ -16,4 +17,4 @@ const applicationSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Application', applicationSchema);
+module.exports = apiConnect.model('Application', applicationSchema);

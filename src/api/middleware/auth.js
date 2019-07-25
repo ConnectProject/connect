@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const logger = require('./../../logger');
 const { AUTH_SECRET } = require('./../../config');
-const mongoModel = require('./../db/model');
+const mongoModel = require('./../../db/model');
 
 const jwtVerify = promisify(jwt.verify);
 
