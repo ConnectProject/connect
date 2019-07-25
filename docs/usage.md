@@ -11,6 +11,7 @@
   - [Update object](#update-object)
   - [Delete object](#delete-object)
   - [Batch operations](#batch-operations)
+  - [Sandbox](#sandbox)
 - [Schema Contribute](#schema-contribute)
   - [Add a new Class](#add-class)
   - [Update an existing Class](#update-class)
@@ -304,6 +305,17 @@ curl --request POST \
 ```
 
 The response from batch will be a list with the same number of elements as the input list. Each item in the list with be a dictionary with either the `success` or `error` field set. The value of `success` will be the normal response to the equivalent REST command. The value of `error` will be an object with a numeric `code` and `error` string.
+
+### <a name="sandbox">Sandbox</a>
+
+Before use the production database you can use the sanbox environnement. 
+
+For that two changes should be done :
+
+* Every endpoint uri is `https://connect-project.io/parse-sandbox` instead of `https://connect-project.io/parse`
+* Change the header value `x-parse-application-id` to `connect-sandbox`.
+
+For the authentification you have to use the APP_TOKEN_SANDBOX instead of the APP_TOKEN.
 
 ## <a name="schema-contribute">Schema Contribute</a>
 
