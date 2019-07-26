@@ -10,7 +10,7 @@ module.exports = {
 
       return res.send(applications);
     } catch (err) {
-      logger(err);
+      logger.error(err);
       return res.sendStatus(500);
     }
   },
@@ -28,7 +28,7 @@ module.exports = {
 
       return res.send(application);
     } catch (err) {
-      logger(err);
+      logger.error(err);
       return res.sendStatus(500);
     }
   },
@@ -48,7 +48,7 @@ module.exports = {
 
       return res.send(application);
     } catch (err) {
-      logger(err);
+      logger.error(err);
       return res.sendStatus(500);
     }
   },
@@ -69,7 +69,7 @@ module.exports = {
 
       return res.send(application);
     } catch (err) {
-      logger(err);
+      logger.error(err);
       return res.sendStatus(500);
     }
   },

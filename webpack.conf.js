@@ -25,13 +25,15 @@ const scssLoaders = cssOptions => [
 
 module.exports = () => {
   const env = dotenv.config().parsed;
-  
+
   // reduce it to a nice object, the same as before
-  const envKeys = Object.keys(env).reduce((prev, next) => {
-    // eslint-disable-next-line no-param-reassign
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
-    return prev;
-  }, {});
+  const envKeys = env
+    ? Object.keys(env).reduce((prev, next) => {
+        // eslint-disable-next-line no-param-reassign
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {})
+    : {};
 
   return {
     mode: process.env.NODE_ENV || 'development',
@@ -43,9 +45,9 @@ module.exports = () => {
       filename: '[name].[contenthash].js',
     },
     devServer: {
-      inline:true,
+      inline: true,
       port: process.env.FRONT_PORT,
-      historyApiFallback: true
+      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -112,5 +114,5 @@ module.exports = () => {
           },
         }
       : {},
-  }
+  };
 };

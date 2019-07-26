@@ -56,7 +56,7 @@ module.exports = async appId => {
     return Promise.all(schemaSyncs);
   } catch (err) {
     if (err.code === 103) {
-      logger(err.message);
+      logger.error(err.message);
     } else {
       throw err;
     }

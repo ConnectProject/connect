@@ -50,7 +50,7 @@ module.exports = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    logger(err);
+    logger.error(err);
     return res.sendStatus(500);
   }
 };

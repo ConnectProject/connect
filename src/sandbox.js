@@ -18,5 +18,5 @@ app.use(cors(corsOptions));
 app.use('/parse-sandbox', parseSandbox);
 
 app.listen(SANDBOX_PORT, () => {
-  logger(`connect sandbox running on port ${SANDBOX_PORT}.`);
+  logger.info(`connect sandbox running on port ${SANDBOX_PORT}.`);
 });
