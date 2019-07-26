@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  connect:
+    image: docker.matters.tech/medylink/medway/back/prod:$VERSION_NUMBER
+    ports:
+      - "3000:3000"
+    restart: always
+    env_file:
+      - .env
+
+  connect-sandbox:
+    image: docker.matters.tech/medylink/medway/front/prod:$VERSION_NUMBER
+    ports:
+      - "3001:3001"
+    restart: always
+    env_file:
+      - .env
