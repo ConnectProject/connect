@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 
     return res.sendStatus(403);
   } catch (err) {
-    logger(err);
+    logger.error(err);
     return res.sendStatus(500);
   }
 };

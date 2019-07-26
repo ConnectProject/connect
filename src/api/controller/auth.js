@@ -9,7 +9,7 @@ module.exports = {
 
       res.send(jwt);
     } catch (err) {
-      logger(err);
+      logger.error(err);
       res.sendStatus(500);
     }
   },

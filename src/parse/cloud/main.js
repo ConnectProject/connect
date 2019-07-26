@@ -9,10 +9,10 @@ const setAfterFind = require('./setAfterFind');
 
 async function init(Parse) {
   await roleInstall();
-  logger('Role correctly setup');
+  logger.info('Role correctly setup');
 
   await schemaSync(Parse.applicationId);
-  logger('Schema correctly sync');
+  logger.info('Schema correctly sync');
 
   await setBeforeSave(Parse);
   await setAfterSave(Parse);
@@ -20,8 +20,8 @@ async function init(Parse) {
 }
 
 init(Parse)
-  .then(() => logger(`Parse correctly init`))
-  .catch(err => logger(`Issue to init Parse : ${err}`));
+  .then(() => logger.info(`Parse correctly init`))
+  .catch(err => logger.info(`Issue to init Parse : ${err}`));
 
 Parse.Cloud.afterSave(Parse.User, async req => {
   if (req.object.existed()) {

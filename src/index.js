@@ -38,5 +38,5 @@ app.get('*', (_, res) => {
 });
 
 app.listen(APP_PORT, () => {
-  logger(`connect running on port ${APP_PORT}.`);
+  logger.info(`connect running on port ${APP_PORT}.`);
 });

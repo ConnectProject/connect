@@ -11,7 +11,7 @@ async function clearParseUser(username, sandbox) {
   const user = await userModel.findOne({ username }).exec();
 
   if (!user) {
-    logger(`No user found for '${username}'`);
+    logger.info(`No user found for '${username}'`);
     return null;
   }
 
