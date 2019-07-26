@@ -73,10 +73,13 @@ build_image:
   image: docker:18-dind
   services:
     - docker:18-dind
+  before_script:
+    - ''
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
   only:
     - tags
+  cache: {}
   
