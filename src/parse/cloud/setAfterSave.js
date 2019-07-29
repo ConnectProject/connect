@@ -8,12 +8,7 @@ module.exports = async Parse => {
       delete jsonObject.owner;
       delete jsonObject.ACL;
 
-      req.object = {
-        toJSON: () => jsonObject,
-        equals: () => false,
-      };
-
-      return req.object;
+      return jsonObject;
     });
   }
 };
