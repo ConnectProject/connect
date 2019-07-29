@@ -23,7 +23,6 @@ const styles = {
 class NoFound404Page extends React.PureComponent {
   async goToHome() {
     const { history } = this.props;
-    console.log('home');
     setTimeout(history.push(`/home`), 1000);
   }
 
