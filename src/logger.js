@@ -1,6 +1,7 @@
 const winston = require('winston');
 const flow = require('lodash.flow');
 const debug = require('debug');
+const { DEBUG } = require('./config');
 
 const { combine, timestamp, json } = winston.format;
 
@@ -108,8 +109,6 @@ function createLogger(appName) {
 }
 
 const connectServerLog =
-  process.env.DEBUG === undefined
-    ? createLogger('connect')
-    : createDebugLogger('connect');
+  DEBUG === true ? createDebugLogger('connect') : createLogger('connect');
 
 module.exports = connectServerLog;

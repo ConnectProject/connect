@@ -38,9 +38,11 @@ module.exports = async (req, res, next) => {
     let developer;
 
     if (jwtDeveloper) {
-      developer = await mongoModel.Developer.findOne({
-        github_id: jwtDeveloper.id,
-      }).exec();
+      developer = await mongoModel()
+        .Developer.findOne({
+          github_id: jwtDeveloper.id,
+        })
+        .exec();
     }
 
     req.auth = {

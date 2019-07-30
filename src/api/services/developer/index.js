@@ -3,7 +3,7 @@ const clearParseUser = require('./clearParse');
 
 class Developer {
   constructor() {
-    this.model = mongoModel;
+    this.model = mongoModel();
   }
 
   async delete(developer) {

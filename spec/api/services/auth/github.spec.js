@@ -1,13 +1,12 @@
 /* eslint-disable */
 const axiosMock = jest.fn()
 jest.mock('axios', () => axiosMock);
+const configMock = require(`${SPEC_PATH}/__mock__/config`);
+
+jest.mock(`${SPEC_PATH}/../src/config`, () => configMock);
 const Github = require(`${SPEC_PATH}/../src/api/services/auth/github`);
 
 describe('Github Service', () => {
-  beforeEach(() => { });
-
-  afterEach(() => { });
-
   it('get an access token', async () => {
     axiosMock.mockReturnValue({
       data: {

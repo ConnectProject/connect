@@ -11,6 +11,8 @@ function testConfig(config, name) {
   }
 }
 
+const DEBUG = process.env.DEBUG || false;
+
 const { PUBLIC_URL } = process.env;
 testConfig(PUBLIC_URL, 'PUBLIC_URL');
 
@@ -87,6 +89,7 @@ const { GITHUB_CLIENT_SECRET } = process.env;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
+  DEBUG,
   PUBLIC_URL,
   FRONT_PORT,
   API_URL,
@@ -104,11 +107,9 @@ module.exports = {
   PARSE_READONLY_MASTER_KEY,
   PARSE_DASHBOARD_MAINTENER_PWD,
   PARSE_DASHBOARD_ROOT_PWD,
-  MONGO_PORT,
-  MONGO_HOST,
-  MONGO_USERNAME,
-  MONGO_PASSWORD,
-  MONGO_DB_NAME,
+  PARSE_SANDBOX: true,
+  PARSE_SILENT: false,
+  MONGO_URI: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`,
   AUTH_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
