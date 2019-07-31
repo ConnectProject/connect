@@ -9,6 +9,7 @@ module.exports = {
       arch: 'x64',
       skipMD5: true
     },
-    autoStart: false
+    autoStart: false,
+    debug: true
   }
 };
