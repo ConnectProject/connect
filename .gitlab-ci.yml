@@ -54,6 +54,7 @@ lint:
 test:
   extends: .base_job
   stage: test
+  image: node:12
   script:
     - yarn install
     - cp .env.dist .env
