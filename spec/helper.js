@@ -19,7 +19,7 @@ const reconfigureServer = () => {
     if (server) {
       return server.close(() => {
         server = undefined;
-        reconfigureServer.then(resolve, reject);
+        reconfigureServer().then(resolve, reject);
       });
     }
     try {
