@@ -7,6 +7,8 @@ process.env.TEST_SUITE = 'api-server';
 describe('api server', () => {
   bindAll();
 
+  let applicationId;
+
   it('Create Application', async () => {
     const jwtToken = await getJwtToken();
 
@@ -32,6 +34,8 @@ describe('api server', () => {
     expect(response.data.token).toBeDefined();
     expect(response.data.parse_name).toBeDefined();
     expect.assertions(6);
+
+    applicationId = response.data._id;
   });
 
   it('List Application', async () => {
@@ -53,18 +57,9 @@ describe('api server', () => {
   it('Get Application', async () => {
     const jwtToken = await getJwtToken();
 
-    const listResponse = await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/application',
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
     const getResponse = await axios({
       method: 'get',
-      url: `http://localhost:3000/api/application/${listResponse.data[0]._id}`,
+      url: `http://localhost:3000/api/application/${applicationId}`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
         'Content-Type': 'application/json',
@@ -78,18 +73,9 @@ describe('api server', () => {
   it('Update Application', async () => {
     const jwtToken = await getJwtToken();
 
-    const listResponse = await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/application',
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
     const response = await axios({
       method: 'put',
-      url: `http://localhost:3000/api/application/${listResponse.data[0]._id}`,
+      url: `http://localhost:3000/api/application/${applicationId}`,
       headers: {
         Authorization: `Bearer ${jwtToken}`,
         'Content-Type': 'application/json',

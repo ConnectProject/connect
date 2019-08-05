@@ -1,7 +1,6 @@
 /* eslint-disable */
 const mongoose = require('mongoose');
 const nock = require('nock');
-const cache = require('parse-server/lib/cache').default;
 const getClasses = require(`${SPEC_PATH}/../src/parse/schema/getClasses`);
 const { EventEmitter } = require('events');
 
