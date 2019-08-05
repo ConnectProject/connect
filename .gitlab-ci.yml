@@ -75,7 +75,7 @@ build_image:
   stage: buildImage
   image: docker:18-dind
   services:
-    - docker:18-dind
+    - $MATTERS_GLOBAL_DIND_IMAGE
   before_script:
     - ''
   script:
