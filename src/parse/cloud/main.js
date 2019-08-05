@@ -19,28 +19,35 @@ async function init(Parse) {
   await setAfterFind(Parse);
 }
 
-init(Parse)
-  .then(() => logger.info(`Parse correctly init`))
-  .catch(err => logger.info(`Issue to init Parse : ${err}`));
+module.exports = (Parse, event) => {
+  Parse.Cloud.afterSave(Parse.User, async req => {
+    if (req.object.existed()) {
+      return null;
+    }
 
-Parse.Cloud.afterSave(Parse.User, async req => {
-  if (req.object.existed()) {
-    return null;
-  }
+    const user = req.object;
+    const acl = new Parse.ACL(user);
+    acl.setReadAccess(user, true);
+    acl.setWriteAccess(user, false);
+    user.setACL(acl);
 
-  const user = req.object;
-  const acl = new Parse.ACL(user);
-  acl.setReadAccess(user, true);
-  acl.setWriteAccess(user, false);
-  user.setACL(acl);
+    await user.save({}, { useMasterKey: true });
+    const role = await roleGet.getOne('Developer');
 
-  await user.save({}, { useMasterKey: true });
-  const role = await roleGet.getOne('Developer');
+    if (!role) {
+      return Parse.Promise.error('Role not install');
+    }
 
-  if (!role) {
-    return Parse.Promise.error('Role not install');
-  }
+    role.getUsers().add(user);
+    return role.save(null, { useMasterKey: true });
+  });
 
-  role.getUsers().add(user);
-  return role.save(null, { useMasterKey: true });
-});
+  init(Parse)
+    .then(() => {
+      if (event) {
+        event.emit('parse-init', Parse);
+      }
+      logger.info(`Parse correctly init`);
+    })
+    .catch(err => logger.info(`Issue to init Parse : ${err}`));
+};

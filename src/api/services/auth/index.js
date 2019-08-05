@@ -6,7 +6,7 @@ const mongoModel = require('./../../../db/model');
 
 class Auth {
   constructor() {
-    this.model = mongoModel;
+    this.model = mongoModel();
   }
 
   // Generate a token and send connect link by email
@@ -37,10 +37,14 @@ class Auth {
     const userGithub = await Github.getUser(githubToken);
     const developer = await this.createUserIfNotExist(userGithub);
 
-    const jwtToken = jwt.sign(
+    return Auth.genJwtToken(developer, userGithub.name);
+  }
+
+  static genJwtToken(developer, name) {
+    return jwt.sign(
       {
         login: developer.login,
-        name: userGithub.name,
+        name,
         id: developer.github_id,
         iat: moment().valueOf(),
         exp: moment()
@@ -49,8 +53,6 @@ class Auth {
       },
       AUTH_SECRET,
     );
-
-    return jwtToken;
   }
 }
 

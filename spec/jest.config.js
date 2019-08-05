@@ -9,5 +9,6 @@ module.exports = {
   ],
   "globals": {
     "SPEC_PATH": __dirname
-  }
+  },
+  preset: '@shelf/jest-mongodb'
 };

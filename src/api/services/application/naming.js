@@ -2,7 +2,7 @@ const mongoModel = require('./../../../db/model');
 
 class Naming {
   constructor() {
-    this.model = mongoModel;
+    this.model = mongoModel();
   }
 
   async getUniqName(name) {

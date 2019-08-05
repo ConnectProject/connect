@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const getClasses = require('./../parse/schema/getClasses');
-const { parseConnect, parseSandboxConnect } = require('./client');
+const connectClient = require('./client');
 
 const modelMapping = new Map();
 const modeSandboxMapping = new Map();
@@ -8,6 +8,7 @@ const modeSandboxMapping = new Map();
 // Generate all mongoose schema and model for the parse db
 async function getParseModel(sandbox) {
   const schemaClasses = await getClasses();
+  const { parseConnect, parseSandboxConnect } = connectClient();
   const connect = sandbox ? parseSandboxConnect : parseConnect;
   const models = sandbox ? modeSandboxMapping : modelMapping;
 

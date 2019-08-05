@@ -2,10 +2,11 @@ const uuidv4 = require('uuid/v4');
 const Parse = require('./../../../parse');
 const Naming = require('./naming');
 const mongoModel = require('./../../../db/model');
+const { PARSE_SANDBOX } = require('./../../../config');
 
 class Application {
   constructor() {
-    this.model = mongoModel;
+    this.model = mongoModel();
     this.namingService = new Naming();
   }
 
@@ -29,7 +30,7 @@ class Application {
       description: input.description,
       parse_name: parseName,
       token,
-      token_sandbox: tokenSandbox,
+      token_sandbox: PARSE_SANDBOX ? tokenSandbox : null,
       apple_store_link: input.apple_store_link,
       google_market_link: input.google_market_link,
       created_at: new Date(),
@@ -37,7 +38,10 @@ class Application {
     });
 
     await Parse.signUp(parseName, token);
-    await Parse.signUp(parseName, tokenSandbox, true);
+
+    if (PARSE_SANDBOX) {
+      await Parse.signUp(parseName, tokenSandbox, true);
+    }
 
     application = await application.save();
 

@@ -15,7 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Serve the Parse API at /parse URL prefix
-app.use('/parse-sandbox', parseSandbox);
+app.use('/parse-sandbox', parseSandbox());
 
 app.listen(SANDBOX_PORT, () => {
   logger.info(`connect sandbox running on port ${SANDBOX_PORT}.`);
