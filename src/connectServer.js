@@ -9,7 +9,12 @@ const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
 
 class ConnectServer {
-  static start(port) {
+  constructor(app, server) {
+    this.app = app;
+    this.server = server;
+  }
+
+  static async start(port, parseCloudEvent) {
     logger.info(`start connect express server on port ${port}.`);
 
     const app = express();
@@ -25,7 +30,8 @@ class ConnectServer {
     app.use(express.urlencoded({ extended: true }));
 
     // Serve the Parse API at /parse URL prefix
-    app.use('/parse', parseApi());
+    const parseMiddleware = await parseApi(parseCloudEvent);
+    app.use('/parse', parseMiddleware.app);
     app.use('/dashboard', parseDashboard());
     app.use(parseSwagger());
 
@@ -40,9 +46,11 @@ class ConnectServer {
       res.sendFile(path.join(__dirname, './../build', 'index.html'));
     });
 
-    return app.listen(port, () => {
+    const server = app.listen(port, () => {
       logger.info(`connect running on port ${port}.`);
     });
+
+    return new ConnectServer(app, server);
   }
 }
 
