@@ -21,7 +21,7 @@ stages:
 
 .base_job:
   tags:
-    - k8s
+    - build
 
 ####
 ####
