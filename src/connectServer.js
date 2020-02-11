@@ -8,6 +8,8 @@ const parseApi = require('./middleware/parse');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
 
+const configFront = require('./config/front');
+
 class ConnectServer {
   constructor(app, server) {
     this.app = app;
@@ -37,6 +39,8 @@ class ConnectServer {
 
     // handle all routing for /api/*
     api(app);
+
+    app.get('/envConfig.js', (_, res) => res.send(configFront));
 
     // Serve any static files
     app.use(express.static(path.join(__dirname, './../build')));

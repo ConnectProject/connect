@@ -54,7 +54,7 @@ class LoginPage extends React.PureComponent {
         </CardContent>
         <CardActions className={classes.buttonContainer}>
           <a
-            href="https://github.com/login/oauth/authorize?client_id=c262ab4075b97372f8a4"
+            href={`https://github.com/login/oauth/authorize?client_id=${window._env_.GITHUB_CLIENT_ID}`}
             title="Connect with GitHub"
           >
             <Button size="large" color="primary">

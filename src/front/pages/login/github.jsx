@@ -15,7 +15,7 @@ class Github extends React.Component {
     const { location, history } = this.props;
     const params = new URLSearchParams(location.search);
 
-    const responses = await fetch(`${process.env.API_URL}/api/auth`, {
+    const responses = await fetch(`${window._env_.API_URL}/api/auth`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
