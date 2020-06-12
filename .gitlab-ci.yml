@@ -1,0 +1,88 @@
+image: node:12-alpine
+
+cache:
+  key: ci-cache-$CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+before_script:
+  - apk --no-cache add --virtual builds-deps build-base python
+
+stages:
+  - build
+  - test
+  - buildImage
+
+####
+####
+#### TEMPLATES
+####
+####
+
+.base_job:
+  tags:
+    - build
+
+####
+####
+#### BUILD STAGE
+####
+####
+
+build:
+  extends: .base_job
+  stage: build
+  script:
+    - yarn install
+
+####
+####
+#### LINT STAGE
+####
+####
+
+lint:
+  extends: .base_job
+  stage: test
+  script:
+    - yarn install
+    - yarn eslint.check
+    - yarn prettier.check
+  cache:
+    policy: pull
+
+test:
+  extends: .base_job
+  stage: test
+  image: node:12
+  before_script:
+    - ''
+  script:
+    - yarn install
+    - cp .env.dist .env
+    - yarn test
+  cache:
+    policy: pull
+
+####
+####
+#### BUILD IMAGE STAGE
+####
+####
+
+build_image:
+  extends: .base_job
+  stage: buildImage
+  image: docker:18-dind
+  services:
+    - $MATTERS_GLOBAL_DIND_IMAGE
+  before_script:
+    - ''
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
+  only:
+    - tags
+  cache: {}
+  

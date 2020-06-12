@@ -1,0 +1,10 @@
+.idea
+node_modules/
+yarn-error.log
+.history
+.env
+logs/
+.DS_Store
+spec/coverage
+build
+perf.csv
