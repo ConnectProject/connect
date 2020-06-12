@@ -44,7 +44,7 @@ class App extends React.PureComponent {
     ) {
       this.setState({ canBack: true });
     }
-    history.listen(location => {
+    history.listen((location) => {
       if (location.pathname !== '/home' && location.pathname !== '/') {
         this.setState({ canBack: true });
       } else {
@@ -52,7 +52,7 @@ class App extends React.PureComponent {
       }
     });
 
-    connectedState.subscribe(userConnected => {
+    connectedState.subscribe((userConnected) => {
       if (!userConnected) {
         history.push('/');
       }
@@ -64,7 +64,7 @@ class App extends React.PureComponent {
     const { history } = this.props;
     if (index === 0) {
       window.open(
-        'https://help.github.com/en/articles/basic-writing-and-formatting-syntax',
+        'https://github.com/ConnectProject/connect/blob/master/docs/usage.md',
         '_blank',
       );
     } else if (index === 1) {
@@ -177,7 +177,7 @@ class App extends React.PureComponent {
                                 key={option}
                                 disabled={index === 2}
                                 selected={index === selectedIndex}
-                                onClick={event =>
+                                onClick={(event) =>
                                   this.handleMenuItemClick(event, index)
                                 }
                               >
