@@ -22,6 +22,14 @@ module.exports = {
     ],
     'no-underscore-dangle': 0,
   },
+  overrides: [
+    {
+      files: ['bin/**'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+  ],
   globals: {
     it: 'readonly',
     describe: 'readonly',
@@ -36,6 +44,6 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    jest: true
-  }
-}
+    jest: true,
+  },
+};
