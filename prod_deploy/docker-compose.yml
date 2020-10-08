@@ -1,19 +1,19 @@
-version: "3"
+version: '3'
 
 services:
   connect:
     image: criconnect/connect:$VERSION_NUMBER
     ports:
-      - "3000:3000"
+      - '3000:3000'
     restart: always
     env_file:
       - .env
 
   connect-sandbox:
     image: criconnect/connect:$VERSION_NUMBER
-    command: ["yarn", "start.sandbox"]
+    command: ['yarn', 'start.sandbox']
     ports:
-      - "3001:3001"
+      - '3001:3001'
     restart: always
     env_file:
       - .env

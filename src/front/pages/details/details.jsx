@@ -77,8 +77,8 @@ class DetailsPage extends React.PureComponent {
 
   componentDidMount() {
     const { match } = this.props;
-    getApplication(match.params.appId).then(res => {
-      this.setState(prevState => {
+    getApplication(match.params.appId).then((res) => {
+      this.setState((prevState) => {
         return {
           ...prevState,
           loading: false,
@@ -140,7 +140,7 @@ class DetailsPage extends React.PureComponent {
 
   copyToClipboard(key) {
     const { application } = this.state;
-    navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
+    navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(application[key]);
         this.setState({ snackBarOpen: true });
@@ -170,7 +170,7 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.name}
-                onChange={event => this.handleChange('name', event)}
+                onChange={(event) => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.name}
@@ -182,7 +182,7 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.description}
-                onChange={event => this.handleChange('description', event)}
+                onChange={(event) => this.handleChange('description', event)}
                 margin="normal"
                 variant="outlined"
                 multiline
@@ -196,7 +196,8 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.apple_store_link || ''}
-                onChange={event => this.handleChange('apple_store_link', event)}
+                onChange={(event) =>
+                  this.handleChange('apple_store_link', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.apple_store_link}
@@ -208,9 +209,8 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={application.google_market_link || ''}
-                onChange={event =>
-                  this.handleChange('google_market_link', event)
-                }
+                onChange={(event) =>
+                  this.handleChange('google_market_link', event)}
                 margin="normal"
                 variant="outlined"
                 error={errors.google_market_link}

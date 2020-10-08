@@ -7,8 +7,8 @@ module.exports = {
     '!<rootDir>/src/front/**/*.js',
     '<rootDir>/src/**/*.js',
   ],
-  "globals": {
-    "SPEC_PATH": __dirname
+  globals: {
+    SPEC_PATH: __dirname,
   },
-  preset: '@shelf/jest-mongodb'
+  preset: '@shelf/jest-mongodb',
 };

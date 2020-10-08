@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const getClasses = require('./../parse/schema/getClasses');
+const getClasses = require('../parse/schema/getClasses');
 const connectClient = require('./client');
 
 const modelMapping = new Map();

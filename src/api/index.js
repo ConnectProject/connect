@@ -4,7 +4,7 @@ const authController = require('./controller/auth');
 const applicationController = require('./controller/application');
 const developerController = require('./controller/developer');
 
-module.exports = srv => {
+module.exports = (srv) => {
   srv.use('/api/*', authMiddleware);
   srv.use('/api/*', aclMiddleware);
 

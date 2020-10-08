@@ -1,5 +1,5 @@
 const Config = require('parse-server/lib/Config');
-const logger = require('./../../logger');
+const logger = require('../../logger');
 const getClasses = require('./getClasses');
 const sanitizeClass = require('./sanitizeClass');
 const initClasses = require('./_initClasses');
@@ -36,7 +36,7 @@ async function applySchemaSync(schema, schemaClass) {
   }
 }
 
-module.exports = async appId => {
+module.exports = async (appId) => {
   const schemaClasses = await getClasses();
   const schema = await Config.get(appId).database.loadSchema();
 

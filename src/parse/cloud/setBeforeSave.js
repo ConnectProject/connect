@@ -1,9 +1,9 @@
-const getClasses = require('./../schema/getClasses');
+const getClasses = require('../schema/getClasses');
 
-module.exports = async Parse => {
+module.exports = async (Parse) => {
   const schemaClasses = await getClasses();
   for (const schemaClass of schemaClasses) {
-    Parse.Cloud.beforeSave(schemaClass.className, req => {
+    Parse.Cloud.beforeSave(schemaClass.className, (req) => {
       if (!req.user) {
         return;
       }

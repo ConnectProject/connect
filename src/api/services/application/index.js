@@ -1,8 +1,8 @@
 const uuidv4 = require('uuid/v4');
-const Parse = require('./../../../parse');
+const Parse = require('../../../parse');
 const Naming = require('./naming');
-const mongoModel = require('./../../../db/model');
-const { PARSE_SANDBOX } = require('./../../../config');
+const mongoModel = require('../../../db/model');
+const { PARSE_SANDBOX } = require('../../../config');
 
 class Application {
   constructor() {

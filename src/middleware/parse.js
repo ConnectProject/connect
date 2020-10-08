@@ -8,8 +8,8 @@ const {
   PARSE_MASTER_KEY,
   PARSE_READONLY_MASTER_KEY,
   PARSE_SILENT,
-} = require('./../config');
-const cloud = require('./../parse/cloud/main');
+} = require('../config');
+const cloud = require('../parse/cloud/main');
 
 class ParseMiddelware {
   constructor(app) {
@@ -17,10 +17,10 @@ class ParseMiddelware {
   }
 
   static start(options, parseCloudEvent) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       let parseMiddelware;
       const parseOptions = Object.assign(options, {
-        cloud: Parse => {
+        cloud: (Parse) => {
           cloud(Parse, parseCloudEvent);
         },
         serverStartComplete: () => {
@@ -34,7 +34,7 @@ class ParseMiddelware {
   }
 }
 
-module.exports = parseCloudEvent =>
+module.exports = (parseCloudEvent) =>
   ParseMiddelware.start(
     {
       databaseURI: MONGO_URI,

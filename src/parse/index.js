@@ -4,7 +4,7 @@ const {
   PARSE_MASTER_KEY,
   API_URL,
   SANDBOX_URL,
-} = require('./../config');
+} = require('../config');
 
 class Parse {
   static async signUp(username, password, isSandbox) {
