@@ -1,5 +1,5 @@
 const ParseSwagger = require('../parse/parse-server-swagger');
-const { PARSE_APP_ID, PARSE_MASTER_KEY, API_URL } = require('./../config');
+const { PARSE_APP_ID, PARSE_MASTER_KEY, API_URL } = require('../config');
 
 module.exports = () =>
   new ParseSwagger({

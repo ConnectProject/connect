@@ -14,7 +14,7 @@ const indexTemplate = getPath('src/front/public/index.html');
 const EXTRACT_CSS = process.env.NODE_ENV === 'production';
 const APPLY_OPTIMIZATIONS = process.env.NODE_ENV === 'production';
 
-const scssLoaders = cssOptions => [
+const scssLoaders = (cssOptions) => [
   EXTRACT_CSS ? MiniCssExtractPlugin.loader : 'style-loader',
   {
     loader: 'css-loader',
@@ -27,11 +27,13 @@ module.exports = () => {
   const env = dotenv.config().parsed;
 
   // reduce it to a nice object, the same as before
-  const envKeys = env ? Object.keys(env).reduce((prev, next) => {
-    // eslint-disable-next-line no-param-reassign
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
-    return prev;
-  }, {}) : {};
+  const envKeys = env
+    ? Object.keys(env).reduce((prev, next) => {
+        // eslint-disable-next-line no-param-reassign
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {})
+    : {};
 
   return {
     mode: process.env.NODE_ENV || 'development',
@@ -45,7 +47,7 @@ module.exports = () => {
     devServer: {
       inline: true,
       port: process.env.FRONT_PORT,
-      historyApiFallback: true
+      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -106,11 +108,11 @@ module.exports = () => {
     },
     optimization: APPLY_OPTIMIZATIONS
       ? {
-        runtimeChunk: 'single',
-        splitChunks: {
-          chunks: 'all',
-        },
-      }
+          runtimeChunk: 'single',
+          splitChunks: {
+            chunks: 'all',
+          },
+        }
       : {},
-  }
+  };
 };

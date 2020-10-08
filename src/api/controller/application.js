@@ -1,6 +1,6 @@
 const ApplicationService = require('../services/application');
 const createValidator = require('./validator/applicationCreate');
-const logger = require('./../../logger');
+const logger = require('../../logger');
 
 module.exports = {
   list: async (req, res) => {

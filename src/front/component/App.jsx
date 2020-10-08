@@ -159,6 +159,7 @@ class App extends React.PureComponent {
                 >
                   {({ TransitionProps, placement }) => (
                     <Grow
+                      /* eslint-disable-next-line react/jsx-props-no-spreading */
                       {...TransitionProps}
                       style={{
                         transformOrigin:
@@ -178,8 +179,7 @@ class App extends React.PureComponent {
                                 disabled={index === 2}
                                 selected={index === selectedIndex}
                                 onClick={(event) =>
-                                  this.handleMenuItemClick(event, index)
-                                }
+                                  this.handleMenuItemClick(event, index)}
                               >
                                 {option}
                               </MenuItem>

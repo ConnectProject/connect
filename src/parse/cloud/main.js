@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const logger = require('./../../logger');
+const logger = require('../../logger');
 const schemaSync = require('../schema/sync');
 const roleInstall = require('../role/install');
 const roleGet = require('../role/get');
@@ -20,7 +20,7 @@ async function init(Parse) {
 }
 
 module.exports = (Parse, event) => {
-  Parse.Cloud.afterSave(Parse.User, async req => {
+  Parse.Cloud.afterSave(Parse.User, async (req) => {
     if (req.object.existed()) {
       return null;
     }
@@ -49,5 +49,5 @@ module.exports = (Parse, event) => {
       }
       logger.info(`Parse correctly init`);
     })
-    .catch(err => logger.info(`Issue to init Parse : ${err}`));
+    .catch((err) => logger.info(`Issue to init Parse : ${err}`));
 };

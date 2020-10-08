@@ -1,7 +1,7 @@
 module.exports = {
-  className: "jsonSchemaData",
+  className: 'jsonSchemaData',
   fields: {
-    schemaURL: {type: "String"},
-    data: {type: "Object"}
-  }
+    schemaURL: { type: 'String' },
+    data: { type: 'Object' },
+  },
 };

@@ -8,7 +8,7 @@ jest.mock(`${SPEC_PATH}/../src/db/model`, () => {
     return {
       Application: applicationModelMock,
     };
-  }
+  };
 });
 const Naming = require(`${SPEC_PATH}/../src/api/services/application/naming`);
 

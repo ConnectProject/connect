@@ -1,4 +1,4 @@
-module.exports = schemaClass => {
+module.exports = (schemaClass) => {
   const newSchemaClass = schemaClass;
 
   // even if it's set on the schema classes we remove it to be sure the great type an properties is setup

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-module.exports = apiConnect => {
+module.exports = (apiConnect) => {
   if (apiConnect.modelNames().includes('Developer')) {
     return apiConnect.model('Developer');
   }

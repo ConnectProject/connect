@@ -87,7 +87,7 @@ class HomePage extends React.PureComponent {
   }
 
   componentDidMount() {
-    listOfApplications().then(res => {
+    listOfApplications().then((res) => {
       this.setState({
         loading: false,
         developerApplications: res,
@@ -165,7 +165,7 @@ class HomePage extends React.PureComponent {
           {loading && <CircularProgress className={classes.progress} />}
 
           {!loading &&
-            developerApplications.map(application => (
+            developerApplications.map((application) => (
               <div key={application._id} className={classes.listContainer}>
                 <ListItem
                   alignItems="flex-start"
@@ -174,7 +174,7 @@ class HomePage extends React.PureComponent {
                 >
                   <ListItemText
                     primary={
-                      <React.Fragment>
+                      <>
                         {application.name}
                         <Typography
                           component="span"
@@ -187,7 +187,7 @@ class HomePage extends React.PureComponent {
                             {application.updated_at}
                           </Moment>
                         </Typography>
-                      </React.Fragment>
+                      </>
                     }
                     secondary={application.description}
                   />
@@ -245,7 +245,7 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.name}
-              onChange={event => this.handleChange('name', event)}
+              onChange={(event) => this.handleChange('name', event)}
               margin="normal"
               variant="outlined"
               error={errors.name}
@@ -258,7 +258,7 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.description}
-              onChange={event => this.handleChange('description', event)}
+              onChange={(event) => this.handleChange('description', event)}
               margin="normal"
               variant="outlined"
               multiline
@@ -272,7 +272,7 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.apple_store_link}
-              onChange={event => this.handleChange('apple_store_link', event)}
+              onChange={(event) => this.handleChange('apple_store_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.apple_store_link}
@@ -284,7 +284,8 @@ class HomePage extends React.PureComponent {
               className={classes.textField}
               fullWidth
               value={newApplication.google_market_link}
-              onChange={event => this.handleChange('google_market_link', event)}
+              onChange={(event) =>
+                this.handleChange('google_market_link', event)}
               margin="normal"
               variant="outlined"
               error={errors.google_market_link}
