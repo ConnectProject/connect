@@ -1,6 +1,6 @@
 const validate = require('validate.js');
 
-module.exports = data =>
+module.exports = (data) =>
   validate(data, {
     name: {
       presence: true,

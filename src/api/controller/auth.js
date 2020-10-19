@@ -1,5 +1,5 @@
-const Auth = require('./../services/auth');
-const logger = require('./../../logger');
+const Auth = require('../services/auth');
+const logger = require('../../logger');
 
 module.exports = {
   github: async (req, res) => {

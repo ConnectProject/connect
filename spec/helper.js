@@ -31,27 +31,29 @@ function bindServer() {
       }
       try {
         const event = new EventEmitter();
-        ConnectServer.start(configMock.APP_PORT, event).then(connectServer => {
-          server = connectServer;
-          let expressFinish = false;
-          let parseInit = false;
+        ConnectServer.start(configMock.APP_PORT, event).then(
+          (connectServer) => {
+            server = connectServer;
+            let expressFinish = false;
+            let parseInit = false;
 
-          event.once('parse-init', function(Parse) {
-            parse = Parse;
-            parseInit = true;
-            if (parseInit && expressFinish) {
-              resolve();
-            }
-          });
+            event.once('parse-init', function (Parse) {
+              parse = Parse;
+              parseInit = true;
+              if (parseInit && expressFinish) {
+                resolve();
+              }
+            });
 
-          server.server.once('listening', function() {
-            expressFinish = true;
+            server.server.once('listening', function () {
+              expressFinish = true;
 
-            if (parseInit && expressFinish) {
-              resolve();
-            }
-          });
-        });
+              if (parseInit && expressFinish) {
+                resolve();
+              }
+            });
+          },
+        );
       } catch (error) {
         return reject(error);
       }
@@ -97,7 +99,7 @@ function bindServer() {
   });
 
   afterEach(async () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (!server) {
         resolve();
       }
@@ -120,15 +122,12 @@ function bindGithub() {
         access_token: 'test-access-token',
       });
 
-    nock(`https://api.github.com`)
-      .persist()
-      .get('/user')
-      .reply(200, {
-        login: 'user',
-        id: 1,
-        company: 'tester',
-        email: 'noreply@sample.fr',
-      });
+    nock(`https://api.github.com`).persist().get('/user').reply(200, {
+      login: 'user',
+      id: 1,
+      company: 'tester',
+      email: 'noreply@sample.fr',
+    });
   });
 
   afterEach(() => nock.cleanAll());

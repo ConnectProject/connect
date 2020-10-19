@@ -7,7 +7,7 @@ const {
   PARSE_FILE_KEY,
   PARSE_MASTER_KEY,
   PARSE_READONLY_MASTER_KEY,
-} = require('./../config');
+} = require('../config');
 
 module.exports = () =>
   new ParseServer({

@@ -1,6 +1,6 @@
-const getParseModel = require('./../../../db/parse');
-const getClasses = require('./../../../parse/schema/getClasses');
-const logger = require('./../../../logger');
+const getParseModel = require('../../../db/parse');
+const getClasses = require('../../../parse/schema/getClasses');
+const logger = require('../../../logger');
 
 // Remove all data related to an application (user in parse)
 async function clearParseUser(username, sandbox) {

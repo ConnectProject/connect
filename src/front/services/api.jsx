@@ -34,7 +34,7 @@ export const listOfApplications = async () => {
 /*
 Returns details of one application
 */
-export const getApplication = async appId => {
+export const getApplication = async (appId) => {
   const headers = headersWithJWT();
   if (!headers) {
     return {};
@@ -53,7 +53,7 @@ export const getApplication = async appId => {
 /*
 Create a new application on the connected user
 */
-export const createApplication = async newApplication => {
+export const createApplication = async (newApplication) => {
   const headers = headersWithJWT();
   if (!headers) {
     return {};

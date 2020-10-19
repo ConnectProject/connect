@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { AUTH_SECRET } = require('../../../config');
 const Github = require('./github');
-const mongoModel = require('./../../../db/model');
+const mongoModel = require('../../../db/model');
 
 class Auth {
   constructor() {
@@ -47,9 +47,7 @@ class Auth {
         name,
         id: developer.github_id,
         iat: moment().valueOf(),
-        exp: moment()
-          .add(1, 'days')
-          .valueOf(),
+        exp: moment().add(1, 'days').valueOf(),
       },
       AUTH_SECRET,
     );

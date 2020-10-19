@@ -9,7 +9,7 @@ export const logout = () => {
   Cookie.remove(COOKIENAME);
 };
 
-const isJwtValid = jwt => {
+const isJwtValid = (jwt) => {
   if (!jwt) {
     return false;
   }
@@ -32,7 +32,7 @@ const isJwtValid = jwt => {
   return now < exp;
 };
 
-export const setAuthToken = token => {
+export const setAuthToken = (token) => {
   if (!isJwtValid(token)) {
     connectedState.next(false);
     return false;
