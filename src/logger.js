@@ -60,7 +60,7 @@ function createFormatMessage(name) {
  * @param {*} severity
  */
 function addSeverity(severity) {
-  return params => ({
+  return (params) => ({
     ...params,
     severity,
   });

@@ -5,12 +5,12 @@
   "scripts": {
     "start": "node src/index.js",
     "start.sandbox": "node src/sandbox.js",
-    "build": "webpack --config webpack.conf.js",
-    "watch": "webpack-dev-server --config webpack.conf.js",
-    "eslint.check": "eslint src/**/*.{js,jsx}",
-    "eslint.fix": "eslint src/**/*.{js,jsx} --fix",
-    "prettier.check": "prettier src/**/*.{js,jsx} --list-different",
-    "prettier.fix": "prettier src/**/*.{js,jsx} --write",
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack-dev-server --config webpack.config.js",
+    "eslint.check": "eslint --ext js,jsx .",
+    "eslint.fix": "eslint --ext js,jsx --fix .",
+    "prettier.check": "prettier --list-different .",
+    "prettier.fix": "prettier --write .",
     "test": "jest --config spec/jest.config.js -i --forceExit",
     "copyToSandbox": "./bin/migration.sh",
     "performance": "node bin/performance.js"
@@ -26,7 +26,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn eslint.check && yarn prettier.check"
+      "pre-commit": "lint-staged"
     }
   },
   "author": "Matters",
@@ -72,25 +72,30 @@
     "copy-webpack-plugin": "5.0.3",
     "core-js": "3.1.4",
     "css-loader": "3.0.0",
-    "eslint": "6.0.1",
-    "eslint-config-airbnb": "17.1.1",
-    "eslint-config-prettier": "6.0.0",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.2",
+    "eslint": "7.10.0",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-prettier": "6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.3",
     "html-webpack-plugin": "3.2.0",
-    "husky": "3.0.1",
+    "husky": ">=4",
     "jest": "24.8.0",
     "json2csv": "^4.5.2",
+    "lint-staged": ">=10",
     "mini-css-extract-plugin": "0.7.0",
     "nock": "10.0.6",
     "node-sass": "4.13.1",
-    "prettier": "1.18.2",
+    "prettier": "^2",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
     "url-loader": "2.0.1",
     "webpack": "4.35.2",
     "webpack-cli": "3.3.5",
     "webpack-dev-server": "^3.7.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.*": "prettier --ignore-unknown --write"
   }
 }

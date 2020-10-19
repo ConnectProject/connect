@@ -40,7 +40,7 @@ ParseSwagger.prototype.renderSwaggerSpec = (_, res) => {
   const excludes = this.config.excludes || [];
 
   request(options)
-    .then(data => {
+    .then((data) => {
       const swagger = parseSchemaToSwagger(
         parseBaseSwaggerSpec,
         data.results,
@@ -48,7 +48,7 @@ ParseSwagger.prototype.renderSwaggerSpec = (_, res) => {
       );
       res.json(swagger);
     })
-    .catch(error => {
+    .catch((error) => {
       res.send(`Request failed with response code ${error.statu}`);
     });
 };

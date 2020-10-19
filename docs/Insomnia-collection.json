@@ -435,11 +435,7 @@
         "SESSION_TOKEN": "{% response 'body', 'req_b762de04bc504fff8624f92cdb8b32f0', 'b64::JC5zZXNzaW9uVG9rZW4=::46b', 'always' %}"
       },
       "dataPropertyOrder": {
-        "&": [
-          "CONNECT_URI",
-          "SESSION_TOKEN",
-          "JWT_TOKEN"
-        ]
+        "&": ["CONNECT_URI", "SESSION_TOKEN", "JWT_TOKEN"]
       },
       "isPrivate": false,
       "metaSortKey": 1563204550618,
@@ -466,10 +462,7 @@
         "JWT_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImJydW5vTWF1cmljZSIsIm5hbWUiOiJCcnVub01hdXJpY2UiLCJpZCI6MjgzODk5OCwiaWF0IjoxNTYyMjI3NzM1OTQwLCJleHAiOjE1NjIzMTQxMzU5NDF9.g-uxZcEFPwqqmG16tA5-Q2fhDlUIYRGXsjnaOzvz7m4"
       },
       "dataPropertyOrder": {
-        "&": [
-          "CONNECT_URI",
-          "JWT_TOKEN"
-        ]
+        "&": ["CONNECT_URI", "JWT_TOKEN"]
       },
       "isPrivate": false,
       "metaSortKey": 1563204620660,

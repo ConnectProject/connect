@@ -1,6 +1,6 @@
-const mongoModel = require('./../../../db/model');
+const mongoModel = require('../../../db/model');
 const clearParseUser = require('./clearParse');
-const { PARSE_SANDBOX } = require('./../../../config');
+const { PARSE_SANDBOX } = require('../../../config');
 
 class Developer {
   constructor() {

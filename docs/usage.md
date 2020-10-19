@@ -1,6 +1,6 @@
 # Usage Documentations
 
- This documentations is write in purpose to explain how to use the connect application and how to contribute.
+This documentations is write in purpose to explain how to use the connect application and how to contribute.
 
 ## Sommaire
 
@@ -21,9 +21,9 @@
 
 ## Lexique
 
- User : It's the developer who want to consume the connect api
+User : It's the developer who want to consume the connect api
 
- CRI : It's the organisation who manage the "connect" api and manage how it run and evolve.
+CRI : It's the organisation who manage the "connect" api and manage how it run and evolve.
 
 ## <a name="api-usage">Api usage</a>
 
@@ -44,7 +44,7 @@ curl --request GET \
   --url 'https://connect-project.io/parse/login?password=APP_TOKEN&username=APP_ID&=' \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-revocable-session: 1'
-  
+
 Reponse : {
   "objectId": "xxxxx",
   "username": "j93mt7-xxxx",
@@ -68,7 +68,7 @@ curl --request GET \
   --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
-  
+
 Response :
 {
   "score": 1338,
@@ -87,7 +87,7 @@ curl --request GET \
   --url https://connect-project.io/parse/classes/GameScore \
   --header 'x-parse-application-id: connect' \
   --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
-  
+
 Response :
 {
   "results": [
@@ -125,31 +125,31 @@ curl --request GET \
 
 The values of the `where` parameter also support comparisons besides exact matching. Instead of an exact value, provide a hash with keys corresponding to the comparisons to do. The `where` parameter supports these options:
 
-| Key         | Operation                        |
-|-------------|----------------------------------|
-| $lt         | Less Than                        |
-| $lte        | Less Than Or Equal To            |
-| $gt         | Greater Than                     |
-| $gte        | Greater Than Or Equal To         |
-| $ne         | Not Equal To                     |
-| $in         | Contained In                     |
-| $nin        | Not Contained in                 |
-| $exists     | A value is set for the key       |
-| $select     | This matches a value for a key in the result of a different query |
-| $dontSelect | Requires that a key's value not match a value for a key in the result of a different query |
-| $all        | Contains all of the given values |
-| $regex      | Requires that a key's value match a regular expression |
-| $text       | Performs a full text search on indexed fields |
+| Key          | Operation                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------ |
+| \$lt         | Less Than                                                                                  |
+| \$lte        | Less Than Or Equal To                                                                      |
+| \$gt         | Greater Than                                                                               |
+| \$gte        | Greater Than Or Equal To                                                                   |
+| \$ne         | Not Equal To                                                                               |
+| \$in         | Contained In                                                                               |
+| \$nin        | Not Contained in                                                                           |
+| \$exists     | A value is set for the key                                                                 |
+| \$select     | This matches a value for a key in the result of a different query                          |
+| \$dontSelect | Requires that a key's value not match a value for a key in the result of a different query |
+| \$all        | Contains all of the given values                                                           |
+| \$regex      | Requires that a key's value match a regular expression                                     |
+| \$text       | Performs a full text search on indexed fields                                              |
 
 In addition to `where`, there are several parameters you can use to configure what types of results are returned by the query.
 
-| Parameter   | Use                                               |
-|-----------------------------------------------------------------|-----------------------------------------------------------------|
-| order       | Specify a field to sort by                        |
-| limit       | Limit the number of objects returned by the query (it can't be above 100 items) |
-| skip        | Use with limit to paginate through results        |
-| keys        | Restrict the fields returned by the query         |
-| include     | Use on Pointer columns to return the full object  |
+| Parameter | Use                                                                             |
+| --------- | ------------------------------------------------------------------------------- |
+| order     | Specify a field to sort by                                                      |
+| limit     | Limit the number of objects returned by the query (it can't be above 100 items) |
+| skip      | Use with limit to paginate through results                                      |
+| keys      | Restrict the fields returned by the query                                       |
+| include   | Use on Pointer columns to return the full object                                |
 
 You can use the `order` parameter to specify a field to sort by. Prefixing with a negative sign reverses the order. Thus, to retrieve scores in ascending order:
 
@@ -173,7 +173,7 @@ curl --request GET \
   --data-urlencode 'where={"playerName":"Jonathan Walsh"}' \
   --data-urlencode 'count=1' \
   --data-urlencode 'limit=0'
-  
+
 Response:
 {
   "results": [],
@@ -308,12 +308,12 @@ The response from batch will be a list with the same number of elements as the i
 
 ### <a name="sandbox">Sandbox</a>
 
-Before use the production database you can use the sanbox environnement. 
+Before use the production database you can use the sanbox environnement.
 
 For that two changes should be done :
 
-* Every endpoint uri is `https://connect-project.io/parse-sandbox` instead of `https://connect-project.io/parse`
-* Change the header value `x-parse-application-id` to `connect-sandbox`.
+- Every endpoint uri is `https://connect-project.io/parse-sandbox` instead of `https://connect-project.io/parse`
+- Change the header value `x-parse-application-id` to `connect-sandbox`.
 
 For the authentification you have to use the APP_TOKEN_SANDBOX instead of the APP_TOKEN.
 

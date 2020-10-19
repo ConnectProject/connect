@@ -12,7 +12,7 @@ const {
   PARSE_READONLY_MASTER_KEY,
   PARSE_DASHBOARD_MAINTENER_PWD,
   PARSE_DASHBOARD_ROOT_PWD,
-} = require('./../config');
+} = require('../config');
 
 module.exports = () =>
   new ParseDashboard({

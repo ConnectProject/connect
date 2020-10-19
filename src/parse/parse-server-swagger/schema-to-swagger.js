@@ -57,16 +57,16 @@ function getPath(classes) {
         'Find queries documentation here https://docs.parseplatform.org/rest/guide/#queries',
       tags: [`${classes.className}`],
       responses: {
-        '200': {
+        200: {
           description: `Return ${classes.className} data`,
           schema: {
             $ref: `#/components/schemas/${classes.className}`,
           },
         },
-        '400': { description: 'Bad Request' },
-        '401': { description: 'Unauthorized' },
-        '406': { description: 'Not Acceptable' },
-        '500': { description: 'Server Internal error' },
+        400: { description: 'Bad Request' },
+        401: { description: 'Unauthorized' },
+        406: { description: 'Not Acceptable' },
+        500: { description: 'Server Internal error' },
       },
     },
     post: {
@@ -86,16 +86,16 @@ function getPath(classes) {
         },
       ],
       responses: {
-        '200': {
+        200: {
           description: `Returns ${classes.className} data`,
           schema: {
             $ref: `#/components/schemas/${classes.className}`,
           },
         },
-        '400': { description: 'Bad Request' },
-        '401': { description: 'Unauthorized' },
-        '406': { description: 'Not Acceptable' },
-        '500': { description: 'Server Internal error' },
+        400: { description: 'Bad Request' },
+        401: { description: 'Unauthorized' },
+        406: { description: 'Not Acceptable' },
+        500: { description: 'Server Internal error' },
       },
     },
   };
@@ -127,16 +127,16 @@ function getPathById(classes) {
         },
       ],
       responses: {
-        '200': {
+        200: {
           description: 'Returns data',
           schema: {
             $ref: `#/components/schemas/${classes.className}`,
           },
         },
-        '400': { description: 'Bad Request' },
-        '401': { description: 'Unauthorized' },
-        '406': { description: 'Not Acceptable' },
-        '500': { description: 'Server Internal error' },
+        400: { description: 'Bad Request' },
+        401: { description: 'Unauthorized' },
+        406: { description: 'Not Acceptable' },
+        500: { description: 'Server Internal error' },
       },
     },
     put: {
@@ -168,22 +168,22 @@ function getPathById(classes) {
         },
       ],
       responses: {
-        '200': {
+        200: {
           description: 'Returns instance data',
           schema: {
             $ref: `#/components/schemas/${classes.className}`,
           },
         },
-        '400': {
+        400: {
           description: 'Bad Request',
         },
-        '401': {
+        401: {
           description: 'Unauthorized',
         },
-        '406': {
+        406: {
           description: 'Not Acceptable',
         },
-        '500': {
+        500: {
           description: 'Server Internal error',
         },
       },
@@ -208,25 +208,25 @@ function getPathById(classes) {
         },
       ],
       responses: {
-        '200': {
+        200: {
           description: 'Returns a confirmation message',
         },
-        '400': {
+        400: {
           description: 'Bad Request',
         },
-        '401': {
+        401: {
           description: 'Unauthorized',
         },
-        '404': {
+        404: {
           description: 'Id not found',
           schema: {
             $ref: '#/components/schemas/notfound',
           },
         },
-        '406': {
+        406: {
           description: 'Not Acceptable',
         },
-        '500': {
+        500: {
           description: 'Server Internal error',
         },
       },

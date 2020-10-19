@@ -1,5 +1,5 @@
 const DeveloperService = require('../services/developer');
-const logger = require('./../../logger');
+const logger = require('../../logger');
 
 module.exports = {
   delete: async (req, res) => {

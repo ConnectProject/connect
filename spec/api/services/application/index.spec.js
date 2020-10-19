@@ -11,11 +11,13 @@ jest.mock(`${SPEC_PATH}/../src/db/model`, () => {
     return {
       Application: jest.fn().mockImplementation(() => applicationModelMock),
     };
-  }
+  };
 });
-jest.mock(`${SPEC_PATH}/../src/api/services/application/naming`, () => jest.fn().mockImplementation(() => applicationNamingMock));
+jest.mock(`${SPEC_PATH}/../src/api/services/application/naming`, () =>
+  jest.fn().mockImplementation(() => applicationNamingMock),
+);
 jest.mock('uuid/v4', () => jest.fn().mockReturnValue('uuidv4'));
-jest.mock(`${SPEC_PATH}/../src/parse`, () => parseMock)
+jest.mock(`${SPEC_PATH}/../src/parse`, () => parseMock);
 const ApplicationService = require(`${SPEC_PATH}/../src/api/services/application`);
 
 describe('Application Service', () => {
@@ -24,21 +26,23 @@ describe('Application Service', () => {
       name: 'monApp',
       description: 'blabla',
       apple_store_link: 'http://apple.fr',
-      google_market_link: 'http://google.fr'
-    }
+      google_market_link: 'http://google.fr',
+    };
 
     applicationNamingMock.getUniqName.mockReturnValue('12345-monapp');
-    applicationModelMock.save.mockReturnValue(Promise.resolve({
-      developer: {
-        _id: 1
-      },
-      name: input.name,
-      description: input.description,
-      parse_name: '12345-monapp',
-      token: 'uuidv4',
-      apple_store_link: input.apple_store_link,
-      google_market_link: input.google_market_link,
-    }))
+    applicationModelMock.save.mockReturnValue(
+      Promise.resolve({
+        developer: {
+          _id: 1,
+        },
+        name: input.name,
+        description: input.description,
+        parse_name: '12345-monapp',
+        token: 'uuidv4',
+        apple_store_link: input.apple_store_link,
+        google_market_link: input.google_market_link,
+      }),
+    );
 
     const applicationService = new ApplicationService();
     await applicationService.create({ _id: 1 }, input);

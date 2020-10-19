@@ -1,4 +1,4 @@
-const mongoModel = require('./../../../db/model');
+const mongoModel = require('../../../db/model');
 
 class Naming {
   constructor() {

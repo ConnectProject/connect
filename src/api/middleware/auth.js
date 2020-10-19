@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
-const logger = require('./../../logger');
-const { AUTH_SECRET } = require('./../../config');
-const mongoModel = require('./../../db/model');
+const logger = require('../../logger');
+const { AUTH_SECRET } = require('../../config');
+const mongoModel = require('../../db/model');
 
 const jwtVerify = promisify(jwt.verify);
 
 const bearerLength = 'Bearer '.length;
 
-const getTokenFromAuthHeader = header => {
+const getTokenFromAuthHeader = (header) => {
   if (header && header.length > bearerLength) {
     return header.slice(bearerLength);
   }

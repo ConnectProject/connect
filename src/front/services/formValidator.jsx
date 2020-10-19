@@ -30,9 +30,9 @@ export const validateFormField = (value, field) => {
   return validated;
 };
 
-export const checkValid = errorState => {
+export const checkValid = (errorState) => {
   let valid = true;
-  Object.keys(errorState).forEach(element => {
+  Object.keys(errorState).forEach((element) => {
     if (errorState[element] === true) {
       valid = false;
     }

@@ -123,7 +123,7 @@ class ProfilePage extends React.PureComponent {
                   className={classes.textField}
                   fullWidth
                   value={user.name}
-                  onChange={event => this.handleChange('name', event)}
+                  onChange={(event) => this.handleChange('name', event)}
                   margin="normal"
                   variant="outlined"
                 />
@@ -135,7 +135,7 @@ class ProfilePage extends React.PureComponent {
                   className={classes.textField}
                   fullWidth
                   value={user.login}
-                  onChange={event => this.handleChange('githubLogin', event)}
+                  onChange={(event) => this.handleChange('githubLogin', event)}
                   margin="normal"
                   variant="outlined"
                 />
