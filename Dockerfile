@@ -7,11 +7,9 @@ WORKDIR /usr/src/app
 RUN apk update && \
   apk upgrade && \
   apk --no-cache add --virtual builds-deps build-base python && \
-  yarn && \
-  yarn build && \
-  rm -r ./node_modules && \
+  rm -rf ./node_modules && \
   yarn --production && \
-  touch .env
+  apk del builds-deps
 # End of build stage
 
 FROM node:12-alpine
