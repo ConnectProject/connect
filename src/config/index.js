@@ -71,10 +71,8 @@ const { MONGO_HOST } = process.env;
 testConfig(MONGO_HOST, 'MONGO_HOST');
 
 const { MONGO_USERNAME } = process.env;
-testConfig(MONGO_USERNAME, 'MONGO_USERNAME');
 
 const { MONGO_PASSWORD } = process.env;
-testConfig(MONGO_PASSWORD, 'MONGO_PASSWORD');
 
 const { MONGO_DB_NAME } = process.env;
 testConfig(MONGO_DB_NAME, 'MONGO_DB_NAME');
