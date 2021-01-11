@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const getPath = path.join.bind(path, __dirname);
@@ -11,43 +10,55 @@ const sources = getPath('src/front');
 const dist = getPath('build');
 const indexTemplate = getPath('src/front/public/index.html');
 
-const EXTRACT_CSS = process.env.NODE_ENV === 'production';
-const APPLY_OPTIMIZATIONS = process.env.NODE_ENV === 'production';
+module.exports = (env, argv) => {
+  const production = argv.mode === 'production';
+  const envConfig = dotenv.config().parsed;
 
-const scssLoaders = (cssOptions) => [
-  EXTRACT_CSS ? MiniCssExtractPlugin.loader : 'style-loader',
-  {
-    loader: 'css-loader',
-    options: cssOptions,
-  },
-  'sass-loader',
-];
+  // create an array of env variables with process.env. prefix
+  const envKeys = Object.keys(envConfig).reduce(
+    (acc, key) => ({
+      ...acc,
+      [`process.env.${key}`]: JSON.stringify(envConfig[key]),
+    }),
+    {},
+  );
 
-module.exports = () => {
-  const env = dotenv.config().parsed;
+  const EXTRACT_CSS = production;
+  const APPLY_OPTIMIZATIONS = production;
 
-  // reduce it to a nice object, the same as before
-  const envKeys = env
-    ? Object.keys(env).reduce((prev, next) => {
-        // eslint-disable-next-line no-param-reassign
-        prev[`process.env.${next}`] = JSON.stringify(env[next]);
-        return prev;
-      }, {})
-    : {};
+  const scssLoaders = (cssOptions) => [
+    EXTRACT_CSS ? MiniCssExtractPlugin.loader : 'style-loader',
+    {
+      loader: 'css-loader',
+      options: cssOptions,
+    },
+    'sass-loader',
+  ];
+
+  const plugins = [
+    new webpack.DefinePlugin(envKeys),
+    new MiniCssExtractPlugin({
+      filename: EXTRACT_CSS ? '[name].[hash].css' : '[name].css',
+      chunkFilename: EXTRACT_CSS ? '[id].[hash].css' : '[id].css',
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: indexTemplate,
+    }),
+  ];
+
+  if (production) {
+    plugins.push(new webpack.ids.HashedModuleIdsPlugin());
+  }
 
   return {
-    mode: process.env.NODE_ENV || 'development',
-    devtool: process.env.NODE_ENV ? false : 'eval-source-map',
+    mode: argv.mode || 'development',
+    devtool: production ? false : 'eval-source-map',
     entry: ['@babel/polyfill', sources],
     output: {
       path: dist,
       publicPath: '/',
       filename: '[name].[contenthash].js',
-    },
-    devServer: {
-      inline: true,
-      port: process.env.FRONT_PORT,
-      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -81,27 +92,7 @@ module.exports = () => {
       modules: ['src/front', 'node_modules'],
       extensions: ['.jsx', '.js', '.json'],
     },
-    plugins: [
-      new webpack.DefinePlugin(envKeys),
-      new MiniCssExtractPlugin({
-        filename: EXTRACT_CSS ? '[name].[hash].css' : '[name].css',
-        chunkFilename: EXTRACT_CSS ? '[id].[hash].css' : '[id].css',
-      }),
-      new HtmlWebpackPlugin({
-        inject: true,
-        template: indexTemplate,
-        publicUrl: process.env.PUBLIC_URL,
-      }),
-      new webpack.DefinePlugin({}),
-      new CopyWebpackPlugin([
-        {
-          from: getPath('src/front/public'),
-          ignore: 'index.html',
-          to: dist,
-        },
-      ]),
-      new webpack.HashedModuleIdsPlugin(),
-    ],
+    plugins,
     watchOptions: {
       aggregateTimeout: 300,
       poll: 1000,
