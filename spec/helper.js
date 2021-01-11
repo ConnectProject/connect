@@ -12,6 +12,7 @@ let ConnectServer;
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
 
 const Parse = require('parse/node');
 Parse.serverURL = 'http://localhost:3000/parse';
