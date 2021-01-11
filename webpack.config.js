@@ -12,7 +12,7 @@ const indexTemplate = getPath('src/front/public/index.html');
 
 module.exports = (env, argv) => {
   const production = argv.mode === 'production';
-  const envConfig = dotenv.config().parsed;
+  const envConfig = dotenv.config().parsed || {};
 
   // create an array of env variables with process.env. prefix
   const envKeys = Object.keys(envConfig).reduce(
