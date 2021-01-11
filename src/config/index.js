@@ -13,8 +13,8 @@ function testConfig(config, name) {
 
 const DEBUG = process.env.DEBUG || false;
 
-const { PUBLIC_URL } = process.env;
-testConfig(PUBLIC_URL, 'PUBLIC_URL');
+// const { PUBLIC_URL } = process.env;
+// testConfig(PUBLIC_URL, 'PUBLIC_URL');
 
 const { FRONT_PORT } = process.env;
 testConfig(FRONT_PORT, 'FRONT_PORT');
@@ -70,12 +70,19 @@ testConfig(MONGO_PORT, 'MONGO_PORT');
 const { MONGO_HOST } = process.env;
 testConfig(MONGO_HOST, 'MONGO_HOST');
 
-const { MONGO_USERNAME } = process.env;
-
-const { MONGO_PASSWORD } = process.env;
-
 const { MONGO_DB_NAME } = process.env;
 testConfig(MONGO_DB_NAME, 'MONGO_DB_NAME');
+
+const { MONGO_USERNAME } = process.env;
+const { MONGO_PASSWORD } = process.env;
+
+let MONGO_URI;
+if (MONGO_USERNAME) {
+  testConfig(MONGO_PASSWORD, 'MONGO_PASSWORD');
+  MONGO_URI = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`;
+} else {
+  MONGO_URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`;
+}
 
 const { AUTH_SECRET } = process.env;
 testConfig(AUTH_SECRET, 'AUTH_SECRET');
@@ -88,7 +95,7 @@ testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
   DEBUG,
-  PUBLIC_URL,
+  // PUBLIC_URL,
   FRONT_PORT,
   API_URL,
   APP_PORT,
@@ -107,7 +114,7 @@ module.exports = {
   PARSE_DASHBOARD_ROOT_PWD,
   PARSE_SANDBOX: true,
   PARSE_SILENT: false,
-  MONGO_URI: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`,
+  MONGO_URI,
   AUTH_SECRET,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
