@@ -8,3 +8,5 @@ logs/
 spec/coverage
 build
 perf.csv
+.vscode
+.eslintcache
