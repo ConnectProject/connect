@@ -94,7 +94,7 @@ function bindServer() {
     });
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     return reconfigureServer();
   });
 
@@ -141,7 +141,7 @@ function bindAll() {
 async function getJwtToken() {
   const AuthService = require(`${SPEC_PATH}/../src/api/services/auth`);
   const authService = new AuthService();
-  return authService.connectUser('lambda_github_code');
+  return await authService.connectUser('lambda_github_code');
 }
 
 module.exports = {
