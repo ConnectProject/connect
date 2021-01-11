@@ -4,6 +4,7 @@ const { MONGO_URI } = require('../config');
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
 
 let parseConnect;
 let apiConnect;
