@@ -10,3 +10,4 @@ build
 perf.csv
 .vscode
 .eslintcache
+globalConfig.json
