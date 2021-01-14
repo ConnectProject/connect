@@ -2,6 +2,7 @@ version: '3'
 
 services:
   connect:
+    network_mode: host
     image: criconnect/connect:$VERSION_NUMBER
     ports:
       - '3000:3000'
@@ -10,6 +11,7 @@ services:
       - .env
 
   connect-sandbox:
+    network_mode: host
     image: criconnect/connect:$VERSION_NUMBER
     command: ['yarn', 'start.sandbox']
     ports:
