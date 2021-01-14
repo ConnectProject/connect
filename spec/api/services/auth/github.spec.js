@@ -1,31 +1,19 @@
-/* eslint-disable */
-const axiosMock = jest.fn();
-jest.mock('axios', () => axiosMock);
-const configMock = require(`${SPEC_PATH}/__mock__/config`);
+const Github = require('../../../../src/api/services/auth/github');
+const { bindGithub } = require('../../../helper');
 
-jest.mock(`${SPEC_PATH}/../src/config`, () => configMock);
-const Github = require(`${SPEC_PATH}/../src/api/services/auth/github`);
+bindGithub();
 
 describe('Github Service', () => {
   it('get an access token', async () => {
-    axiosMock.mockReturnValue({
-      data: {
-        access_token: 'theAccessToken',
-      },
-    });
-
     const accessToken = await Github.getAccessToken('anyOauthCode');
-    expect(accessToken).toBe('theAccessToken');
+    expect(accessToken).toBe('test-access-token');
   });
 
   it('get an user', async () => {
-    axiosMock.mockReturnValue({
-      data: {
-        name: 'githubName',
-      },
-    });
-
     const githubUser = await Github.getUser('theAccessToken');
-    expect(githubUser.name).toBe('githubName');
+    expect(githubUser.login).toBe('user');
+    expect(githubUser.id).toBe(1);
+    expect(githubUser.company).toBe('tester');
+    expect(githubUser.email).toBe('noreply@sample.fr');
   });
 });
