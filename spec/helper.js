@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const nock = require('nock');
-const { EventEmitter } = require('events');
+const { EventEmitter, once } = require('events');
 
 const configMock = require('./__mock__/config');
 
@@ -19,30 +19,10 @@ function bindServer() {
     await mongoose.disconnect();
   });
 
-  beforeAll(() => {
-    return new Promise((resolve) => {
-      const event = new EventEmitter();
-      ConnectServer.start(configMock.APP_PORT, event).then((connectServer) => {
-        server = connectServer;
-        let expressFinish = false;
-        let parseInit = false;
-
-        event.once('parse-init', () => {
-          parseInit = true;
-          if (parseInit && expressFinish) {
-            resolve();
-          }
-        });
-
-        server.server.once('listening', () => {
-          expressFinish = true;
-
-          if (parseInit && expressFinish) {
-            resolve();
-          }
-        });
-      });
-    });
+  beforeAll(async () => {
+    const event = new EventEmitter();
+    server = await ConnectServer.start(configMock.APP_PORT, event);
+    await once(event, 'parse-init');
   });
 
   afterAll(async () => {

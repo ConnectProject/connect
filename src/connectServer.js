@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const { once } = require('events');
 
 const api = require('./api');
 const logger = require('./logger');
@@ -53,6 +54,8 @@ class ConnectServer {
     const server = app.listen(port, () => {
       logger.info(`connect running on port ${port}.`);
     });
+
+    await once(server, 'listening');
 
     return new ConnectServer(app, server);
   }
