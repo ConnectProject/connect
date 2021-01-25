@@ -8,11 +8,14 @@ const {
   PARSE_MASTER_KEY,
   PARSE_READONLY_MASTER_KEY,
 } = require('../config');
+const cloud = require('../parse/cloud/main');
 
 module.exports = () =>
   new ParseServer({
     databaseURI: `${MONGO_URI}-sandbox`,
-    cloud: `${__dirname}./../parse/cloud/main.js`,
+    cloud: (Parse) => {
+      cloud(Parse);
+    },
     appId: `${PARSE_APP_ID}-sandbox`,
     fileKey: PARSE_FILE_KEY,
     masterKey: PARSE_MASTER_KEY,
