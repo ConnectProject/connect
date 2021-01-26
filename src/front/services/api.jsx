@@ -24,7 +24,7 @@ export const listOfApplications = async () => {
     return [];
   }
 
-  const responses = await fetch(`${window._env_.API_URL}/api/application`, {
+  const responses = await fetch(`${window._env_.PUBLIC_URL}/api/application`, {
     headers,
     method: 'GET',
   });
@@ -41,7 +41,7 @@ export const getApplication = async (appId) => {
   }
 
   const responses = await fetch(
-    `${window._env_.API_URL}/api/application/${appId}`,
+    `${window._env_.PUBLIC_URL}/api/application/${appId}`,
     {
       headers,
       method: 'GET',
@@ -59,7 +59,7 @@ export const createApplication = async (newApplication) => {
     return {};
   }
 
-  const responses = await fetch(`${window._env_.API_URL}/api/application`, {
+  const responses = await fetch(`${window._env_.PUBLIC_URL}/api/application`, {
     headers,
     method: 'POST',
     body: JSON.stringify(newApplication),
@@ -78,7 +78,7 @@ export const updateApplication = async (appId, application) => {
   }
 
   const responses = await fetch(
-    `${window._env_.API_URL}/api/application/${appId}`,
+    `${window._env_.PUBLIC_URL}/api/application/${appId}`,
     {
       headers,
       method: 'PUT',
@@ -98,7 +98,7 @@ export const deleteUser = async () => {
     return {};
   }
 
-  const responses = await fetch(`${window._env_.API_URL}/api/developer`, {
+  const responses = await fetch(`${window._env_.PUBLIC_URL}/api/developer`, {
     headers,
     method: 'DELETE',
   });
