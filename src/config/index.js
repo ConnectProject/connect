@@ -13,35 +13,18 @@ function testConfig(config, name) {
 
 const DEBUG = process.env.DEBUG || false;
 
-// const { PUBLIC_URL } = process.env;
-// testConfig(PUBLIC_URL, 'PUBLIC_URL');
-
-const { FRONT_PORT } = process.env;
-testConfig(FRONT_PORT, 'FRONT_PORT');
-
-const { API_URL } = process.env;
-testConfig(API_URL, 'API_URL');
+const { PUBLIC_URL } = process.env;
+testConfig(PUBLIC_URL, 'PUBLIC_URL');
 
 const { APP_PORT } = process.env;
 testConfig(APP_PORT, 'APP_PORT');
 
-const { APP_PROTOCOL } = process.env;
-testConfig(APP_PROTOCOL, 'APP_PROTOCOL');
-
-const { APP_HOST } = process.env;
-testConfig(APP_HOST, 'APP_HOST');
-
-const { SANDBOX_URL } = process.env;
-testConfig(SANDBOX_URL, 'SANDBOX_URL');
+const API_URL = `http://localhost:${APP_PORT}`;
 
 const { SANDBOX_PORT } = process.env;
 testConfig(SANDBOX_PORT, 'SANDBOX_PORT');
 
-const { SANDBOX_PROTOCOL } = process.env;
-testConfig(SANDBOX_PROTOCOL, 'SANDBOX_PROTOCOL');
-
-const { SANDBOX_HOST } = process.env;
-testConfig(SANDBOX_HOST, 'SANDBOX_HOST');
+const SANDBOX_URL = `http://localhost:${SANDBOX_PORT}`;
 
 const { PARSE_APP_NAME } = process.env;
 testConfig(PARSE_APP_NAME, 'PARSE_APP_NAME');
@@ -95,16 +78,11 @@ testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
   DEBUG,
-  // PUBLIC_URL,
-  FRONT_PORT,
+  PUBLIC_URL,
   API_URL,
   APP_PORT,
-  APP_PROTOCOL,
-  APP_HOST,
   SANDBOX_URL,
   SANDBOX_PORT,
-  SANDBOX_PROTOCOL,
-  SANDBOX_HOST,
   PARSE_APP_NAME,
   PARSE_APP_ID,
   PARSE_FILE_KEY,
