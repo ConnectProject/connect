@@ -2,12 +2,12 @@
 node_modules/
 yarn-error.log
 .history
-.env
+/.env
 logs/
 .DS_Store
-spec/coverage
-build
+/spec/coverage
+/build
 perf.csv
 .vscode
 .eslintcache
-globalConfig.json
+/globalConfig.json
