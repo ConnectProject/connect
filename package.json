@@ -41,6 +41,7 @@
     "express": "^4.17.1",
     "glob": "7.1.4",
     "js-cookie": "2.2.0",
+    "jsonschema": "^1.2.6",
     "jsonwebtoken": "8.5.1",
     "jwt-decode": "2.2.0",
     "lodash.flow": "^3.5.0",

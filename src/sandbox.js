@@ -5,6 +5,10 @@ const logger = require('./logger');
 const { SANDBOX_PORT } = require('./config');
 const parseSandbox = require('./middleware/parseSandbox');
 
+process.on('unhandledRejection', (err) => {
+  throw err;
+});
+
 const app = express();
 
 const corsOptions = {

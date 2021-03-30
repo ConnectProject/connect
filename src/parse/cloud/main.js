@@ -49,5 +49,8 @@ module.exports = (Parse, event) => {
       }
       logger.info(`Parse correctly init`);
     })
-    .catch((err) => logger.info(`Issue to init Parse : ${err}`));
+    .catch((err) => {
+      logger.error(`Issue to init Parse : ${err}`);
+      throw err;
+    });
 };

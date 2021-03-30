@@ -15,6 +15,13 @@ module.exports = async (Parse) => {
         delete newObject.ACL;
         delete newObject.owner;
 
+        // re-convert dates in JSON format
+        for (const field of Object.keys(newObject)) {
+          if (newObject[field].__type === 'Date') {
+            newObject[field] = newObject[field].iso;
+          }
+        }
+
         objects.push({ toJSON: () => newObject });
       }
 
