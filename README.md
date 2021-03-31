@@ -23,14 +23,18 @@ docker-compose v1.23+ (or a Mongo database)
 ### Installing
 
 Setup env variables.
-The parse dashboard password have to be bcrypt hash (see https://bcrypt-generator.com/)
 
 ```
 cp .env.dist .env
 ```
 
 Edit the .env file to set your custom values.
-Then start the docker compose to get a mongo db ready to use
+
+The parse dashboard password have to be bcrypt hash (see https://bcrypt-generator.com/)
+
+[Create a new OAuth application](https://github.com/settings/applications/new) and set the callback URL to _PUBLIC_URL_/login/github
+
+Start the docker compose to get a mongo db ready to use
 
 ```
 docker-compose up -d
@@ -47,12 +51,13 @@ yarn install
 Build the react application
 
 ```
-yarn build
+yarn build.dev
 ```
 
 The project is ready to run
 
 ```
+yarn start.sandbox
 yarn start
 ```
 
