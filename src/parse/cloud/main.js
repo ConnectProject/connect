@@ -22,7 +22,7 @@ async function init(Parse) {
 module.exports = (Parse, event) => {
   Parse.Cloud.afterSave(Parse.User, async (req) => {
     if (req.object.existed()) {
-      return null;
+      return;
     }
 
     const user = req.object;
@@ -35,11 +35,11 @@ module.exports = (Parse, event) => {
     const role = await roleGet.getOne('Developer');
 
     if (!role) {
-      return Parse.Promise.error('Role not install');
+      throw new Error('Role not installed');
     }
 
     role.getUsers().add(user);
-    return role.save(null, { useMasterKey: true });
+    role.save(null, { useMasterKey: true });
   });
 
   init(Parse)
