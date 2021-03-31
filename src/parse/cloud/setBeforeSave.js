@@ -23,7 +23,7 @@ module.exports = async (Parse) => {
       const schema = JSON.parse(fs.readFileSync(schemaFile));
       const res = v.validate(jsonObject, schema);
       if (res.errors.length) {
-        throw res.errors[0].stack;
+        throw new Error(res.errors[0].stack);
       }
 
       // convert dates in Parse format
