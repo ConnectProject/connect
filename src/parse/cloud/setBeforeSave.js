@@ -18,6 +18,7 @@ module.exports = async (Parse) => {
       delete jsonObject.createdAt;
       delete jsonObject.updatedAt;
       delete jsonObject.objectId;
+      delete jsonObject.ACL;
 
       const v = new Validator();
       const schema = JSON.parse(fs.readFileSync(schemaFile));

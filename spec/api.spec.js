@@ -137,7 +137,7 @@ describe('parse custom server', () => {
       method: 'get',
       url: `${API_URL}/parse/login`,
       headers: {
-        'x-parse-application-id': `test`,
+        'x-parse-application-id': 'test',
         'x-parse-revocable-session': '1',
       },
       data: {
@@ -158,7 +158,7 @@ describe('parse custom server', () => {
       url: `${API_URL}/parse/classes/GameScore`,
       headers: {
         'Content-Type': 'application/json',
-        'x-parse-application-id': `test`,
+        'x-parse-application-id': 'test',
         'x-parse-session-token': sessionToken,
       },
       data: {
@@ -187,7 +187,7 @@ describe('parse custom server', () => {
       url: `${API_URL}/parse/classes/GameScore`,
       headers: {
         'Content-Type': 'application/json',
-        'x-parse-application-id': `test`,
+        'x-parse-application-id': 'test',
         'x-parse-session-token': sessionToken,
       },
     });
@@ -206,7 +206,7 @@ describe('parse custom server', () => {
       url: `${API_URL}/parse/classes/GameScore/${objectId}`,
       headers: {
         'Content-Type': 'application/json',
-        'x-parse-application-id': `test`,
+        'x-parse-application-id': 'test',
         'x-parse-session-token': sessionToken,
       },
     });
@@ -224,7 +224,7 @@ describe('parse custom server', () => {
       url: `${API_URL}/parse/classes/GameScore/${objectId}`,
       headers: {
         'Content-Type': 'application/json',
-        'x-parse-application-id': `test`,
+        'x-parse-application-id': 'test',
         'x-parse-session-token': sessionToken,
       },
       data: {
