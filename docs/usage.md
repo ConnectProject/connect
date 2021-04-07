@@ -33,6 +33,15 @@ A swagger documentation to explain each accessible endpoint can be found at `/sw
 Any request you do should have the following header : `x-parse-application-id: connect`
 And for any authentified endpoint add the header : `x-parse-session-token: r:xxxxxx` (see [Authentification](#authentification) section to get the sessionToken).
 
+You can set bash variables like this:
+
+```bash
+API_URL=https://connect-project.io/parse
+PARSE_APPLICATION=connect
+APP_ID=xxxxxx-xxxx
+APP_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+```
+
 ### <a name="authentification">Authentification</a>
 
 In order to manipulate the connect api you need to identify each of your request with a `sessionToken`.
@@ -41,13 +50,13 @@ To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_ID like t
 
 ```bash
 curl --request GET \
-  --url 'https://connect-project.io/parse/login?password=APP_TOKEN&username=APP_ID&=' \
-  --header 'x-parse-application-id: connect' \
+  --url $API_URL'/login?username='$APP_ID'&password='$APP_TOKEN \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'x-parse-revocable-session: 1'
 
 Reponse : {
   "objectId": "xxxxx",
-  "username": "j93mt7-xxxx",
+  "username": "xxxxxx-xxxx",
   "createdAt": "2019-07-12T15:08:56.813Z",
   "updatedAt": "2019-07-12T15:08:57.120Z",
   "ACL": {
@@ -55,9 +64,72 @@ Reponse : {
       "read": true
     }
   },
-  "sessionToken": "r:b003aae18ee536c94aeb07562a4af8e2"
+  "sessionToken": "r:xxxxxx"
 }
 ```
+
+At this point you can set the session token:
+
+```bash
+SESSION_TOKEN=r:xxxxxx
+```
+
+### <a name="create-object">Create object</a>
+
+To create new object send a POST request to the endpoint `/parse/classes/:OBJECTNAME` :
+
+```bash
+curl --request POST \
+  --url $API_URL/classes/GameScore \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
+  --data '{
+	"score":1337,
+	"playerName":"sample",
+	"cheatMode":false
+}'
+
+Response :
+{
+  "score": 1337,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T14:06:53.659Z",
+  "objectId": "DFwP7JXoa0"
+}
+```
+
+### <a name="update-object">Update object</a>
+
+To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+
+```bash
+OBJECT_ID=DFwP7JXoa0
+curl --request PUT \
+  --url $API_URL/classes/GameScore/$OBJECT_ID \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
+  --data '{
+	"score":1338,
+	"playerName":"sample",
+	"cheatMode":false
+}'
+
+Response :
+{
+  "score": 1338,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T15:04:42.884Z",
+  "objectId": "DFwP7JXoa0"
+}
+```
+
+⚠️ **Only the owner of the data can update an object. If you did not create this object you will have an error message** ⚠️
 
 ### <a name="get-object">Get object</a>
 
@@ -65,9 +137,9 @@ You can retrieve a specific object using the GET endpoint `/parse/classes/:OBJEC
 
 ```bash
 curl --request GET \
-  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  --url $API_URL/classes/GameScore/$OBJECT_ID \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN
 
 Response :
 {
@@ -84,9 +156,9 @@ To retrieve a list of an object you can directly call the GET endpoint `/parse/c
 
 ```bash
 curl --request GET \
-  --url https://connect-project.io/parse/classes/GameScore \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  --url $API_URL/classes/GameScore \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN
 
 Response :
 {
@@ -116,9 +188,9 @@ There are several ways to put constraints on the objects found, using the `where
 
 ```bash
 curl --request GET \
-  --url https://connect-project.io/parse/classes/GameScore \
-  --header "X-Parse-Application-Id: connect" \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  --url $API_URL/classes/GameScore \
+  --header "X-Parse-Application-Id: "$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
   --data-urlencode 'where={"playerName":"Sean Plott","cheatMode":false}'
 ```
@@ -155,9 +227,9 @@ You can use the `order` parameter to specify a field to sort by. Prefixing with 
 
 ```bash
 curl --request GET \
-  --url https://connect-project.io/parse/classes/GameScore \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --url $API_URL/classes/GameScore \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
   --data-urlencode 'order=score'
 ```
@@ -166,9 +238,9 @@ If you are limiting your query, or if there are a very large number of results, 
 
 ```bash
 curl --request GET \
-  --url https://connect-project.io/parse/classes/GameScore \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --url $API_URL/classes/GameScore \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
   --data-urlencode 'where={"playerName":"Jonathan Walsh"}' \
   --data-urlencode 'count=1' \
@@ -183,71 +255,15 @@ Response:
 
 Since this requests a count as well as limiting to zero results, there will be a count but no results in the response. With a nonzero limit, that request would return results as well as the count.
 
-### <a name="create-object">Create object</a>
-
-To create new object send a POST request to the endpoint `/parse/classes/:OBJECTNAME` :
-
-```bash
-curl --request POST \
-  --url https://connect-project.io/parse/classes/GameScore \
-  --header 'content-type: application/json' \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
-  --data '{
-	"score":1337,
-	"playerName":"sample",
-	"cheatMode":false
-}'
-
-Response :
-{
-  "score": 1337,
-  "playerName": "sample",
-  "cheatMode": false,
-  "createdAt": "2019-07-15T14:06:53.659Z",
-  "updatedAt": "2019-07-15T14:06:53.659Z",
-  "objectId": "DFwP7JXoa0"
-}
-```
-
-### <a name="update-object">Update object</a>
-
-To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
-
-```bash
-curl --request PUT \
-  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
-  --header 'content-type: application/json' \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
-  --data '{
-	"score":1338,
-	"playerName":"sample",
-	"cheatMode":false
-}'
-
-Response :
-{
-  "score": 1338,
-  "playerName": "sample",
-  "cheatMode": false,
-  "createdAt": "2019-07-15T14:06:53.659Z",
-  "updatedAt": "2019-07-15T15:04:42.884Z",
-  "objectId": "DFwP7JXoa0"
-}
-```
-
-⚠️ **Only the owner of the data can update an object. If you did not create this object you will have an error message** ⚠️
-
 ### <a name="delete-object">Delete object</a>
 
 To delete an object send a DELETE request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
 
 ```bash
 curl --request DELETE \
-  --url https://connect-project.io/parse/classes/GameScore/DFwP7JXoa0 \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2'
+  --url $API_URL/classes/GameScore/DFwP7JXoa0 \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN
 
 Response:
 {}
@@ -263,10 +279,10 @@ Each command in a batch has `method`, `path`, and `body` parameters that specify
 
 ```bash
 curl --request POST \
-  --url https://connect-project.io/parse/batch \
+  --url $API_URL/batch \
   --header 'content-type: application/json' \
-  --header 'x-parse-application-id: connect' \
-  --header 'x-parse-session-token: r:b003aae18ee536c94aeb07562a4af8e2' \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
   --data '{
 	"requests": [
 		{
@@ -326,26 +342,34 @@ When a Pull Request is accepted, the change (add or update) will be apply at the
 
 ### <a name="add-class">Add a new Class</a>
 
-A schema is a group of classes. A class have a name, a list of fields and some permissions.
+A schema is the descriptor of a class. The name of class is the beggining of its file name, we use [JSON Schema](https://json-schema.org/) to describe the list of the fields.
 
 You can create a Pull Request with for title `[Schema][New] ClassName`.
 Write your schema file on `src/parse/schema/classes` folder with name `YOUR_CLASS_NAME.js`. A schema file should look like that :
 
-```javascript
-module.exports = {
-  className: YOUR_CLASS_NAME,
-  fields: {
-    aNumber: { type: 'Number' },
-    aString: { type: 'String' },
-    aBool: { type: 'Boolean' },
-    aDate: { type: 'Date' },
-    aObject: { type: 'Object' },
-    aArray: { type: 'Array' },
-    aGeoPoint: { type: 'GeoPoint' },
-    aPolygon: { type: 'Polygon' },
-    aFile: { type: 'File' },
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Game Score",
+  "description": "A score obtained by a player and whether the player used the cheat mode",
+  "type": "object",
+  "properties": {
+    "score": {
+      "type": "number",
+      "description": "The score obtained by the player"
+    },
+    "playerName": {
+      "type": "string",
+      "description": "The name of the player"
+    },
+    "cheatMode": {
+      "type": "boolean",
+      "description": "Whether the player used the cheat mode"
+    }
   },
-};
+  "required": ["score", "playerName"],
+  "additionalProperties": false
+}
 ```
 
 ### <a name="update-class">Update an existing Class</a>

@@ -5,6 +5,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    // Enable additional rules
+    'no-throw-literal': 'warn',
+
     // Disable rules handled by prettier
     'react/jsx-one-expression-per-line': 'off',
     'react/jsx-wrap-multilines': 'off',

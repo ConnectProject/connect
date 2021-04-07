@@ -20,6 +20,10 @@ class ConnectServer {
   static async start(port, parseCloudEvent) {
     logger.info(`start connect express server on port ${port}.`);
 
+    process.on('unhandledRejection', (err) => {
+      throw err;
+    });
+
     const app = express();
 
     app.use(express.json());
