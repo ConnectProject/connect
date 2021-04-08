@@ -28,9 +28,6 @@
       "description": "Timestamp for the end of the session"
     }
   },
-  "oneOf": [
-    { "required": ["appId", "userId", "sessionBegin"] },
-    { "required": ["appId", "userId", "sessionEnd"] }
-  ],
+  "required": ["appId", "userId", "sessionBegin"],
   "additionalProperties": false
 }

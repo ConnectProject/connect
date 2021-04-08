@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const { Validator } = require('jsonschema');
 const Config = require('parse-server/lib/Config');
 const getClasses = require('../schema/getClasses');
@@ -21,7 +21,7 @@ module.exports = async (Parse) => {
       delete jsonObject.ACL;
 
       const v = new Validator();
-      const schema = JSON.parse(fs.readFileSync(schemaFile));
+      const schema = JSON.parse(await fs.readFile(schemaFile));
       const res = v.validate(jsonObject, schema);
       if (res.errors.length) {
         throw new Error(res.errors[0].stack);
