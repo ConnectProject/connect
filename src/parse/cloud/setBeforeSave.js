@@ -20,6 +20,13 @@ module.exports = async (Parse) => {
       delete jsonObject.objectId;
       delete jsonObject.ACL;
 
+      // convert Parse dates in iso format
+      for (const field of Object.keys(jsonObject)) {
+        if (jsonObject[field].__type === 'Date') {
+          jsonObject[field] = jsonObject[field].iso;
+        }
+      }
+
       const v = new Validator();
       const schema = JSON.parse(await fs.readFile(schemaFile));
       const res = v.validate(jsonObject, schema);

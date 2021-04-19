@@ -8,6 +8,13 @@ module.exports = async (Parse) => {
       delete jsonObject.owner;
       delete jsonObject.ACL;
 
+      // re-convert dates in JSON format
+      for (const field of Object.keys(jsonObject)) {
+        if (jsonObject[field].__type === 'Date') {
+          jsonObject[field] = jsonObject[field].iso;
+        }
+      }
+
       return jsonObject;
     });
   }
