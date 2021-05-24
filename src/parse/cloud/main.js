@@ -5,6 +5,7 @@ const roleGet = require('../role/get');
 const setBeforeSave = require('./setBeforeSave');
 const setAfterSave = require('./setAfterSave');
 const setAfterFind = require('./setAfterFind');
+const initCloudFunctions = require('./functions');
 
 const init = async function (Parse) {
   await roleInstall();
@@ -16,6 +17,8 @@ const init = async function (Parse) {
   await setBeforeSave(Parse);
   await setAfterSave(Parse);
   await setAfterFind(Parse);
+
+  await initCloudFunctions(Parse);
 };
 
 module.exports = (Parse, event) => {

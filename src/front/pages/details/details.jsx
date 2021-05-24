@@ -81,13 +81,11 @@ class DetailsPage extends React.PureComponent {
     const Application = Parse.Object.extend('OAuthApplication');
     const query = new Parse.Query(Application);
     query.get(match.params.appId).then((res) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          loading: false,
-          application: res,
-        };
-      });
+      this.setState((prevState) => ({
+        ...prevState,
+        loading: false,
+        application: res,
+      }));
     });
   }
 
@@ -230,7 +228,8 @@ class DetailsPage extends React.PureComponent {
                   ''
                 }
                 onChange={(event) =>
-                  this.handleChange('googleMarketLink', event)}
+                  this.handleChange('googleMarketLink', event)
+                }
                 margin="normal"
                 variant="outlined"
                 error={errors.googleMarketLink}

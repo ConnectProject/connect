@@ -57,8 +57,11 @@ class ConnectServer {
         hot: true,
       });
       const compiler = webpack(webpackConfig);
+      const { publicPath } = webpackConfig.output;
+      var history = require('connect-history-api-fallback');
       /* eslint-enable */
-      app.use(middleware(compiler));
+      app.use(history());
+      app.use(middleware(compiler, { publicPath }));
     } else {
       // Serve any static files
       app.use(express.static(path.join(__dirname, './../build')));

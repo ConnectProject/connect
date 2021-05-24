@@ -78,7 +78,6 @@ class LoginPage extends React.PureComponent {
         user = await user.signUp();
       }
     } catch (err) {
-      // TODO: show error
       console.error(err, err.message);
     }
     if (user) {
@@ -95,6 +94,7 @@ class LoginPage extends React.PureComponent {
       email,
       password,
     } = this.state;
+
     return (
       <Card className={classes.card}>
         <CardContent>
@@ -126,6 +126,13 @@ class LoginPage extends React.PureComponent {
             onClick={() => this.setState({ isDialogSignupOpened: true })}
           >
             SignUp
+          </Button>
+          <Button
+            size="large"
+            color="default"
+            href={`https://github.com/login/oauth/authorize?client_id=${window._env_.GITHUB_CLIENT_ID}`}
+          >
+            Login with Github
           </Button>
         </CardActions>
         <Dialog
@@ -162,7 +169,8 @@ class LoginPage extends React.PureComponent {
               fullWidth
               value={password}
               onChange={(event) =>
-                this.setState({ password: event.target.value })}
+                this.setState({ password: event.target.value })
+              }
               margin="normal"
               variant="outlined"
               type="password"
