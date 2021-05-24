@@ -8,11 +8,12 @@ import DetailsPage from '../pages/details/details';
 import ProfilePage from '../pages/profile/profile';
 import NoFound404Page from '../pages/notfound/notfound';
 
-export const ROUTES = {
-  HOME: '/',
-  LOGIN_GITHUB: '/login/github',
-  CONNECTED_HOME: '/home',
-};
+// not used anywhere
+// export const ROUTES = {
+//   HOME: '/',
+//   LOGIN_GITHUB: '/login/github',
+//   CONNECTED_HOME: '/home',
+// };
 
 class Routes extends React.PureComponent {
   render() {

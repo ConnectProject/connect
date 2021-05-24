@@ -12,10 +12,11 @@ const getTokenFromAuthHeader = (header) => {
   if (header && header.length > bearerLength) {
     return header.slice(bearerLength);
   }
+
   return null;
 };
 
-const getUserFromAuthHeader = async (secretOrPublicKey, authorization) => {
+const getUserFromAuthHeader = (secretOrPublicKey, authorization) => {
   const token = getTokenFromAuthHeader(authorization);
   if (token) {
     try {
@@ -53,6 +54,7 @@ module.exports = async (req, res, next) => {
     return next();
   } catch (err) {
     logger.error(err);
+
     return res.sendStatus(500);
   }
 };

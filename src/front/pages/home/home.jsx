@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -27,8 +26,8 @@ import Moment from 'react-moment';
 
 import PropTypes from 'prop-types'; // ES6
 
-import { listOfApplications, createApplication } from '../../services/api';
-import { validateFormField, checkValid } from '../../services/formValidator';
+import { createApplication, listOfApplications } from '../../services/api';
+import { checkValid, validateFormField } from '../../services/formValidator';
 
 const styles = {
   root: {
@@ -95,11 +94,6 @@ class HomePage extends React.PureComponent {
     });
   }
 
-  rowClick(application) {
-    const { history } = this.props;
-    history.push(`/application/${application._id}`);
-  }
-
   handleClickOpen() {
     this.setState({
       dialogNewApplicationOpen: true,
@@ -141,6 +135,11 @@ class HomePage extends React.PureComponent {
     });
   }
 
+  rowClick(application) {
+    const { history } = this.props;
+    history.push(`/application/${application._id}`);
+  }
+
   async clickCreateApplication() {
     const { newApplication } = this.state;
     const response = await createApplication(newApplication);
@@ -159,6 +158,7 @@ class HomePage extends React.PureComponent {
       newApplication,
       errors,
     } = this.state;
+
     return (
       <>
         <List className={classes.root}>
@@ -285,7 +285,8 @@ class HomePage extends React.PureComponent {
               fullWidth
               value={newApplication.google_market_link}
               onChange={(event) =>
-                this.handleChange('google_market_link', event)}
+                this.handleChange('google_market_link', event)
+              }
               margin="normal"
               variant="outlined"
               error={errors.google_market_link}

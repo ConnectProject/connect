@@ -1,3 +1,5 @@
+// this option is given to pass the linter but the functions are not working
+/* eslint-disable no-invalid-this */
 // All credit to https://github.com/bhtz/parse-server-swagger
 // the code is adapted for our use case
 
@@ -9,9 +11,10 @@ const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
 
 /**
  * constructor
- * @returns app: express middleware
+ * @param {Object} options options
+ * @returns {Object} app: express middleware
  */
-function ParseSwagger(options) {
+const ParseSwagger = function (options) {
   this.config = options;
 
   const app = express();
@@ -21,10 +24,13 @@ function ParseSwagger(options) {
   app.use('/api-docs', this.renderSwaggerSpec.bind(this));
 
   return app;
-}
+};
 
 /**
  * Get parse compatible api swagger.json base
+ * @param {any} _ unused argument
+ * @param {object} res res
+ * @returns {void}
  */
 ParseSwagger.prototype.renderSwaggerSpec = (_, res) => {
   const options = {

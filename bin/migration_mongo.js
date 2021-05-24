@@ -1,7 +1,4 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable func-names */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-undef */
+/* eslint-disable */
 
 /*
 This file is directly executed by MongoDB and drops the previous tables of connect-sandbox.

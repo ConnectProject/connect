@@ -35,11 +35,13 @@ const isJwtValid = (jwt) => {
 export const setAuthToken = (token) => {
   if (!isJwtValid(token)) {
     connectedState.next(false);
+
     return false;
   }
 
   Cookie.set(COOKIENAME, token);
   connectedState.next(true);
+
   return true;
 };
 
@@ -47,6 +49,7 @@ export const getJwt = () => {
   const jwt = Cookie.get(COOKIENAME);
   const valid = jwt && isJwtValid(jwt) ? jwt : null;
   connectedState.next(!!valid);
+
   return valid;
 };
 
@@ -54,6 +57,7 @@ export const getUser = () => {
   const jwt = getJwt();
   try {
     const decoded = jwtDecode(jwt);
+
     return decoded;
   } catch (e) {
     return null;

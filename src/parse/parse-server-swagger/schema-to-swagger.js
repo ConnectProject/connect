@@ -1,8 +1,9 @@
 /**
  * Cast parse type to swagger type
- * @param {Parse type} type
+ * @param {string} type Parse type
+ * @returns {string} swagger type
  */
-function schemaTypeToSwaggerType(type) {
+const schemaTypeToSwaggerType = function (type) {
   let swaggerType;
   switch (type) {
     case 'String':
@@ -41,14 +42,16 @@ function schemaTypeToSwaggerType(type) {
       swaggerType = { type: 'string' };
       break;
   }
+
   return swaggerType;
-}
+};
 
 /**
  * Get swagger configuration (CREATE, READ) for parse endpoint
- * @param {*} classes
+ * @param {*} classes classes
+ * @returns {Object} path
  */
-function getPath(classes) {
+const getPath = function (classes) {
   return {
     get: {
       security: [{ ParseAppId: [], ParseSessionId: [] }],
@@ -99,13 +102,14 @@ function getPath(classes) {
       },
     },
   };
-}
+};
 
 /**
  * Get swagger configuration (UPDATE, READ, DELETE) for parse endpoint
- * @param {*} classes
+ * @param {*} classes classes
+ * @returns {Object} path
  */
-function getPathById(classes) {
+const getPathById = function (classes) {
   return {
     get: {
       security: [
@@ -232,13 +236,14 @@ function getPathById(classes) {
       },
     },
   };
-}
+};
 
 /**
  *
- * @param {classe} parse server classes
+ * @param {Object} classe server classes
+ * @returns {Object} schema
  */
-function transformClasseToSchema(classe) {
+const transformClasseToSchema = function (classe) {
   const schema = { type: 'object', properties: {} };
 
   classe.forEach((element, key) => {
@@ -248,10 +253,14 @@ function transformClasseToSchema(classe) {
   });
 
   return schema;
-}
+};
 
 /**
  * Transform Parse Server schema.json to swagger.json
+ * @param {object} spec spec
+ * @param {object} schemas schemas
+ * @param {array} excludes exclude list
+ * @returns {Object} spec
  */
 exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
   const newSpec = spec;

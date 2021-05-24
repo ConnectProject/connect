@@ -12,7 +12,7 @@ jest.mock('../src/config', () => configMock);
 const ConnectServer = require('../src/connectServer');
 const AuthService = require('../src/api/services/auth');
 
-function bindServer() {
+const bindServer = function () {
   let server;
 
   afterAll(async () => {
@@ -28,12 +28,12 @@ function bindServer() {
   afterAll(async () => {
     if (server) {
       await server.server.close();
-      server = undefined;
+      server = null;
     }
   });
-}
+};
 
-function bindGithub() {
+const bindGithub = function () {
   beforeAll(() => {
     nock(`https://github.com`)
       .persist()
@@ -51,17 +51,20 @@ function bindGithub() {
   });
 
   afterAll(() => nock.cleanAll());
-}
+};
 
-function bindAll() {
+const bindAll = function () {
   bindServer();
   bindGithub();
-}
+};
 
-async function getJwtToken() {
+// the async call is on the return statement
+// eslint-disable-next-line require-await
+const getJwtToken = async function () {
   const authService = new AuthService();
+
   return authService.connectUser('lambda_github_code');
-}
+};
 
 module.exports = {
   bindAll,

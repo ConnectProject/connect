@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -21,13 +20,14 @@ const styles = {
 };
 
 class NoFound404Page extends React.PureComponent {
-  async goToHome() {
+  goToHome() {
     const { history } = this.props;
     setTimeout(history.push(`/home`), 1000);
   }
 
   render() {
     const { classes } = this.props;
+
     return (
       <Card className={classes.card}>
         <CardContent>

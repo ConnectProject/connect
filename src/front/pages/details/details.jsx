@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable max-lines */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,7 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { getApplication, updateApplication } from '../../services/api';
-import { validateFormField, checkValid } from '../../services/formValidator';
+import { checkValid, validateFormField } from '../../services/formValidator';
 
 const styles = {
   root: {
@@ -78,13 +78,11 @@ class DetailsPage extends React.PureComponent {
   componentDidMount() {
     const { match } = this.props;
     getApplication(match.params.appId).then((res) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          loading: false,
-          application: res,
-        };
-      });
+      this.setState((prevState) => ({
+        ...prevState,
+        loading: false,
+        application: res,
+      }));
     });
   }
 
@@ -157,6 +155,7 @@ class DetailsPage extends React.PureComponent {
       updateLoading,
       snackBarOpen,
     } = this.state;
+
     return (
       <>
         <div className={classes.root}>
@@ -197,7 +196,8 @@ class DetailsPage extends React.PureComponent {
                 fullWidth
                 value={application.apple_store_link || ''}
                 onChange={(event) =>
-                  this.handleChange('apple_store_link', event)}
+                  this.handleChange('apple_store_link', event)
+                }
                 margin="normal"
                 variant="outlined"
                 error={errors.apple_store_link}
@@ -210,7 +210,8 @@ class DetailsPage extends React.PureComponent {
                 fullWidth
                 value={application.google_market_link || ''}
                 onChange={(event) =>
-                  this.handleChange('google_market_link', event)}
+                  this.handleChange('google_market_link', event)
+                }
                 margin="normal"
                 variant="outlined"
                 error={errors.google_market_link}

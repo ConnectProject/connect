@@ -10,7 +10,7 @@ class Page extends React.PureComponent {
     this.state = { redirectToReferrer: false };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { isPublic } = this.props;
     if (!isPublic && !hasJwt()) {
       this.setState({ redirectToReferrer: true });

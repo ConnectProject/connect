@@ -35,6 +35,7 @@ class LoginPage extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
+
     return (
       <Card className={classes.card}>
         <CardContent>

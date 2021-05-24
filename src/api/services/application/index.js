@@ -10,10 +10,14 @@ class Application {
     this.namingService = new Naming();
   }
 
+  // the async call is on the return statement
+  // eslint-disable-next-line require-await
   async list(developer) {
     return this.model.Application.find({ developer });
   }
 
+  // the async call is on the return statement
+  // eslint-disable-next-line require-await
   async get(developer, id) {
     return this.model.Application.findOne({ developer, _id: id });
   }

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['airbnb', 'prettier'],
+  extends: ['airbnb', 'prettier', 'naat', 'prettier'],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -8,22 +8,22 @@ module.exports = {
     // Enable additional rules
     'no-throw-literal': 'warn',
 
-    // Disable rules handled by prettier
-    'react/jsx-one-expression-per-line': 'off',
-    'react/jsx-wrap-multilines': 'off',
+    // Disable rule incompatible with eslint-plugin-import rule import/order
+    'sort-imports': 'off',
 
     // Disables rules we choose not to apply
-    'import/prefer-default-export': 'off',
-    'react/forbid-prop-types': 'off',
-    'react/sort-comp': 'off',
+    // 'import/prefer-default-export': 'off',
+    // 'react/forbid-prop-types': 'off',
+    // 'react/sort-comp': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
+    'no-underscore-dangle': 'off',
+    // Rewrite airbnb rule to allow ForOfStatement
     'no-restricted-syntax': [
       'error',
       'ForInStatement',
       'LabeledStatement',
       'WithStatement',
     ],
-    'no-underscore-dangle': 0,
   },
   overrides: [
     {

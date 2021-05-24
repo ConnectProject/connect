@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-function testConfig(config, name) {
+const testConfig = function (config, name) {
   if (
     (!config && config !== false && config !== 'false') ||
     `${config}`.length <= 0
@@ -9,7 +9,7 @@ function testConfig(config, name) {
       `Undefined config ${name}: ${JSON.stringify(process.env)} `,
     );
   }
-}
+};
 
 const DEBUG = process.env.DEBUG || false;
 

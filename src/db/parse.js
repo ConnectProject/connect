@@ -6,7 +6,8 @@ const modelMapping = new Map();
 const modeSandboxMapping = new Map();
 
 // Generate all mongoose schema and model for the parse db
-async function getParseModel(sandbox) {
+// eslint-disable-next-line max-statements
+const getParseModel = async function (sandbox) {
   const schemaClasses = await getClasses();
   const { parseConnect, parseSandboxConnect } = connectClient();
   const connect = sandbox ? parseSandboxConnect : parseConnect;
@@ -50,6 +51,6 @@ async function getParseModel(sandbox) {
   );
 
   return models;
-}
+};
 
 module.exports = getParseModel;

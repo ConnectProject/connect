@@ -6,6 +6,7 @@ const getClasses = require('../schema/getClasses');
 module.exports = async (Parse) => {
   const schemaClasses = await getClasses();
   for (const schemaClass of schemaClasses) {
+    // eslint-disable-next-line max-statements
     Parse.Cloud.beforeSave(schemaClass.className, async (req) => {
       if (!req.user) {
         // how can this happen and what's the expected behavior to make a return at this point?
