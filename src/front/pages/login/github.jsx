@@ -16,9 +16,7 @@ class Github extends React.Component {
     Parse.Cloud.run('get-github-auth-data', {
       code: params.get('code'),
     })
-      .then((authData) => {
-        Parse.User.logInWith('github', { authData });
-      })
+      .then((authData) => Parse.User.logInWith('github', { authData }))
       .then(() => {
         history.push('/');
       })
