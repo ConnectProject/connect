@@ -10,6 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
+import Parse from 'parse';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -26,8 +27,7 @@ import Moment from 'react-moment';
 
 import PropTypes from 'prop-types'; // ES6
 
-import { createApplication, listOfApplications } from '../../services/api';
-import { checkValid, validateFormField } from '../../services/formValidator';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 const styles = {
   root: {
@@ -73,25 +73,41 @@ class HomePage extends React.PureComponent {
       newApplication: {
         name: '',
         description: '',
-        apple_store_link: '',
-        google_market_link: '',
+        appleStoreLink: '',
+        googleMarketLink: '',
       },
       errors: {
         name: false,
         description: false,
-        apple_store_link: false,
-        google_market_link: false,
+        appleStoreLink: false,
+        googleMarketLink: false,
       },
     };
   }
 
   componentDidMount() {
-    listOfApplications().then((res) => {
-      this.setState({
-        loading: false,
-        developerApplications: res,
+    const Application = Parse.Object.extend('OAuthApplication');
+    const query = new Parse.Query(Application);
+    query
+      .find()
+      .then((applications) => {
+        this.setState({
+          loading: false,
+          developerApplications: applications,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        this.setState({
+          loading: false,
+          developerApplications: [],
+        });
       });
-    });
+  }
+
+  rowClick(application) {
+    const { history } = this.props;
+    history.push(`/application/${application.id}`);
   }
 
   handleClickOpen() {
@@ -142,11 +158,11 @@ class HomePage extends React.PureComponent {
 
   async clickCreateApplication() {
     const { newApplication } = this.state;
-    const response = await createApplication(newApplication);
-    this.handleClose();
-
+    const Application = Parse.Object.extend('OAuthApplication');
+    const app = new Application(newApplication);
+    await app.save();
     const { history } = this.props;
-    history.push(`/application/${response._id}`);
+    history.push(`/application/${app.id}`);
   }
 
   render() {
@@ -166,7 +182,7 @@ class HomePage extends React.PureComponent {
 
           {!loading &&
             developerApplications.map((application) => (
-              <div key={application._id} className={classes.listContainer}>
+              <div key={application.id} className={classes.listContainer}>
                 <ListItem
                   alignItems="flex-start"
                   button
@@ -175,7 +191,7 @@ class HomePage extends React.PureComponent {
                   <ListItemText
                     primary={
                       <>
-                        {application.name}
+                        {application.attributes.name}
                         <Typography
                           component="span"
                           variant="body2"
@@ -184,12 +200,12 @@ class HomePage extends React.PureComponent {
                         >
                           {' - '}
                           <Moment format="YYYY-MM-DD HH:mm">
-                            {application.updated_at}
+                            {application.attributes.updatedAt}
                           </Moment>
                         </Typography>
                       </>
                     }
-                    secondary={application.description}
+                    secondary={application.attributes.description}
                   />
                 </ListItem>
                 <Divider component="li" />
@@ -267,29 +283,27 @@ class HomePage extends React.PureComponent {
             />
 
             <TextField
-              id="apple_store_link"
+              id="appleStoreLink"
               label="App Store Link"
               className={classes.textField}
               fullWidth
-              value={newApplication.apple_store_link}
-              onChange={(event) => this.handleChange('apple_store_link', event)}
+              value={newApplication.appleStoreLink}
+              onChange={(event) => this.handleChange('appleStoreLink', event)}
               margin="normal"
               variant="outlined"
-              error={errors.apple_store_link}
+              error={errors.appleStoreLink}
             />
 
             <TextField
-              id="google_market_link"
+              id="googleMarketLink"
               label="Play Store Link"
               className={classes.textField}
               fullWidth
-              value={newApplication.google_market_link}
-              onChange={(event) =>
-                this.handleChange('google_market_link', event)
-              }
+              value={newApplication.googleMarketLink}
+              onChange={(event) => this.handleChange('googleMarketLink', event)}
               margin="normal"
               variant="outlined"
-              error={errors.google_market_link}
+              error={errors.googleMarketLink}
             />
           </DialogContent>
           <DialogActions>

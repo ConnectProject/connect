@@ -54,4 +54,15 @@ module.exports = async (Parse) => {
       req.object.set('ACL', roleACL);
     });
   }
+
+  Parse.Cloud.beforeSave('OAuthApplication', (req) => {
+    req.object.set('owner', req.user);
+
+    const roleACL = new Parse.ACL();
+
+    roleACL.setReadAccess(req.user, true);
+    roleACL.setWriteAccess(req.user, true);
+
+    req.object.set('ACL', roleACL);
+  });
 };

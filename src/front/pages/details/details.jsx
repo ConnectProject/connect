@@ -13,8 +13,8 @@ import PropTypes from 'prop-types'; // ES6
 import Snackbar from '@material-ui/core/Snackbar';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { getApplication, updateApplication } from '../../services/api';
-import { checkValid, validateFormField } from '../../services/formValidator';
+import Parse from 'parse';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 const styles = {
   root: {
@@ -65,35 +65,40 @@ class DetailsPage extends React.PureComponent {
       loading: true,
       updateLoading: false,
       application: {},
+      applicationUpdate: {},
       snackBarOpen: false,
       errors: {
         name: false,
         description: false,
-        apple_store_link: false,
-        google_market_link: false,
+        appleStoreLink: false,
+        googleMarketLink: false,
       },
     };
   }
 
   componentDidMount() {
     const { match } = this.props;
-    getApplication(match.params.appId).then((res) => {
-      this.setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        application: res,
-      }));
+    const Application = Parse.Object.extend('OAuthApplication');
+    const query = new Parse.Query(Application);
+    query.get(match.params.appId).then((res) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          loading: false,
+          application: res,
+        };
+      });
     });
   }
 
   handleChange(name, event) {
-    const { application, errors } = this.state;
+    const { applicationUpdate, errors } = this.state;
     const { value } = event.target;
 
     const validated = validateFormField(value, name);
     this.setState({
-      application: {
-        ...application,
+      applicationUpdate: {
+        ...applicationUpdate,
         [name]: value,
       },
       errors: {
@@ -125,14 +130,19 @@ class DetailsPage extends React.PureComponent {
   }
 
   async clickUpdateApplication() {
-    const { application } = this.state;
+    const { application, applicationUpdate } = this.state;
     this.setState({
       updateLoading: true,
     });
-    const response = await updateApplication(application._id, application);
+
+    Object.entries(applicationUpdate).forEach(([key, value]) => {
+      application.set(key, value);
+    });
+    await application.save();
     this.setState({
       updateLoading: false,
-      application: response,
+      application,
+      applicationUpdate: {},
     });
   }
 
@@ -150,6 +160,7 @@ class DetailsPage extends React.PureComponent {
     const { classes } = this.props;
     const {
       application,
+      applicationUpdate,
       errors,
       loading,
       updateLoading,
@@ -168,7 +179,7 @@ class DetailsPage extends React.PureComponent {
                 label="Name"
                 className={classes.textField}
                 fullWidth
-                value={application.name}
+                value={applicationUpdate.name || application.attributes.name}
                 onChange={(event) => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
@@ -180,7 +191,10 @@ class DetailsPage extends React.PureComponent {
                 label="Description"
                 className={classes.textField}
                 fullWidth
-                value={application.description}
+                value={
+                  applicationUpdate.description ||
+                  application.attributes.description
+                }
                 onChange={(event) => this.handleChange('description', event)}
                 margin="normal"
                 variant="outlined"
@@ -190,31 +204,36 @@ class DetailsPage extends React.PureComponent {
               />
 
               <TextField
-                id="apple_store_link"
+                id="appleStoreLink"
                 label="App Store Link"
                 className={classes.textField}
                 fullWidth
-                value={application.apple_store_link || ''}
-                onChange={(event) =>
-                  this.handleChange('apple_store_link', event)
+                value={
+                  applicationUpdate.appleStoreLink ||
+                  application.attributes.appleStoreLink ||
+                  ''
                 }
+                onChange={(event) => this.handleChange('appleStoreLink', event)}
                 margin="normal"
                 variant="outlined"
-                error={errors.apple_store_link}
+                error={errors.appleStoreLink}
               />
 
               <TextField
-                id="google_market_link"
+                id="googleMarketLink"
                 label="Play Store Link"
                 className={classes.textField}
                 fullWidth
-                value={application.google_market_link || ''}
-                onChange={(event) =>
-                  this.handleChange('google_market_link', event)
+                value={
+                  applicationUpdate.googleMarketLink ||
+                  application.attributes.googleMarketLink ||
+                  ''
                 }
+                onChange={(event) =>
+                  this.handleChange('googleMarketLink', event)}
                 margin="normal"
                 variant="outlined"
-                error={errors.google_market_link}
+                error={errors.googleMarketLink}
               />
 
               <div className={classes.buttonContainer}>

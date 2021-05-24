@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'; // ES6
+import Parse from 'parse';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,7 +20,6 @@ import MenuList from '@material-ui/core/MenuList';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import { connectedState, logout } from '../services/auth';
 import Routes from './Router';
 
 const options = ['Documentation', 'My Profile'];
@@ -52,13 +52,9 @@ class App extends React.PureComponent {
       }
     });
 
-    connectedState.subscribe((userConnected) => {
-      // useful to avoid displaying user pages when logged out
-      if (!userConnected) {
-        history.push('/');
-      }
-      this.setState({ userConnected });
-    });
+    if (Parse.User.current()) {
+      this.setState({ userConnected: true });
+    }
   }
 
   handleMenuItemClick(event, index) {
@@ -135,7 +131,7 @@ class App extends React.PureComponent {
                   <Button
                     color="inherit"
                     onClick={() => {
-                      logout();
+                      Parse.User.logOut();
                       window.location.href = '/';
                     }}
                   >

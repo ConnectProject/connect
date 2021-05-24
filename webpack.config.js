@@ -91,6 +91,7 @@ module.exports = (env, argv) => {
     resolve: {
       modules: ['src/front', 'node_modules'],
       extensions: ['.jsx', '.js', '.json'],
+      fallback: { crypto: false },
     },
     plugins,
     watchOptions: {

@@ -48,13 +48,26 @@ class ConnectServer {
 
     app.get('/envConfig.js', (_, res) => res.send(configFront));
 
-    // Serve any static files
-    app.use(express.static(path.join(__dirname, './../build')));
+    if (process.env.NODE_ENV === 'development') {
+      /* eslint-disable */
+      const webpack = require('webpack');
+      const middleware = require('webpack-dev-middleware');
+      const webpackConfig = require('../webpack.config.js')('development', {
+        mode: 'development',
+        hot: true,
+      });
+      const compiler = webpack(webpackConfig);
+      /* eslint-enable */
+      app.use(middleware(compiler));
+    } else {
+      // Serve any static files
+      app.use(express.static(path.join(__dirname, './../build')));
 
-    // Handle React routing, return all requests to React app
-    app.get('*', (_, res) => {
-      res.sendFile(path.join(__dirname, './../build', 'index.html'));
-    });
+      // Handle React routing, return all requests to React app
+      app.get('*', (_, res) => {
+        res.sendFile(path.join(__dirname, './../build', 'index.html'));
+      });
+    }
 
     const server = app.listen(port, () => {
       logger.info(`connect running on port ${port}.`);
