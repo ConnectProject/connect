@@ -105,11 +105,6 @@ class HomePage extends React.PureComponent {
       });
   }
 
-  rowClick(application) {
-    const { history } = this.props;
-    history.push(`/application/${application.id}`);
-  }
-
   handleClickOpen() {
     this.setState({
       dialogNewApplicationOpen: true,
@@ -137,23 +132,16 @@ class HomePage extends React.PureComponent {
   handleChange(name, event) {
     const { newApplication, errors } = this.state;
     const { value } = event.target;
-
     const validated = validateFormField(value, name);
     this.setState({
-      newApplication: {
-        ...newApplication,
-        [name]: value,
-      },
-      errors: {
-        ...errors,
-        [name]: !validated,
-      },
+      newApplication: { ...newApplication, [name]: value },
+      errors: { ...errors, [name]: !validated },
     });
   }
 
   rowClick(application) {
     const { history } = this.props;
-    history.push(`/application/${application._id}`);
+    history.push(`/application/${application.id}`);
   }
 
   async clickCreateApplication() {
