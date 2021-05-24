@@ -1,10 +1,8 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 const glob = require('glob');
 const path = require('path');
 const fs = require('fs');
 
-function swaggerTypeToParseType(element) {
+const swaggerTypeToParseType = function (element) {
   let parseType;
   switch (element.type) {
     case 'string':
@@ -29,13 +27,35 @@ function swaggerTypeToParseType(element) {
       parseType = 'Object';
       break;
   }
-  return parseType;
-}
 
-const classes = [];
+  return parseType;
+};
+
+const getClass = function (file) {
+  return new Promise((resolve, reject) => {
+    const className = path.parse(file).base.replace(/.schema.json$/, '');
+    fs.readFile(file, 'utf8', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        const schema = JSON.parse(data);
+        const parseClass = {
+          className,
+          fields: {},
+        };
+        for (const [key, element] of Object.entries(schema.properties)) {
+          parseClass.fields[key] = { type: swaggerTypeToParseType(element) };
+        }
+        resolve(parseClass);
+      }
+    });
+  });
+};
+
+var classes;
 
 module.exports = function getClasses() {
-  if (classes.length > 0) {
+  if (typeof classes !== 'undefined') {
     return classes;
   }
 
@@ -44,19 +64,14 @@ module.exports = function getClasses() {
       if (err) {
         reject(err);
       } else {
+        const promises = [];
         for (const file of files) {
-          const className = path.parse(file).base.replace(/.schema.json$/, '');
-          const schema = JSON.parse(fs.readFileSync(file));
-          const parseClass = {
-            className,
-            fields: {},
-          };
-          for (const [key, element] of Object.entries(schema.properties)) {
-            parseClass.fields[key] = { type: swaggerTypeToParseType(element) };
-          }
-          classes.push(parseClass);
+          promises.push(getClass(file));
         }
-        resolve(classes);
+        Promise.all(promises).then((result) => {
+          classes = result;
+          resolve(classes);
+        });
       }
     });
   });

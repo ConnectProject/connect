@@ -11,7 +11,7 @@
     "eslint.fix": "eslint --ext js,jsx --fix .",
     "prettier.check": "prettier --list-different .",
     "prettier.fix": "prettier --write .",
-    "test": "jest --config spec/jest.config.js -i --forceExit",
+    "test": "jest --config spec/jest.config.js -i --forceExit --detectOpenHandles",
     "copyToSandbox": "./bin/migration.sh",
     "performance": "node bin/performance.js"
   },
@@ -76,7 +76,7 @@
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-naat": "git+https://github.com/neuroanatomy/eslint-config-naat",
-    "eslint-config-prettier": "^6.12.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.3",

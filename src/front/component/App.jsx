@@ -19,7 +19,7 @@ import MenuList from '@material-ui/core/MenuList';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import { logout, connectedState } from '../services/auth';
+import { connectedState, logout } from '../services/auth';
 import Routes from './Router';
 
 const options = ['Documentation', 'My Profile'];
@@ -53,6 +53,7 @@ class App extends React.PureComponent {
     });
 
     connectedState.subscribe((userConnected) => {
+      // useful to avoid displaying user pages when logged out
       if (!userConnected) {
         history.push('/');
       }
@@ -60,7 +61,7 @@ class App extends React.PureComponent {
     });
   }
 
-  async handleMenuItemClick(event, index) {
+  handleMenuItemClick(event, index) {
     const { history } = this.props;
     if (index === 0) {
       window.open(
@@ -144,7 +145,7 @@ class App extends React.PureComponent {
                     color="primary"
                     variant="contained"
                     size="small"
-                    aria-owns={open ? 'menu-list-grow' : undefined}
+                    aria-owns={open ? 'menu-list-grow' : null}
                     aria-haspopup="true"
                     onClick={() => this.handleToggle()}
                   >
@@ -179,7 +180,8 @@ class App extends React.PureComponent {
                                 disabled={index === 2}
                                 selected={index === selectedIndex}
                                 onClick={(event) =>
-                                  this.handleMenuItemClick(event, index)}
+                                  this.handleMenuItemClick(event, index)
+                                }
                               >
                                 {option}
                               </MenuItem>

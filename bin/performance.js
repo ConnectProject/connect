@@ -13,15 +13,15 @@ const json2csv = require('json2csv');
 const APP_NAME = '7n3k8m-Test';
 const APP_TOKEN = 'f81eda23-3bab-466e-89bb-627a96ba3991';
 
-function getHeaderWithToken(sessionToken) {
+const getHeaderWithToken = function (sessionToken) {
   return {
     'x-parse-application-id': 'connect',
     'x-parse-session-token': sessionToken,
     'content-type': 'application/json',
   };
-}
+};
 
-function writeToCSV(task, quantity, time) {
+const writeToCSV = function (task, quantity, time) {
   const newLine = '\r\n';
   const fields = ['date', 'task', 'quantity', 'time'];
   const data = {
@@ -50,12 +50,11 @@ function writeToCSV(task, quantity, time) {
       });
     }
   });
-}
+};
 
-async function createObjects(numberOfObject, sessionToken) {
+const createObjects = async function (numberOfObject, sessionToken) {
   const t0 = performance.now();
-  // eslint-disable-next-line no-unused-vars
-  for (const _ of Array(numberOfObject).keys()) {
+  for (let i = 0; i < numberOfObject; i++) {
     // eslint-disable-next-line no-await-in-loop
     await axios.post(
       'http://127.0.0.1:1337/parse/classes/GameScore',
@@ -74,9 +73,9 @@ async function createObjects(numberOfObject, sessionToken) {
     `Creation of ${numberOfObject} objects took ${t1 - t0} milliseconds.`,
   );
   writeToCSV('POST /classes', numberOfObject, t1 - t0);
-}
+};
 
-async function readObjects(numberOfObject, sessionToken) {
+const readObjects = async function (numberOfObject, sessionToken) {
   const t0 = performance.now();
   // eslint-disable-next-line no-unused-vars
   for (const _ of Array(numberOfObject).keys()) {
@@ -90,12 +89,11 @@ async function readObjects(numberOfObject, sessionToken) {
     `Reading of ${numberOfObject} bacthes took ${t1 - t0} milliseconds.`,
   );
   writeToCSV('GET /classes', numberOfObject, t1 - t0);
-}
+};
 
-async function readObjectsWithCondition(numberOfObject, sessionToken) {
+const readObjectsWithCondition = async function (numberOfObject, sessionToken) {
   const t0 = performance.now();
-  // eslint-disable-next-line no-unused-vars
-  for (const i of Array(numberOfObject).keys()) {
+  for (let i = 0; i < numberOfObject; i++) {
     // eslint-disable-next-line no-await-in-loop
     await axios.get('http://127.0.0.1:1337/parse/classes/GameScore', {
       params: {
@@ -112,9 +110,9 @@ async function readObjectsWithCondition(numberOfObject, sessionToken) {
     } milliseconds.`,
   );
   writeToCSV('GET /classes w/ condition', numberOfObject, t1 - t0);
-}
+};
 
-async function checkAdd() {
+const checkAdd = async function () {
   try {
     const response = await axios.get('http://127.0.0.1:1337/parse/login', {
       params: {
@@ -137,6 +135,6 @@ async function checkAdd() {
   }
 
   return 0;
-}
+};
 
 checkAdd();

@@ -4,7 +4,7 @@ const sanitizeClass = require('./sanitizeClass');
 const initClasses = require('./_initClasses');
 
 // Retrieve the fields not already setup on the parse schema installed
-async function getNewFields(schema, schemaClass) {
+const getNewFields = async function (schema, schemaClass) {
   const actualSchemaClass = await schema.getOneSchema(schemaClass.className);
 
   const newFields = {};
@@ -15,10 +15,10 @@ async function getNewFields(schema, schemaClass) {
   }
 
   return newFields;
-}
+};
 
 // Create or Update the schema
-async function applySchemaSync(schema, schemaClass) {
+const applySchemaSync = async function (schema, schemaClass) {
   if (await schema.hasClass(schemaClass.className)) {
     const newFields = await getNewFields(schema, schemaClass);
     await schema.updateClass(
@@ -33,7 +33,7 @@ async function applySchemaSync(schema, schemaClass) {
       schemaClass.classLevelPermissions,
     );
   }
-}
+};
 
 module.exports = async (appId) => {
   const schemaClasses = await getClasses();

@@ -17,6 +17,7 @@ class ConnectServer {
     this.server = server;
   }
 
+  // eslint-disable-next-line max-statements
   static async start(port, parseCloudEvent) {
     logger.info(`start connect express server on port ${port}.`);
 

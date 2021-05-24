@@ -11,7 +11,7 @@ describe('api server', () => {
   it('Get JSON web token', async () => {
     jwtToken = await getJwtToken();
 
-    expect(jwtToken).toBeDefined();
+    expect(typeof jwtToken).toBe('string');
     expect.assertions(1);
   });
 

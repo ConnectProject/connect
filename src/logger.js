@@ -5,11 +5,13 @@ const { DEBUG } = require('./config');
 
 const { combine, timestamp, json } = winston.format;
 
-function createFormatMessage(name) {
+const createFormatMessage = function (name) {
   /**
    * Format params to return an unique object that matches willing format
-   * @param {Object|String} params
-   * @param {?String} message
+   * JSDoc not verified
+   * @param {Object|String} params message parameters
+   * @param {?String} message message to be formatted
+   * @returns {Object} formatted message
    */
   const formatMessage = function formatMessage(params, message) {
     // INPUT
@@ -53,20 +55,21 @@ function createFormatMessage(name) {
   };
 
   return formatMessage;
-}
+};
 
 /**
  * Adds a custom severity field to an object
- * @param {*} severity
+ * @param {*} severity custom severity
+ * @returns {Object} object with severity
  */
-function addSeverity(severity) {
+const addSeverity = function (severity) {
   return (params) => ({
     ...params,
     severity,
   });
-}
+};
 
-function createDebugLogger(appName) {
+const createDebugLogger = function (appName) {
   if (!appName) {
     throw new Error('Missing mandatory parameters appName');
   }
@@ -76,14 +79,14 @@ function createDebugLogger(appName) {
     warn: debug(`${appName}::warn`),
     error: debug(`${appName}::error`),
   };
-}
+};
 
 /**
  * Create a new logger for the app named appName
- * @param {string} appName
+ * @param {string} appName app name
  * @returns {Object} logger
  */
-function createLogger(appName) {
+const createLogger = function (appName) {
   const systemLogger = winston.createLogger({
     transports: [new winston.transports.Console()],
     format: combine(timestamp(), json()),
@@ -106,7 +109,7 @@ function createLogger(appName) {
       systemLogger.error.bind(systemLogger),
     ]),
   };
-}
+};
 
 const connectServerLog =
   DEBUG === true ? createDebugLogger('connect') : createLogger('connect');

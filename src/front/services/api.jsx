@@ -8,6 +8,7 @@ const headersWithJWT = () => {
   if (!jwt) {
     return null;
   }
+
   return {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -28,6 +29,7 @@ export const listOfApplications = async () => {
     headers,
     method: 'GET',
   });
+
   return responses.json();
 };
 
@@ -47,6 +49,7 @@ export const getApplication = async (appId) => {
       method: 'GET',
     },
   );
+
   return responses.json();
 };
 
@@ -104,5 +107,6 @@ export const deleteUser = async () => {
   });
 
   logout();
+
   return responses.json();
 };

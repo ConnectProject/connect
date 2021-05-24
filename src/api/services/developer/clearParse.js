@@ -3,7 +3,8 @@ const getClasses = require('../../../parse/schema/getClasses');
 const logger = require('../../../logger');
 
 // Remove all data related to an application (user in parse)
-async function clearParseUser(username, sandbox) {
+// eslint-disable-next-line max-statements
+const clearParseUser = async function (username, sandbox) {
   const schemaClasses = await getClasses();
   const parseModel = await getParseModel(sandbox);
 
@@ -12,6 +13,7 @@ async function clearParseUser(username, sandbox) {
 
   if (!user) {
     logger.info(`No user found for '${username}'`);
+
     return null;
   }
 
@@ -32,6 +34,6 @@ async function clearParseUser(username, sandbox) {
   deleteOps.push(userModel.deleteOne({ _id: user._id }));
 
   return Promise.all(deleteOps);
-}
+};
 
 module.exports = clearParseUser;

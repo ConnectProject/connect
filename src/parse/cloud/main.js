@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const logger = require('../../logger');
 const schemaSync = require('../schema/sync');
 const roleInstall = require('../role/install');
@@ -7,7 +6,7 @@ const setBeforeSave = require('./setBeforeSave');
 const setAfterSave = require('./setAfterSave');
 const setAfterFind = require('./setAfterFind');
 
-async function init(Parse) {
+const init = async function (Parse) {
   await roleInstall();
   logger.info('Role correctly setup');
 
@@ -17,7 +16,7 @@ async function init(Parse) {
   await setBeforeSave(Parse);
   await setAfterSave(Parse);
   await setAfterFind(Parse);
-}
+};
 
 module.exports = (Parse, event) => {
   Parse.Cloud.afterSave(Parse.User, async (req) => {

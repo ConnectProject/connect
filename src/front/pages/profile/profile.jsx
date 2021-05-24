@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -82,17 +81,6 @@ class ProfilePage extends React.PureComponent {
     });
   }
 
-  goBack() {
-    const { history } = this.props;
-    history.goBack();
-  }
-
-  confirmationDialog() {
-    this.setState({
-      dialogOpen: true,
-    });
-  }
-
   async handleClose(userToBeDeleted) {
     if (userToBeDeleted) {
       await deleteUser();
@@ -105,9 +93,21 @@ class ProfilePage extends React.PureComponent {
     }
   }
 
+  confirmationDialog() {
+    this.setState({
+      dialogOpen: true,
+    });
+  }
+
+  goBack() {
+    const { history } = this.props;
+    history.goBack();
+  }
+
   render() {
     const { classes } = this.props;
     const { user, loading, dialogOpen } = this.state;
+
     return (
       <>
         <div className={classes.root}>

@@ -1,12 +1,8 @@
 const applicationModelMock = require('../../../__mock__/applicationModel');
 
-jest.mock('../../../../src/db/model', () => {
-  return () => {
-    return {
-      Application: applicationModelMock,
-    };
-  };
-});
+jest.mock('../../../../src/db/model', () => () => ({
+  Application: applicationModelMock,
+}));
 const Naming = require('../../../../src/api/services/application/naming');
 
 describe('Application Naming Service', () => {
