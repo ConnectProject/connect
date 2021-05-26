@@ -1,0 +1,31 @@
+[
+  {
+    "id": "deploy-connect",
+    "execute-command": "/opt/webhook/deploy-connect.sh",
+    "command-working-directory": "/opt/connect",
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hmac-sha1",
+            "secret": "xxxxxx",
+            "parameter": {
+              "source": "header",
+              "name": "x-hub-signature"
+            }
+          }
+        },
+        {
+          "match": {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter": {
+              "source": "payload",
+              "name": "ref"
+            }
+          }
+        }
+      ]
+    }
+  }
+]

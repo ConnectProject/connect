@@ -1,0 +1,12 @@
+[Unit]
+Description="Deploy webhook server"
+AssertPathExists=/opt/webhook
+
+[Service]
+User=rto
+WorkingDirectory=/opt/webhook
+ExecStart=/opt/webhook/webhook -port 9990 -hooks deploy-hooks.json -hotreload -logfile deploy-hooks.log
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

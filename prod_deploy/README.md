@@ -1,12 +1,3 @@
-# Export to docker hub
-
-- give a new version number: `VERSION=1.0.x`
-- Make sure the app is built in production mode
-- `yarn build`
-- `docker build -t criconnect/connect:$VERSION`
-- `docker login`
-- `docker push criconnect/connect:$VERSION`
-
 # Install from scratch
 
 ## Pré-requis
@@ -24,19 +15,6 @@
   - `sudo systemctl start nginx`
   - `sudo systemctl stop firewalld`
 
-- Installer docker (suivre https://docs.docker.com/install/linux/docker-ce/centos/)
-
-  - `sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
-  - `sudo yum install docker-ce docker-ce-cli containerd.io`
-  - `sudo systemctl start docker`
-
-- Installer docker-compose
-
-  - `sudo yum install docker-compose`
-  - `sudo groupadd docker`
-  - `sudo usermod -aG docker $USER`
-  - log out and log in or `newgrp docker`
-
 - Installer MongoDB (suivre https://docs.mongodb.com/manual/installation/):
 
   - Créer trois tables `MONGO_DB_NAME`, `MONGO_DB_NAME-api`, `MONGO_DB_NAME-sandbox` (remplacer `MONGO_DB_NAME` par le nom de la table souhaité, example: `connect`):
@@ -50,25 +28,28 @@
   - `connect-sandbox`
   - `db.createUser({user: user, pwd: passwd, roles: ["readWrite"]});`
 
-- Installer node et yarn (suivre https://classic.yarnpkg.com/en/docs/install/#centos-stable, non nécessaire pour lancer le serveur avec docker)
+- Installer node et yarn (suivre https://classic.yarnpkg.com/en/docs/install/#centos-stable
+
   - `curl --silent --location https://rpm.nodesource.com/setup_12.x | sudo bash -`
   - `curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo`
   - `sudo yum install nodejs`
   - `sudo yum install yarn`
   - `sudo yum install gcc-c++`
 
+- Install pm2
+  - `sudo npm install pm2 -g`
+
 ## Installation de Connect
 
-Dans toutes les commandes suivantes, remplacer `VERSION_NUMBER` par le numéro de la version à déployer. (par exemple, `1.0.0`)
-
-- `cd /opt/connect`
-- `mkdir connect-VERSION_NUMBER`
-- `cd connect-VERSION_NUMBER`
-- Copier les fichiers `docker-compose.yml` and `.env` fournis dans ce dossier
-- Remplacer la valeur de VERSION_NUMBER dans le `.env` par le numéro de version actuellement déployée
+- `cd /opt`
+- `sudo mkdir connect`
+- `sudo chown $USER connect`
+- `git clone https://github.com/ConnectProject/connect/`
 - Ouvrir le fichier `.env`, et configurer les variables ayant besoin de l'être (suivre les indications en commentaires)
-- `docker-compose up -d`
+- `pm2 start`
 - L'application devrait démarrer, et être disponible en http sur les ports 3000, 3001
+- Save the pm2 process list: `pm2 save`
+- Configure pm2 startup script: `pm2 startup` and execute the command given by pm2
 
 - Mettre en place un reverse proxy réalisant la terminaison TLS, accessible depuis Internet, et proxyfiant les requêtes de la manière suivante :
   - https://connect-project.io/parse-sandbox -> port 3001 local
@@ -82,18 +63,47 @@ Dans toutes les commandes suivantes, remplacer `VERSION_NUMBER` par le numéro d
   - `curl -v localhost:3000/swagger`
   - `curl -v localhost:3001/parse-sandbox`
 
-# Pare-feu
+## Configure crontab to renew the certificate
+- run `sudo crontab -e` and add the following:
+```
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+45 2 * * 6 certbot renew && nginx -s reload
+```
+
+## Installation de webhook
+Configuration de webhook pour effectuer la mise à jour du serveur de manière automatique
+- `sudo mkdir /opt/webhook`
+- `sudo chown $USER /opt/webhook`
+- Download release from https://github.com/adnanh/webhook/releases and extract the `webhook` binary to `/opt/webhook`
+- Copy the files `deploy-connect.sh` and `deploy-hooks.json` to the `/opt/webhook` folder
+- Fill the secret field according to the `WEBHOOK_SECRET` variable on github in `deploy-hooks.json`
+- Configure the webhook service:
+  - Copy `webhook.service` to `/etc/systemd/system/`
+  - `sudo systemctl start webhook`
+  - `systemctl status webhook`
+  - `curl localhost:9990/hooks/deploy-connect` should answer: `Hook rules were not satisfied.`
+  - `sudo systemctl enable webhook`
+- Add the following redirection to the nginx server:
+```
+location /hooks/ {
+    proxy_pass http://127.0.0.1:9990;
+}
+```
+- `sudo nginx -s reload`
+
+## Pare-feu
 
 - Les ports 3000,3001 de la machine APP01 n'ont pas besoin d'être accessibles depuis une machine autre que le reverse proxy mentionné ci-dessus, aussi, ils ne devraient pas l'être si possible.
 
-# Accès aux logs
+## Accès aux logs
 
-Tout d'abord, trouver l'id du conteneur que l'on souhaite étudier avec `docker-compose ps`
+Tout d'abord, trouver l'id du processus que l'on souhaite étudier avec `pm2 list`
 
-Les logs sont stockés par le daemon docker dans `/var/lib/docker/containers/[container-id]/[container-id]-json.log`.
-Il est cependant plus pratique d'y accéder à l'aide de la commande `docker logs [container-id]`, ou `docker-compose logs`
+Les logs sont stockés par pm2 dans le dossier `$HOME/.pm2/logs/`.
+Il est cependant plus pratique d'y accéder à l'aide de la commande `pm2 log [process-id]`, ou `pm2 log`
 
-# Vérification du bon fonctionnement de l'app
+## Vérification du bon fonctionnement de l'app
 
 L'ensemble des composants de l'application exposée doit répondre un code http 200 sur une url spécifique, voici des exemples de commandes curl permettant de réaliser ce test :
 
@@ -102,20 +112,3 @@ L'ensemble des composants de l'application exposée doit répondre un code http 
 - `curl -v connect-project.io/dashboard`
 - `curl -v connect-project.io/swagger`
 - `curl -v connect-project.io/parse-sandbox`
-
-# Mise à jour
-
-Lors d'une mise à jour, vous aurez un nouveau numéro de version à déployer (remplacer les occurrences de NEW_VERSION_NUMBER par ce numéro de version)
-
-La procédure est à exécuter avec l'utilisateur root.
-
-- `cd /opt/connect`
-- `mkdir connect-NEW_VERSION_NUMBER`
-- Copier dans ce dossier les fichiers `docker-compose.yml` et `.env` (à moins que l'on vous en fournisse de nouveaux, utiliser ceux de la version précédente)
-- `cd connect-NEW_VERSION_NUMBER`
-- Remplacer la valeur de `VERSION_NUMBER` dans `.env` par `NEW_VERSION_NUMBER`
-- `cd ../connect-OLD_VERSION_NUMBER`
-- `docker-compose down`
-- `cd ../connect-NEW_VERSION_NUMBER`
-- `docker-compose up -d`
-- Vérifier que le site fonctionne bien
