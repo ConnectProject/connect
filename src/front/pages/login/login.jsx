@@ -39,6 +39,7 @@ class LoginPage extends React.PureComponent {
       isDialogLoginOpened: false,
       email: '',
       password: '',
+      errorMessage: null,
     };
     this.handleDialogClose = this.handleDialogClose.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -75,6 +76,7 @@ class LoginPage extends React.PureComponent {
       }
     } catch (err) {
       console.error(err, err.message);
+      this.setState({ errorMessage: err.message || 'An error occured.' });
     }
     if (user) {
       const { history } = this.props;
@@ -89,6 +91,7 @@ class LoginPage extends React.PureComponent {
       isDialogSignupOpened,
       email,
       password,
+      errorMessage,
     } = this.state;
 
     return (
@@ -114,15 +117,19 @@ class LoginPage extends React.PureComponent {
             color="primary"
             onClick={() => this.setState({ isDialogLoginOpened: true })}
           >
-            Login
+            Login with email
           </Button>
+        </CardActions>
+        <CardActions className={classes.buttonContainer}>
           <Button
             size="large"
             color="primary"
             onClick={() => this.setState({ isDialogSignupOpened: true })}
           >
-            SignUp
+            Sign up with email
           </Button>
+        </CardActions>
+        <CardActions className={classes.buttonContainer}>
           <Button
             size="large"
             color="primary"
@@ -171,6 +178,11 @@ class LoginPage extends React.PureComponent {
               variant="outlined"
               type="password"
             />
+            {errorMessage && (
+              <DialogContentText align="right" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleDialogClose()} color="primary">
