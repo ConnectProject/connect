@@ -13,8 +13,8 @@ import PropTypes from 'prop-types'; // ES6
 import Snackbar from '@material-ui/core/Snackbar';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import Parse from 'parse';
 import { validateFormField, checkValid } from '../../services/formValidator';
+import ApplicationsService from '../../services/applications-service';
 
 const styles = {
   root: {
@@ -78,9 +78,7 @@ class DetailsPage extends React.PureComponent {
 
   componentDidMount() {
     const { match } = this.props;
-    const Application = Parse.Object.extend('OAuthApplication');
-    const query = new Parse.Query(Application);
-    query.get(match.params.appId).then((res) => {
+    ApplicationsService.findById(match.params.appId).then((res) => {
       this.setState((prevState) => ({
         ...prevState,
         loading: false,
@@ -148,7 +146,7 @@ class DetailsPage extends React.PureComponent {
     const { application } = this.state;
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.clipboard.writeText(application[key]);
+        navigator.clipboard.writeText(application.attributes[key]);
         this.setState({ snackBarOpen: true });
       }
     });
@@ -257,12 +255,12 @@ class DetailsPage extends React.PureComponent {
 
               <TextField
                 disabled
-                id="parse_name"
-                label="App ID"
+                id="pub_key"
+                label="Public key"
                 className={classes.textField}
                 fullWidth
-                helperText="Used to identify your application with the API"
-                value={application.parse_name}
+                helperText="Used to identify your application with the OAuth flow"
+                value={application.attributes.publicKey}
                 margin="normal"
                 variant="outlined"
                 InputProps={{
@@ -271,7 +269,7 @@ class DetailsPage extends React.PureComponent {
                       <Tooltip title="Copy to clipboard">
                         <IconButton
                           onClick={() => {
-                            this.copyToClipboard('parse_name');
+                            this.copyToClipboard('publicKey');
                           }}
                         >
                           <FileCopy />
@@ -284,12 +282,12 @@ class DetailsPage extends React.PureComponent {
 
               <TextField
                 disabled
-                id="token"
-                label="Token"
+                id="sec_key"
+                label="Secret Key"
                 className={classes.textField}
                 fullWidth
-                helperText="Production environment"
-                value={application.token}
+                helperText="Used to identify your application with the OAuth flow - not to be used on client side applications"
+                value={application.attributes.secretKey}
                 margin="normal"
                 variant="outlined"
                 InputProps={{
@@ -298,34 +296,7 @@ class DetailsPage extends React.PureComponent {
                       <Tooltip title="Copy to clipboard">
                         <IconButton
                           onClick={() => {
-                            this.copyToClipboard('token');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                disabled
-                id="token_sandbox"
-                label="Token Sandbox"
-                className={classes.textField}
-                fullWidth
-                helperText="Test environment"
-                value={application.token_sandbox}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('token_sandbox');
+                            this.copyToClipboard('secretKey');
                           }}
                         >
                           <FileCopy />

@@ -10,7 +10,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
-import Parse from 'parse';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -28,6 +27,7 @@ import Moment from 'react-moment';
 import PropTypes from 'prop-types'; // ES6
 
 import { validateFormField, checkValid } from '../../services/formValidator';
+import ApplicationsService from '../../services/applications-service';
 
 const styles = {
   root: {
@@ -86,10 +86,7 @@ class HomePage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const Application = Parse.Object.extend('OAuthApplication');
-    const query = new Parse.Query(Application);
-    query
-      .find()
+    ApplicationsService.listApplications()
       .then((applications) => {
         this.setState({
           loading: false,
@@ -146,9 +143,7 @@ class HomePage extends React.PureComponent {
 
   async clickCreateApplication() {
     const { newApplication } = this.state;
-    const Application = Parse.Object.extend('OAuthApplication');
-    const app = new Application(newApplication);
-    await app.save();
+    const app = await ApplicationsService.create(newApplication);
     const { history } = this.props;
     history.push(`/application/${app.id}`);
   }

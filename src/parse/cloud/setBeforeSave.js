@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const { Validator } = require('jsonschema');
 const Config = require('parse-server/lib/Config');
+const uuidv4 = require('uuid/v4');
 const getClasses = require('../schema/getClasses');
 
 module.exports = async (Parse) => {
@@ -64,5 +65,12 @@ module.exports = async (Parse) => {
     roleACL.setWriteAccess(req.user, true);
 
     req.object.set('ACL', roleACL);
+
+    if (!req.object.get('publicKey')) {
+      req.object.set('publicKey', 'pub_' + uuidv4().replace(/-/g, ''));
+    }
+    if (!req.object.get('secretKey')) {
+      req.object.set('secretKey', 'sec_' + uuidv4().replace(/-/g, ''));
+    }
   });
 };

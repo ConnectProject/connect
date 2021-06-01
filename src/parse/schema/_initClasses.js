@@ -44,6 +44,7 @@ module.exports = [
       owner: { type: 'Pointer', required: true, targetClass: '_User' },
       appleStoreLink: { type: 'String' },
       googleMarketLink: { type: 'String' },
+      publicKey: { type: 'String' },
       secretKey: { type: 'String' },
     },
     required: ['name', 'description'],
