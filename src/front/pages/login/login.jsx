@@ -9,13 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'; // ES6
 
 import * as React from 'react';
-import Parse from 'parse';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import UserService from '../../services/user-service';
 
 const styles = {
   card: {
@@ -45,7 +45,7 @@ class LoginPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const currentUser = Parse.User.current();
+    const currentUser = UserService.getCurrentUser();
     if (currentUser) {
       const { history } = this.props;
       history.push('/home');
@@ -69,13 +69,9 @@ class LoginPage extends React.PureComponent {
     let user;
     try {
       if (isDialogLoginOpened) {
-        user = await Parse.User.logIn(email, password);
+        user = await UserService.loginWithEmail({ email, password });
       } else if (isDialogSignupOpened) {
-        user = new Parse.User();
-        user.set('username', email);
-        user.set('email', email);
-        user.set('password', password);
-        user = await user.signUp();
+        user = await UserService.registerWithEmail({ email, password });
       }
     } catch (err) {
       console.error(err, err.message);
@@ -129,7 +125,7 @@ class LoginPage extends React.PureComponent {
           </Button>
           <Button
             size="large"
-            color="default"
+            color="primary"
             href={`https://github.com/login/oauth/authorize?client_id=${window._env_.GITHUB_CLIENT_ID}`}
           >
             Login with Github

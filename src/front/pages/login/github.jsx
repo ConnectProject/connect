@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
-import * as React from 'react';
 import PropTypes from 'prop-types'; // ES6
-import Parse from 'parse';
+import * as React from 'react';
+import UserService from '../../services/user-service';
 
 class Github extends React.Component {
   constructor(props) {
@@ -13,16 +13,13 @@ class Github extends React.Component {
     const { location, history } = this.props;
     const params = new URLSearchParams(location.search);
 
-    Parse.Cloud.run('get-github-auth-data', {
-      code: params.get('code'),
-    })
-      .then((authData) => Parse.User.logInWith('github', { authData }))
+    UserService.confirmGithubAuth({ code: params.get('code') })
       .then(() => {
-        history.push('/');
+        history.push('/home');
       })
       .catch((err) => {
         console.error(err);
-        history.push('/home');
+        history.push('/');
       });
   }
 

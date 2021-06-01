@@ -21,6 +21,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import Routes from './Router';
+import PubSub from '../utils/pub-sub';
+import UserService from '../services/user-service';
 
 const options = ['Documentation', 'My Profile'];
 
@@ -52,9 +54,18 @@ class App extends React.PureComponent {
       }
     });
 
-    if (Parse.User.current()) {
-      this.setState({ userConnected: true });
+    const currentUser = UserService.getCurrentUser();
+    this.setState({ userConnected: currentUser !== null });
+    if (currentUser === null && history.location.pathname !== '/') {
+      history.push('/');
     }
+    PubSub.subscribe(UserService.PubSubEvents.AUTH_STATUS_UPDATED, async () => {
+      const newUser = await UserService.getCurrentUserAsync();
+      if (!newUser) {
+        history.push('/');
+      }
+      this.setState({ userConnected: newUser !== null });
+    });
   }
 
   handleMenuItemClick(event, index) {

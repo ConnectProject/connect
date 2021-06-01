@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
-import Parse from 'parse';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,6 +13,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import PropTypes from 'prop-types'; // ES6
+import UserService from '../../services/user-service';
 
 const styles = {
   root: {
@@ -72,16 +72,15 @@ class ProfilePage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const user = Parse.User.current();
     this.setState({
       loading: false,
-      user,
+      user: UserService.getCurrentUser(),
     });
   }
 
   async handleClose(userToBeDeleted) {
     if (userToBeDeleted) {
-      await Parse.User.current().destroy();
+      await UserService.deleteCurrentUser();
       const { history } = this.props;
       history.push('/');
     } else {
