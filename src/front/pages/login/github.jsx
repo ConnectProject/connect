@@ -15,7 +15,11 @@ class Github extends React.Component {
 
     UserService.confirmGithubAuth({ code: params.get('code') })
       .then(() => {
-        history.push('/home');
+        if (params.get('redirectPath')) {
+          history.push(params.get('redirectPath'));
+        } else {
+          history.push('/home');
+        }
       })
       .catch((err) => {
         console.error(err);

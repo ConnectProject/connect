@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -175,7 +176,9 @@ class DetailsPage extends React.PureComponent {
                 label="Name"
                 className={classes.textField}
                 fullWidth
-                value={applicationUpdate.name || application.attributes.name}
+                value={
+                  applicationUpdate.name ?? application.attributes.name ?? ''
+                }
                 onChange={(event) => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
@@ -188,8 +191,9 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={
-                  applicationUpdate.description ||
-                  application.attributes.description
+                  applicationUpdate.description ??
+                  application.attributes.description ??
+                  ''
                 }
                 onChange={(event) => this.handleChange('description', event)}
                 margin="normal"
@@ -205,8 +209,8 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={
-                  applicationUpdate.appleStoreLink ||
-                  application.attributes.appleStoreLink ||
+                  applicationUpdate.appleStoreLink ??
+                  application.attributes.appleStoreLink ??
                   ''
                 }
                 onChange={(event) => this.handleChange('appleStoreLink', event)}
@@ -221,8 +225,8 @@ class DetailsPage extends React.PureComponent {
                 className={classes.textField}
                 fullWidth
                 value={
-                  applicationUpdate.googleMarketLink ||
-                  application.attributes.googleMarketLink ||
+                  applicationUpdate.googleMarketLink ??
+                  application.attributes.googleMarketLink ??
                   ''
                 }
                 onChange={(event) =>
@@ -233,30 +237,10 @@ class DetailsPage extends React.PureComponent {
                 error={errors.googleMarketLink}
               />
 
-              <div className={classes.buttonContainer}>
-                <div className={classes.wrapper}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={updateLoading || !checkValid(errors)}
-                    className={classes.button}
-                    onClick={() => this.clickUpdateApplication()}
-                  >
-                    Save
-                  </Button>
-                  {updateLoading && (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    />
-                  )}
-                </div>
-              </div>
-
               <TextField
                 disabled
                 id="pub_key"
-                label="Public key"
+                label="OAuth Public key"
                 className={classes.textField}
                 fullWidth
                 helperText="Used to identify your application with the OAuth flow"
@@ -283,7 +267,7 @@ class DetailsPage extends React.PureComponent {
               <TextField
                 disabled
                 id="sec_key"
-                label="Secret Key"
+                label="OAuth Secret Key"
                 className={classes.textField}
                 fullWidth
                 helperText="Used to identify your application with the OAuth flow - not to be used on client side applications"
@@ -306,6 +290,43 @@ class DetailsPage extends React.PureComponent {
                   ),
                 }}
               />
+
+              <TextField
+                id="redirectUris"
+                label="OAuth Redirect URIs"
+                className={classes.textField}
+                fullWidth
+                helperText="Enter URIs your app can receive the OAuth response on. Separate multiple URIs by a coma. Can be a web url or a deeplink uri for mobile apps."
+                value={
+                  applicationUpdate.redirectUris ??
+                  application.attributes.redirectUris ??
+                  ''
+                }
+                onChange={(event) => this.handleChange('redirectUris', event)}
+                margin="normal"
+                variant="outlined"
+                error={errors.redirectUris}
+              />
+
+              <div className={classes.buttonContainer}>
+                <div className={classes.wrapper}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={updateLoading || !checkValid(errors)}
+                    className={classes.button}
+                    onClick={() => this.clickUpdateApplication()}
+                  >
+                    Save
+                  </Button>
+                  {updateLoading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+              </div>
 
               <Snackbar
                 anchorOrigin={{

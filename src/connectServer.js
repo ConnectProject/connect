@@ -5,6 +5,7 @@ const { once } = require('events');
 
 const api = require('./api');
 const logger = require('./logger');
+const oauthApi = require('./oauth/oauth-routes');
 const parseApi = require('./middleware/parse');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
@@ -45,6 +46,9 @@ class ConnectServer {
 
     // handle all routing for /api/*
     api(app);
+
+    // handle all routing for /oauth/*
+    oauthApi(app);
 
     app.get('/envConfig.js', (_, res) => res.send(configFront));
 

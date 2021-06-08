@@ -61,6 +61,8 @@ module.exports = async (Parse) => {
 
     const roleACL = new Parse.ACL();
 
+    roleACL.setPublicReadAccess(false);
+    roleACL.setPublicWriteAccess(false);
     roleACL.setReadAccess(req.user, true);
     roleACL.setWriteAccess(req.user, true);
 
@@ -72,5 +74,23 @@ module.exports = async (Parse) => {
     if (!req.object.get('secretKey')) {
       req.object.set('secretKey', 'sec_' + uuidv4().replace(/-/g, ''));
     }
+  });
+
+  Parse.Cloud.beforeSave('OAuthAuthorizationCode', (req) => {
+    const acl = new Parse.ACL();
+
+    acl.setPublicReadAccess(false);
+    acl.setPublicWriteAccess(false);
+
+    req.object.set('ACL', acl);
+  });
+
+  Parse.Cloud.beforeSave('OAuthToken', (req) => {
+    const acl = new Parse.ACL();
+
+    acl.setPublicReadAccess(false);
+    acl.setPublicWriteAccess(false);
+
+    req.object.set('ACL', acl);
   });
 };

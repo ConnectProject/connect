@@ -40,10 +40,7 @@ class App extends React.PureComponent {
 
   componentDidMount() {
     const { history } = this.props;
-    if (
-      history.location.pathname !== '/home' &&
-      history.location.pathname !== '/'
-    ) {
+    if (!['/home', '/', '/authorize'].includes(history.location.pathname)) {
       this.setState({ canBack: true });
     }
     history.listen((location) => {
@@ -56,7 +53,10 @@ class App extends React.PureComponent {
 
     const currentUser = UserService.getCurrentUser();
     this.setState({ userConnected: currentUser !== null });
-    if (currentUser === null && history.location.pathname !== '/') {
+    if (
+      currentUser === null &&
+      !['/', '/authorize'].includes(history.location.pathname)
+    ) {
       history.push('/');
     }
     PubSub.subscribe(UserService.PubSubEvents.AUTH_STATUS_UPDATED, async () => {
@@ -106,13 +106,8 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {
-      userConnected,
-      anchorRef,
-      selectedIndex,
-      open,
-      canBack,
-    } = this.state;
+    const { userConnected, anchorRef, selectedIndex, open, canBack } =
+      this.state;
 
     return (
       <div>
