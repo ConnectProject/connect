@@ -240,7 +240,7 @@ class DetailsPage extends React.PureComponent {
               <TextField
                 disabled
                 id="pub_key"
-                label="OAuth Public key"
+                label="OAuth Client ID"
                 className={classes.textField}
                 fullWidth
                 helperText="Used to identify your application with the OAuth flow"
