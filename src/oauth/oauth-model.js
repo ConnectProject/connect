@@ -1,14 +1,9 @@
-/* eslint-disable no-undef */
+/* global Parse */
 
 module.exports = {
   isRedirectUriValidity(redirectUri, validRedirectUris) {
     const allowedUris = validRedirectUris.split(',').map((elt) => elt.trim());
     if (!allowedUris.includes(redirectUri.trim())) {
-      console.log('redirect uri not allowed', {
-        validRedirectUris,
-        redirectUri,
-      });
-
       return false;
     }
 
@@ -36,8 +31,6 @@ module.exports = {
   },
 
   async saveToken(token, client, user) {
-    console.log('OAuth Model - saveToken', { token, client, user });
-
     let savedToken = await new Parse.Query('OAuthToken')
       .equalTo('applicationId', client.id)
       .equalTo('userId', user.id)
@@ -76,7 +69,6 @@ module.exports = {
   },
 
   async getAccessToken(accessToken) {
-    console.log('OAuth Model - getAccessToken', { accessToken });
     const token = await new Parse.Query('OAuthToken')
       .equalTo('accessToken', accessToken)
       .first({ useMasterKey: true });
@@ -106,7 +98,6 @@ module.exports = {
   },
 
   async getRefreshToken(refreshToken) {
-    console.log('OAuth Model - getRefreshToken', { refreshToken });
     const token = await new Parse.Query('OAuthToken')
       .equalTo('refreshToken', refreshToken)
       .first({ useMasterKey: true });
@@ -133,7 +124,6 @@ module.exports = {
   },
 
   async revokeToken(token) {
-    console.log('OAuth Model - revokeToken', { token });
     const foundCode = await new Parse.Query('OAuthToken')
       .equalTo('refreshToken', token.refreshToken)
       .first({ useMasterKey: true });
@@ -145,8 +135,6 @@ module.exports = {
   },
 
   async saveAuthorizationCode(code, client, user) {
-    console.log('OAuth Model - saveAuthorizationCode', { code, client, user });
-
     let authorizationCodeSaved = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('applicationId', client.id)
       .equalTo('userId', user.id)
@@ -187,10 +175,10 @@ module.exports = {
 
   //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#getauthorizationcode-authorizationcode-callback
   async getAuthorizationCode(authorizationCode) {
-    console.log('OAuth Model - getAuthorizationCode', { authorizationCode });
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode)
       .first({ useMasterKey: true });
+
     if (foundCode) {
       return {
         authorizationCode: foundCode.get('authorizationCode'),
@@ -207,10 +195,10 @@ module.exports = {
 
   //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#revokeauthorizationcode-code-callback
   async revokeAuthorizationCode(authorizationCode) {
-    console.log('OAuth Model - revokeAuthorizationCode', { authorizationCode });
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode.authorizationCode)
       .first({ useMasterKey: true });
+
     if (foundCode) {
       await foundCode.destroy({ useMasterKey: true });
     }

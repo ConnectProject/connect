@@ -1,8 +1,11 @@
+/* eslint-disable complexity */
+
 const fs = require('fs').promises;
 const { Validator } = require('jsonschema');
 const Config = require('parse-server/lib/Config');
 const uuidv4 = require('uuid/v4');
 const getClasses = require('../schema/getClasses');
+const { getOAuthUserFromRequest } = require('../../oauth/oauth-service');
 
 module.exports = async (Parse) => {
   const schemaClasses = await getClasses();
@@ -10,8 +13,26 @@ module.exports = async (Parse) => {
     // eslint-disable-next-line max-statements
     Parse.Cloud.beforeSave(schemaClass.className, async (req) => {
       if (!req.user) {
-        // how can this happen and what's the expected behavior to make a return at this point?
-        return;
+        // user is not authenticated, Forbidden.
+        throw new Error('User should be authenticated.');
+      }
+      // authenticate end user using provided token
+      const { client: application, user: endUser } =
+        await getOAuthUserFromRequest({
+          method: 'GET',
+          query: {},
+          headers: req.headers,
+        });
+
+      if (!application || !endUser) {
+        throw new Parse.Error(401, 'Please use OAuth to authenticate');
+      }
+      if (
+        req.object.get('applicationId') &&
+        req.object.get('applicationId') !== application.id
+      ) {
+        // trying to update the object that was cerated with this user, but with another application. Forbidden.
+        throw new Parse.Error(403, 'Please use OAuth to authenticate');
       }
 
       const schemaFile = `${__dirname}/../schema/classes/${schemaClass.className}.schema.json`;
@@ -20,6 +41,7 @@ module.exports = async (Parse) => {
       delete jsonObject.createdAt;
       delete jsonObject.updatedAt;
       delete jsonObject.objectId;
+      delete jsonObject.applicationId;
       delete jsonObject.ACL;
 
       // convert Parse dates in iso format
@@ -48,7 +70,13 @@ module.exports = async (Parse) => {
 
       req.object.set('owner', req.user);
 
+      if (!req.object.get('applicationId')) {
+        req.object.set('applicationId', application.id);
+      }
+
       const roleACL = new Parse.ACL();
+
+      roleACL.setReadAccess(req.user, true);
       roleACL.setWriteAccess(req.user, true);
       roleACL.setRoleReadAccess('Developer', true);
 

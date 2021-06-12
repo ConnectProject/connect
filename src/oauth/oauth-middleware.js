@@ -1,39 +1,52 @@
-/* eslint-disable no-undef */
+/* eslint-disable max-statements */
+/* global Parse */
 
-const { Request, Response } = require('oauth2-server');
-const oauthServer = require('./oauth-server');
+const uuidv4 = require('uuid/v4');
+
+const { getOAuthUserFromRequest } = require('./oauth-service');
 
 module.exports = async (req, res, next) => {
   try {
-    const token = await oauthServer.authenticate(
-      new Request(req),
-      new Response(res),
-    );
+    const { token, client, user } = await getOAuthUserFromRequest(req, res);
 
-    if (token?.client?.id && token?.user?.id) {
-      const [client, user] = await Promise.all([
-        new Parse.Query('OAuthApplication').get(token.client.id, {
-          useMasterKey: true,
-        }),
-        new Parse.Query(Parse.User).get(token.user.id, { useMasterKey: true }),
-      ]);
-      if (!client) {
-        throw new Error('OAuth client not found');
-      }
-      if (!user) {
-        throw new Error('User not found');
-      }
+    if (client && user) {
       res.locals.oauth = {
         token,
         user,
       };
-      console.log({ client, user }, 'made a request?');
-      req.oauthClient = client;
-      req.oauthUser = user;
-    }
 
-    return next();
-  } catch (err) {
-    return next(err);
+      req.application = client;
+      req.user = user;
+
+      // the request is made using a valid OAuth token. We would love to login directly the user, but Parse do not allow us to log a user without it's password, even with the masterKey
+      // therefore, we create or reuse another Parse.User, linked to this specific token (using endUserId and applicationId properties), and use the token as a password
+      // those users would never be displayed, but they are used to manage ACLs on each object (each object can be updated only by the user authenticated using the same application he created it)
+
+      let userForRequest = await new Parse.Query(Parse.User)
+        .equalTo('endUserId', user.id)
+        .equalTo('applicationId', client.id)
+        .first({ useMasterKey: true });
+
+      if (!userForRequest) {
+        userForRequest = await Parse.User.signUp(uuidv4(), token.accessToken, {
+          endUserId: user.id,
+          applicationId: client.id,
+        });
+      }
+      await userForRequest.save(
+        { password: token.accessToken },
+        { useMasterKey: true },
+      );
+      await userForRequest.logIn({ useMasterKey: true });
+
+      const sessionToken = userForRequest.getSessionToken();
+
+      // make next Parse middleware login the user
+      req.headers['x-parse-session-token'] = sessionToken;
+    }
+  } catch (_err) {
+    // not OAuth authenticated
   }
+
+  return next();
 };

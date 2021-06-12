@@ -11,6 +11,7 @@ const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
 
 const configFront = require('./config/front');
+const oauthMiddleware = require('./oauth/oauth-middleware');
 
 class ConnectServer {
   constructor(app, server) {
@@ -37,6 +38,9 @@ class ConnectServer {
 
     app.use(cors(corsOptions));
     app.use(express.urlencoded({ extended: true }));
+
+    // transform the eventuel OAuth Bearer token to an actual Parse user
+    app.use('/parse/classes', oauthMiddleware);
 
     // Serve the Parse API at /parse URL prefix
     const parseMiddleware = await parseApi(parseCloudEvent);
