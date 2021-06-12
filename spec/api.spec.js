@@ -300,6 +300,36 @@ describe('Parse server', () => {
     createdGameScoreObjectId = data.objectId;
   });
 
+  it('POST batch GameScore event', async () => {
+    const { data } = await axios({
+      method: 'post',
+      url: `${API_URL}/parse/batch`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+      data: {
+        requests: [
+          {
+            method: 'POST',
+            path: '/parse/classes/GameScore',
+            body: { score: 3945, playerName: 'tesergrgt9', cheatMode: true },
+          },
+          {
+            method: 'POST',
+            path: '/parse/classes/GameScore',
+            body: { score: 3946, playerName: 'zefzeg', cheatMode: false },
+          },
+        ],
+      },
+    });
+
+    expect(data.length).toBe(2);
+    expect(data[0].success.score).toBe(3945);
+    expect(data[1].success.score).toBe(3946);
+  });
+
   let gameScoreObject;
 
   it('PUT GameScore event', async () => {
@@ -355,7 +385,7 @@ describe('Parse server', () => {
       },
     });
 
-    expect(data.results.length).toBe(1);
+    expect(data.results.length).toBe(3);
   });
 
   let sessionToken;
@@ -403,7 +433,7 @@ describe('Parse server', () => {
       },
     });
 
-    expect(data.results.length).toBe(1);
+    expect(data.results.length).toBe(3);
     expect(data.results[0]).toEqual(gameScoreObject);
   });
 

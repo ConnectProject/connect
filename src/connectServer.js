@@ -39,6 +39,7 @@ class ConnectServer {
     app.use(express.urlencoded({ extended: true }));
 
     // transform the eventuel OAuth Bearer token to an actual Parse user
+    app.use('/parse/batch', oauthMiddleware);
     app.use('/parse/classes', oauthMiddleware);
 
     // Serve the Parse API at /parse URL prefix
