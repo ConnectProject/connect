@@ -17,8 +17,6 @@ module.exports = (Parse) => {
     }
 
     if (!oauthModel.isRedirectUriValidity(redirectUri, client.redirectUris)) {
-      console.log('redirect uri not allowed', { redirectUri, client });
-
       return null;
     }
 
@@ -43,8 +41,6 @@ module.exports = (Parse) => {
     const client = await oauthModel.getClient(clientId);
 
     if (!oauthModel.isRedirectUriValidity(redirectUri, client.redirectUris)) {
-      console.log('Redirect uri not allowed', { redirectUri, client });
-
       return null;
     }
 

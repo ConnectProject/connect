@@ -25,7 +25,10 @@ module.exports = async (Parse) => {
         });
 
       if (!application || !endUser) {
-        throw new Parse.Error(401, 'Please use OAuth to authenticate');
+        throw new Parse.Error(
+          401,
+          'Please authenticate with OAuth before creating items',
+        );
       }
       if (
         req.object.get('applicationId') &&

@@ -104,10 +104,12 @@ module.exports = {
 
     if (token) {
       const [client, user] = await Promise.all([
-        new Parse.Query('OAuthApplication').get(token.clientId, {
+        new Parse.Query('OAuthApplication').get(token.get('applicationId'), {
           useMasterKey: true,
         }),
-        new Parse.Query(Parse.User).get(token.userId, { useMasterKey: true }),
+        new Parse.Query(Parse.User).get(token.get('userId'), {
+          useMasterKey: true,
+        }),
       ]);
       if (client && user) {
         return {
