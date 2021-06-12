@@ -15,6 +15,7 @@ const loginWithEmail = async ({ email, password }) => {
 
   return newlyLoggedInUser;
 };
+
 const registerWithEmail = async ({ email, password }) => {
   const user = new Parse.User();
   user.set('username', email);

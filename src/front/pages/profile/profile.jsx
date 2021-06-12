@@ -1,18 +1,20 @@
-import * as React from 'react';
-import { withRouter } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types'; // ES6
+import * as React from 'react';
+import { withRouter } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import FileCopy from '@material-ui/icons/FileCopy';
+import Tooltip from '@material-ui/core/Tooltip';
 import UserService from '../../services/user-service';
 
 const styles = {
@@ -65,17 +67,12 @@ class ProfilePage extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      loading: true,
-      user: {},
-      dialogOpen: false,
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      loading: false,
       user: UserService.getCurrentUser(),
-    });
+      dialogOpen: false,
+      snackBarOpen: false,
+    };
+    this.copyToClipboard = this.copyToClipboard.bind(this);
+    this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
   }
 
   async handleClose(userToBeDeleted) {
@@ -88,6 +85,26 @@ class ProfilePage extends React.PureComponent {
         dialogOpen: false,
       });
     }
+  }
+
+  handleCloseSnackbar(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({
+      snackBarOpen: false,
+    });
+  }
+
+  copyToClipboard() {
+    const { user } = this.state;
+    navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
+      if (result.state === 'granted' || result.state === 'prompt') {
+        navigator.clipboard.writeText(user.getSessionToken());
+        this.setState({ snackBarOpen: true });
+      }
+    });
   }
 
   confirmationDialog() {
@@ -103,53 +120,71 @@ class ProfilePage extends React.PureComponent {
 
   render() {
     const { classes } = this.props;
-    const { user, loading, dialogOpen } = this.state;
+    const { user, dialogOpen, snackBarOpen } = this.state;
 
     return (
       <>
         <div className={classes.root}>
-          {loading && <CircularProgress className={classes.progress} />}
+          <div className={classes.nameContainer}>
+            <TextField
+              id="name"
+              disabled
+              label="Username"
+              className={classes.textField}
+              fullWidth
+              value={user.get('username')}
+              margin="normal"
+              variant="outlined"
+            />
+          </div>
+          <div className={classes.nameContainer}>
+            <TextField
+              id="sessionToken"
+              disabled
+              label="Session token"
+              helperText={
+                <>
+                  Your personal access token to access the API in read-only
+                  mode. See{' '}
+                  <a
+                    href="https://github.com/ConnectProject/connect/blob/master/docs/usage.md"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    usage documentation
+                  </a>
+                  .
+                </>
+              }
+              className={classes.textField}
+              fullWidth
+              value={user.getSessionToken()}
+              margin="normal"
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip title="Copy to clipboard">
+                      <IconButton onClick={this.copyToClipboard}>
+                        <FileCopy />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
 
-          {!loading && (
-            <>
-              <div className={classes.nameContainer}>
-                <TextField
-                  id="name"
-                  disabled
-                  label="Full Name"
-                  className={classes.textField}
-                  fullWidth
-                  value={user.name}
-                  onChange={(event) => this.handleChange('name', event)}
-                  margin="normal"
-                  variant="outlined"
-                />
-
-                <TextField
-                  id="githubLogin"
-                  disabled
-                  label="GitHub Username"
-                  className={classes.textField}
-                  fullWidth
-                  value={user.login}
-                  onChange={(event) => this.handleChange('githubLogin', event)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </div>
-
-              <div className={classes.buttonContainer}>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  className={classes.button}
-                  onClick={() => this.confirmationDialog()}
-                >
-                  Delete Profile
-                </Button>
-              </div>
-            </>
-          )}
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.button}
+              onClick={() => this.confirmationDialog()}
+            >
+              Delete Profile
+            </Button>
+          </div>
         </div>
 
         <Dialog open={dialogOpen} onClose={() => this.handleClose(false)}>
@@ -173,6 +208,19 @@ class ProfilePage extends React.PureComponent {
             </Button>
           </DialogActions>
         </Dialog>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={snackBarOpen}
+          autoHideDuration={1000}
+          onClose={() => {
+            this.handleCloseSnackbar();
+          }}
+          message={<span>Copied!</span>}
+        />
       </>
     );
   }

@@ -64,35 +64,19 @@ There is two way of authenticating against the API, depending on the request you
 
 ### <a name="authentication">Authentication</a>
 
-In order to manipulate the connect api you need to identify each of your request with a `sessionToken`.
+If you simply want to access data in a read only mode, you can use your personal access token that is presented to you from your Connect profile page. Copy the token and set it in a bash variable.
 
-To get the sessionToken call `/parse/login` with you APP_TOKEN and APP_ID like this :
-
-```bash
-curl --request GET \
-  --url $API_URL'/login?username='$YOUR_CONNECT_ACCOUNT_USERNAME'&password='$YOUR_CONNECT_ACCOUNT_PASSWORD \
-  --header 'x-parse-application-id: '$PARSE_APPLICATION \
-  --header 'x-parse-revocable-session: 1'
-
-Reponse : {
-  "objectId": "xxxxx",
-  "username": "xxxxxx-xxxx",
-  "createdAt": "2019-07-12T15:08:56.813Z",
-  "updatedAt": "2019-07-12T15:08:57.120Z",
-  "ACL": {
-    "xxxx": {
-      "read": true
-    }
-  },
-  "sessionToken": "r:xxxxxx"
-}
-```
-
-At this point you can set the session token:
+Then use it in header for all the "GET" methods, for example:
 
 ```bash
 SESSION_TOKEN=r:xxxxxx
+curl --request GET \
+  --url $API_URL/classes/GameScore \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN
 ```
+
+See [Get object](#get-object) for a list of all methods and example response.
 
 ### <a name="oauth-authentication">OAuth Authentication</a>
 
