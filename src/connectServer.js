@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const { once } = require('events');
 
-const api = require('./api');
 const logger = require('./logger');
 const oauthApi = require('./oauth/oauth-routes');
 const parseApi = require('./middleware/parse');
@@ -47,9 +46,6 @@ class ConnectServer {
     app.use('/parse', parseMiddleware.app);
     app.use('/dashboard', parseDashboard());
     app.use(parseSwagger());
-
-    // handle all routing for /api/*
-    api(app);
 
     // handle all routing for /oauth/*
     oauthApi(app);
