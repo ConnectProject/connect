@@ -8,9 +8,10 @@ const oauthApi = require('./oauth/oauth-routes');
 const parseApi = require('./middleware/parse');
 const parseDashboard = require('./middleware/parseDashboard');
 const parseSwagger = require('./middleware/parseSwagger');
+const sandboxMiddleware = require('./middleware/sandboxMiddleware');
+const oauthMiddleware = require('./oauth/oauth-middleware');
 
 const configFront = require('./config/front');
-const oauthMiddleware = require('./oauth/oauth-middleware');
 
 class ConnectServer {
   constructor(app, server) {
@@ -41,6 +42,9 @@ class ConnectServer {
     // transform the eventuel OAuth Bearer token to an actual Parse user
     app.use('/parse/batch', oauthMiddleware);
     app.use('/parse/classes', oauthMiddleware);
+
+    app.use('/parse/batch', sandboxMiddleware);
+    app.use('/parse/classes', sandboxMiddleware);
 
     // Serve the Parse API at /parse URL prefix
     const parseMiddleware = await parseApi(parseCloudEvent);

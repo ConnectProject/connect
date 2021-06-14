@@ -426,13 +426,9 @@ The response from batch will be a list with the same number of elements as the i
 ### <a name="sandbox">Sandbox</a>
 
 Before use the production database you can use the sanbox environnement.
+Just add the following header to every requests you make to `/classes/*` or `/batch`:
 
-For that two changes should be done :
-
-- Every endpoint uri is `https://connect-project.io/parse-sandbox` instead of `https://connect-project.io/parse`
-- Change the header value `x-parse-application-id` to `connect-sandbox`.
-
-For the authentication you have to use the APP_TOKEN_SANDBOX instead of the APP_TOKEN.
+`x-is-sandbox: true`
 
 ## <a name="schema-contribute">Schema Contribute</a>
 

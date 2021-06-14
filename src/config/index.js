@@ -21,11 +21,6 @@ testConfig(APP_PORT, 'APP_PORT');
 
 const API_URL = `http://localhost:${APP_PORT}`;
 
-const { SANDBOX_PORT } = process.env;
-testConfig(SANDBOX_PORT, 'SANDBOX_PORT');
-
-const SANDBOX_URL = `http://localhost:${SANDBOX_PORT}`;
-
 const { PARSE_APP_NAME } = process.env;
 testConfig(PARSE_APP_NAME, 'PARSE_APP_NAME');
 
@@ -81,8 +76,6 @@ module.exports = {
   PUBLIC_URL,
   API_URL,
   APP_PORT,
-  SANDBOX_URL,
-  SANDBOX_PORT,
   PARSE_APP_NAME,
   PARSE_APP_ID,
   PARSE_FILE_KEY,
@@ -90,7 +83,6 @@ module.exports = {
   PARSE_READONLY_MASTER_KEY,
   PARSE_DASHBOARD_MAINTENER_PWD,
   PARSE_DASHBOARD_ROOT_PWD,
-  PARSE_SANDBOX: false,
   PARSE_SILENT: false,
   MONGO_URI,
   AUTH_SECRET,

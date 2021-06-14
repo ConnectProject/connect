@@ -38,7 +38,10 @@ module.exports = async (Parse) => {
         throw new Parse.Error(403, 'Please use OAuth to authenticate');
       }
 
-      const schemaFile = `${__dirname}/../schema/classes/${schemaClass.className}.schema.json`;
+      const schemaFile = `${__dirname}/../schema/classes/${schemaClass.className.replace(
+        /^Sandbox_/,
+        '',
+      )}.schema.json`;
       const jsonObject = req.object.toJSON();
       // remove extra fields added by Parse to validate the JSON
       delete jsonObject.createdAt;
