@@ -47,7 +47,6 @@ You can set bash variables like this:
 ```bash
 API_URL=https://connect-project.io/parse
 PARSE_APPLICATION=connect
-APP_ID=xxxxxx-xxxx
 ```
 
 There is two way of authenticating against the API, depending on the request you want to perform:
@@ -111,6 +110,12 @@ Response:
     "refresh_token": "YYYYYYYYYYYYYYYYYY",
     "scope": []
 }
+```
+
+To test it, there is a simple endpoint that get you the `userId` associated to this token:
+
+```bash
+GET localhost:1337/oauth/user "Authorization: Bearer $accessToken"
 ```
 
 The token has a one month validity, and the refresh token is valid for one year (and you get a new one each time you refresh the token, see [Refreshing OAuth token](#oauth-authentication-refresh))
