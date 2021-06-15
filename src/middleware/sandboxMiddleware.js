@@ -16,7 +16,7 @@ const transformPathForSandbox = (originalPath) => {
 module.exports = (req, res, next) => {
   if (req.headers['x-is-sandbox'] === 'true') {
     const matchClass = req.originalUrl.match(/\/parse\/classes\/([a-zA-Z_]+)/);
-    if (matchClass.length > 1) {
+    if (matchClass && matchClass.length > 1) {
       const className = matchClass[1];
       if (!className.startsWith('Sandbox_')) {
         changeUrl(req, className, `Sandbox_${className}`);
