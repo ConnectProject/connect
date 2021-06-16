@@ -1,5 +1,7 @@
 /* eslint-disable max-statements */
 
+const fs = require('fs');
+
 const changeUrl = (req, toReplace, replacement) => {
   req.url = req.url.replace(toReplace, replacement);
   req.originalUrl = req.originalUrl.replace(toReplace, replacement);
@@ -9,7 +11,10 @@ const changeUrl = (req, toReplace, replacement) => {
 const transformPathForSandbox = (originalPath) => {
   const regexpResult = originalPath.match(/\/parse\/classes\/([a-zA-Z_]+)/);
   if (regexpResult.length > 1) {
-    return '/parse/classes/Sandbox_' + regexpResult[1];
+    const className = regexpResult[1];
+    if (!className.startsWith('Sandbox_')) {
+      return '/parse/classes/Sandbox_' + className;
+    }
   }
 };
 
@@ -19,7 +24,19 @@ module.exports = (req, res, next) => {
     if (matchClass && matchClass.length > 1) {
       const className = matchClass[1];
       if (!className.startsWith('Sandbox_')) {
-        changeUrl(req, className, `Sandbox_${className}`);
+        fs.access(
+          `${__dirname}/../schema/classes/${className}.schema.json`,
+          fs.constants.F_OK,
+          (err) => {
+            if (!err) {
+              changeUrl(req, className, `Sandbox_${className}`);
+            }
+
+            return next();
+          },
+        );
+
+        return;
       }
 
       return next();
