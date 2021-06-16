@@ -39,10 +39,8 @@ module.exports = async (req, res, next) => {
       );
       await userForRequest.logIn({ useMasterKey: true });
 
-      const sessionToken = userForRequest.getSessionToken();
-
       // make next Parse middleware login the user
-      req.headers['x-parse-session-token'] = sessionToken;
+      req.userFromJWT = userForRequest;
     }
   } catch (_err) {
     // not OAuth authenticated
