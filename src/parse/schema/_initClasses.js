@@ -54,14 +54,18 @@ module.exports = [
     required: ['name', 'description'],
     additionalProperties: false,
     classLevelPermissions: {
-      find: {},
-      get: {},
+      find: { 'role:Developer': true, 'role:Administrator': true },
+      get: { 'role:Developer': true, 'role:Administrator': true },
       readUserFields: ['owner'],
       writeUserFields: ['owner'],
       create: { 'role:Developer': true },
       update: { 'role:Administrator': true },
       delete: { 'role:Administrator': true },
-      protectedFields: { '*': ['owner'], owner: [], 'role:Administrator': [] },
+      protectedFields: {
+        '*': ['owner', 'publicKey', 'secretKey', 'redirectUris'],
+        owner: [],
+        'role:Administrator': [],
+      },
     },
   },
   {

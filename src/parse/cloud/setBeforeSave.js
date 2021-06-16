@@ -95,9 +95,8 @@ module.exports = async (Parse) => {
 
     const roleACL = new Parse.ACL();
 
-    roleACL.setPublicReadAccess(false);
+    roleACL.setPublicReadAccess(true);
     roleACL.setPublicWriteAccess(false);
-    roleACL.setReadAccess(req.user, true);
     roleACL.setWriteAccess(req.user, true);
 
     req.object.set('ACL', roleACL);

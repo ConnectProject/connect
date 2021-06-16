@@ -365,6 +365,28 @@ Response:
 
 Since this requests a count as well as limiting to zero results, there will be a count but no results in the response. With a nonzero limit, that request would return results as well as the count.
 
+### <a name="app-details">Getting an app details from their ID</a>
+
+When you consult data, each object will be returned with an attribute `applicationId`. If needed, it is possible to fetch the name and description of the app using the class `OAuthApplication`:
+
+```bash
+curl --request GET \
+  --url $API_URL/classes/OAuthApplication/$applicationId \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN
+
+Response:
+{
+    "objectId": "qD1tWbnjkK",
+    "name": "App name",
+    "description": "description !",
+    "appleStoreLink": "https://apple.com",
+    "googleMarketLink": "https://google.fr",
+    "createdAt": "2021-06-16T16:43:45.089Z",
+    "updatedAt": "2021-06-16T16:43:45.089Z"
+}
+```
+
 ### <a name="batch-operations">Batch Operations</a>
 
 To reduce the amount of time spent on network round trips, you can create, update, or delete up to 50 objects in one call, using the batch endpoint.
