@@ -45,7 +45,7 @@ module.exports = (Parse) => {
     if ((request.params.id || '').trim().length === 0) {
       throw new Parse.Error(400, 'Bad request');
     }
-    console.log('searching for ', request.params.id, request.user.id);
+
     const token = await new Parse.Query(Parse.Object.extend('OAuthToken'))
       .equalTo('objectId', request.params.id)
       .equalTo('userId', request.user.id)
