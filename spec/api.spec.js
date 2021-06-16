@@ -126,25 +126,6 @@ describe('Parse server', () => {
     expect(application.name).toBe('Test App v2');
   });
 
-  it('cannot see an application if not the owner', async () => {
-    const endUser = await logEndUserIn();
-
-    expect.assertions(2);
-
-    try {
-      await new Parse.Query(Application).get(application.objectId, {
-        sessionToken: endUser.getSessionToken(),
-      });
-    } catch (err) {
-      expect(err).toBeDefined();
-    }
-
-    const all = await new Parse.Query(Application).findAll({
-      sessionToken: endUser.getSessionToken(),
-    });
-    expect(all.length).toBe(0);
-  });
-
   it('fail oauth-get-application with wrong parameter', async () => {
     const endUser = await logEndUserIn();
 
