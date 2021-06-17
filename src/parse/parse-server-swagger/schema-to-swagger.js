@@ -54,7 +54,7 @@ const schemaTypeToSwaggerType = function (type) {
 const getPath = function (classes) {
   return {
     get: {
-      security: [{ ParseAppId: [], ParseSessionId: [] }],
+      security: [{ ParseAppId: [], ParseSessionId: [], OAuth2BearerToken: [] }],
       summary: `Get ${classes.className} data`,
       description:
         'Find queries documentation here https://docs.parseplatform.org/rest/guide/#queries',
@@ -73,7 +73,7 @@ const getPath = function (classes) {
       },
     },
     post: {
-      security: [{ ParseAppId: [], ParseSessionId: [] }],
+      security: [{ ParseAppId: [], OAuth2BearerToken: [] }],
       summary: 'Add object instance',
       description: 'Happy to access The System',
       tags: [`${classes.className}`],
@@ -116,6 +116,7 @@ const getPathById = function (classes) {
         {
           ParseAppId: [],
           ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: `Get ${classes.className} by id`,
@@ -147,7 +148,7 @@ const getPathById = function (classes) {
       security: [
         {
           ParseAppId: [],
-          ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: 'Update instance',
@@ -196,7 +197,7 @@ const getPathById = function (classes) {
       security: [
         {
           ParseAppId: [],
-          ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: 'Delete instance',

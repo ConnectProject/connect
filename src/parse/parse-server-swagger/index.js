@@ -17,9 +17,6 @@ const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
 const ParseSwagger = function (config) {
   const app = express();
 
-  const swagOpts = { swaggerUrl: `${config.host}/api-docs` };
-  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(null, swagOpts));
-
   app.use('/api-docs', (_, res) => {
     const apiDocsOptions = {
       url: `${config.host}${config.apiRoot}/schemas`,
@@ -46,6 +43,9 @@ const ParseSwagger = function (config) {
         res.send(`Request failed with response code ${error.status}`);
       });
   });
+
+  const swagOpts = { swaggerUrl: `${config.host}/api-docs` };
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(null, swagOpts));
 
   return app;
 };
