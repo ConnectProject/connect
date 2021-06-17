@@ -90,7 +90,7 @@ module.exports = async (Parse) => {
     });
   }
 
-  Parse.Cloud.beforeSave('OAuthApplication', (req) => {
+  Parse.Cloud.beforeSave('OAuthApplication', async (req) => {
     req.object.set('owner', req.user);
 
     const roleACL = new Parse.ACL();
@@ -101,10 +101,16 @@ module.exports = async (Parse) => {
 
     req.object.set('ACL', roleACL);
 
-    if (!req.object.get('publicKey')) {
+    const existingObject = req.object.id
+      ? await new Parse.Query(Parse.Object.extend('OAuthApplication')).get(
+          req.object.id,
+          { useMasterKey: true },
+        )
+      : null;
+    if (!existingObject || !existingObject.get('publicKey')) {
       req.object.set('publicKey', 'pub_' + uuidv4().replace(/-/g, ''));
     }
-    if (!req.object.get('secretKey')) {
+    if (!existingObject || !existingObject.get('secretKey')) {
       req.object.set('secretKey', 'sec_' + uuidv4().replace(/-/g, ''));
     }
   });
