@@ -240,13 +240,13 @@ const getPathById = function (classes) {
 
 /**
  *
- * @param {Object} classe server classes
+ * @param {Object} oneClass server class
  * @returns {Object} schema
  */
-const transformClasseToSchema = function (classe) {
+const transformClasseToSchema = function (oneClass) {
   const schema = { type: 'object', properties: {} };
 
-  classe.forEach((element, key) => {
+  Object.entries(oneClass.fields).forEach(([key, element]) => {
     if (key !== 'ACL') {
       schema.properties[key] = schemaTypeToSwaggerType(element.type);
     }
@@ -266,14 +266,15 @@ exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
   const newSpec = spec;
 
   for (const classes of schemas) {
-    if (!excludes.includes(classes.className)) {
-      newSpec.components.schemas[classes.className] = transformClasseToSchema(
-        classes,
-      );
+    if (
+      !excludes.includes(classes.className) &&
+      !classes.className.startsWith('Sandbox_')
+    ) {
+      newSpec.components.schemas[classes.className] =
+        transformClasseToSchema(classes);
       newSpec.paths[`/parse/classes/${classes.className}`] = getPath(classes);
-      newSpec.paths[`/parse/classes/${classes.className}/{id}`] = getPathById(
-        classes,
-      );
+      newSpec.paths[`/parse/classes/${classes.className}/{id}`] =
+        getPathById(classes);
     }
   }
 
