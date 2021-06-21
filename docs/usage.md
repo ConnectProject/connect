@@ -7,7 +7,7 @@ This documentation is written to explain how to use the connect application and 
 - [Glossary](#glossary)
 - [Table of content](#table-of-content)
 - [Api usage](#api-usage)
-  - [Authentication](#authentication)
+  - [Session token Authentication](#authentication)
   - [OAuth Authentication](#oauth-authentication)
     - [OAuth Authentication Implementation](#oauth-authentication-implementation)
     - [Refreshing OAuth token](#oauth-authentication-refresh)
@@ -61,7 +61,7 @@ There is two way of authenticating against the API, depending on the request you
 | POST /classes/ClassName         |      ❌       |     ✅      |
 | PUT /classes/ClassName/objectId |      ❌       |     ✅      |
 
-### <a name="authentication">Authentication</a>
+### <a name="authentication">Session token Authentication</a>
 
 If you simply want to access data in a read only mode, you can use your personal access token that is presented to you from your Connect profile page. Copy the token and set it in a bash variable.
 
