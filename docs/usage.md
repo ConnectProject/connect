@@ -115,7 +115,12 @@ Response:
 To test it, there is a simple endpoint that get you the `userId` associated to this token:
 
 ```bash
-GET localhost:1337/oauth/user "Authorization: Bearer $accessToken"
+curl --request GET \
+  --url $API_URL/oauth/user \
+  --header 'Authorization: Bearer '$access_token
+
+Response:
+{ "id": "xxxx" }
 ```
 
 The token has a one month validity, and the refresh token is valid for one year (and you get a new one each time you refresh the token, see [Refreshing OAuth token](#oauth-authentication-refresh))
