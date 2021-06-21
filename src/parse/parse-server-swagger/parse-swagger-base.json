@@ -179,6 +179,62 @@
         }
       }
     },
+    "/parse/classes/OAuthApplication/": {
+      "get": {
+        "summary": "GET application's list",
+        "security": [
+          {
+            "ParseAppId": [],
+            "ParseSessionId": [],
+            "OAuth2BearerToken": []
+          }
+        ],
+        "tags": ["Application"],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "objectId": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "apple_store_link": {
+                    "type": "string"
+                  },
+                  "google_market_link": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updateAt": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server Internal error"
+          }
+        }
+      }
+    },
     "/parse/classes/OAuthApplication/{id}": {
       "get": {
         "summary": "GET an application's details by its ID",

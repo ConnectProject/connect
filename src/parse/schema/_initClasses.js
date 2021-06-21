@@ -54,8 +54,8 @@ module.exports = [
     required: ['name', 'description'],
     additionalProperties: false,
     classLevelPermissions: {
-      find: { 'role:Developer': true, 'role:Administrator': true },
-      get: { 'role:Developer': true, 'role:Administrator': true },
+      find: { '*': true, 'role:Developer': true, 'role:Administrator': true },
+      get: { '*': true, 'role:Developer': true, 'role:Administrator': true },
       readUserFields: ['owner'],
       writeUserFields: ['owner'],
       create: { 'role:Developer': true },
