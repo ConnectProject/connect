@@ -172,6 +172,18 @@ class DetailsPage extends React.PureComponent {
           {!loading && (
             <>
               <TextField
+                disabled
+                id="id"
+                label="OAuthApplication ID"
+                className={classes.textField}
+                fullWidth
+                helperText="Used to identify your application within the API"
+                value={application.id}
+                margin="normal"
+                variant="outlined"
+              />
+
+              <TextField
                 id="name"
                 label="Name"
                 className={classes.textField}
