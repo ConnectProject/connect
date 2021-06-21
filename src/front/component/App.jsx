@@ -24,7 +24,7 @@ import Routes from './Router';
 import PubSub from '../utils/pub-sub';
 import UserService from '../services/user-service';
 
-const options = ['Documentation', 'My Profile'];
+const options = ['Home', 'Documentation', 'My Profile'];
 
 class App extends React.PureComponent {
   constructor() {
@@ -33,7 +33,6 @@ class App extends React.PureComponent {
       canBack: false,
       userConnected: false,
       anchorRef: { current: null },
-      selectedIndex: 0,
       open: false,
     };
   }
@@ -71,11 +70,13 @@ class App extends React.PureComponent {
   handleMenuItemClick(event, index) {
     const { history } = this.props;
     if (index === 0) {
+      history.push('/');
+    } else if (index === 1) {
       window.open(
         'https://github.com/ConnectProject/connect/blob/master/docs/usage.md',
         '_blank',
       );
-    } else if (index === 1) {
+    } else if (index === 2) {
       history.push('/profile');
     }
 
@@ -106,8 +107,7 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const { userConnected, anchorRef, selectedIndex, open, canBack } =
-      this.state;
+    const { userConnected, anchorRef, open, canBack } = this.state;
 
     return (
       <div>
@@ -129,8 +129,7 @@ class App extends React.PureComponent {
             <Typography variant="h6" color="inherit">
               Connect
             </Typography>
-            <div className="spacer" />
-
+            <div className="spacer" style={{ flex: 1 }} />
             {userConnected && (
               <>
                 <ButtonGroup ref={anchorRef} aria-label="Split button">
@@ -179,8 +178,7 @@ class App extends React.PureComponent {
                             {options.map((option, index) => (
                               <MenuItem
                                 key={option}
-                                disabled={index === 2}
-                                selected={index === selectedIndex}
+                                disabled={index === 3}
                                 onClick={(event) =>
                                   this.handleMenuItemClick(event, index)
                                 }
