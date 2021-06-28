@@ -1,8 +1,16 @@
 import Parse from 'parse';
+import UserService from './user-service';
 
 const Application = Parse.Object.extend('OAuthApplication');
 
-const listApplications = () => new Parse.Query(Application).find();
+const listApplications = async () => {
+  const currentUser = await UserService.getCurrentUserAsync();
+  if (!currentUser) {
+    return [];
+  }
+
+  return new Parse.Query(Application).equalTo('owner', currentUser).find();
+};
 
 const findById = (id) => new Parse.Query(Application).get(id);
 
