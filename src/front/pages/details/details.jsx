@@ -147,7 +147,9 @@ class DetailsPage extends React.PureComponent {
     const { application } = this.state;
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.clipboard.writeText(application.attributes[key]);
+        navigator.clipboard.writeText(
+          application.attributes[key] || application[key],
+        );
         this.setState({ snackBarOpen: true });
       }
     });
@@ -171,18 +173,6 @@ class DetailsPage extends React.PureComponent {
 
           {!loading && (
             <>
-              <TextField
-                disabled
-                id="id"
-                label="OAuthApplication ID"
-                className={classes.textField}
-                fullWidth
-                helperText="Used to identify your application within the API"
-                value={application.id}
-                margin="normal"
-                variant="outlined"
-              />
-
               <TextField
                 id="name"
                 label="Name"
@@ -247,6 +237,33 @@ class DetailsPage extends React.PureComponent {
                 margin="normal"
                 variant="outlined"
                 error={errors.googleMarketLink}
+              />
+
+              <TextField
+                disabled
+                id="id"
+                label="OAuthApplication ID"
+                className={classes.textField}
+                fullWidth
+                helperText="Used to identify your application within the API"
+                value={application.id}
+                margin="normal"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('id');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               <TextField
