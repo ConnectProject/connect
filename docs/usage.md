@@ -45,7 +45,7 @@ Any request you do should have the following header : `x-parse-application-id: c
 You can set bash variables like this:
 
 ```bash
-API_URL=https://connect-project.io/parse
+CONNECT_URL=https://connect-project.io
 PARSE_APPLICATION=connect
 ```
 
@@ -70,7 +70,7 @@ Then use it in header for all the "GET" methods, for example:
 ```bash
 SESSION_TOKEN=r:xxxxxx
 curl --request GET \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'x-parse-session-token: '$SESSION_TOKEN
 ```
@@ -116,7 +116,7 @@ To test it, there is a simple endpoint that get you the `userId` associated to t
 
 ```bash
 curl --request GET \
-  --url $API_URL/oauth/user \
+  --url $CONNECT_URL/oauth/user \
   --header 'Authorization: Bearer '$access_token
 
 Response:
@@ -169,7 +169,7 @@ To create new object send a POST request to the endpoint `/parse/classes/:OBJECT
 
 ```bash
 curl --request POST \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'Authorization: Bearer '$access_token \
@@ -200,7 +200,7 @@ To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNA
 ```bash
 OBJECT_ID=DFwP7JXoa0
 curl --request PUT \
-  --url $API_URL/classes/GameScore/$OBJECT_ID \
+  --url $CONNECT_URL/parse/classes/GameScore/$OBJECT_ID \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'Authorization: Bearer '$access_token \
@@ -230,7 +230,7 @@ To delete an object send a DELETE request to the endpoint `/parse/classes/:OBJEC
 
 ```bash
 curl --request DELETE \
-  --url $API_URL/classes/GameScore/DFwP7JXoa0 \
+  --url $CONNECT_URL/parse/classes/GameScore/DFwP7JXoa0 \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'Authorization: Bearer '$access_token
 
@@ -248,7 +248,7 @@ You can retrieve a specific object using the GET endpoint `/parse/classes/:OBJEC
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/GameScore/$OBJECT_ID \
+  --url $CONNECT_URL/parse/classes/GameScore/$OBJECT_ID \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   # one of the two authentication headers
   --header 'x-parse-session-token: '$SESSION_TOKEN \
@@ -269,7 +269,7 @@ To retrieve a list of an object you can directly call the GET endpoint `/parse/c
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   # one of the two authentication headers
   --header 'x-parse-session-token: '$SESSION_TOKEN \
@@ -303,7 +303,7 @@ There are several ways to put constraints on the objects found, using the `where
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header "X-Parse-Application-Id: "$PARSE_APPLICATION \
   --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
@@ -342,7 +342,7 @@ You can use the `order` parameter to specify a field to sort by. Prefixing with 
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
@@ -353,7 +353,7 @@ If you are limiting your query, or if there are a very large number of results, 
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/GameScore \
+  --url $CONNECT_URL/parse/classes/GameScore \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'x-parse-session-token: '$SESSION_TOKEN \
   --get \
@@ -376,7 +376,7 @@ When you consult data, each object will be returned with an attribute `applicati
 
 ```bash
 curl --request GET \
-  --url $API_URL/classes/OAuthApplication/$applicationId \
+  --url $CONNECT_URL/parse/classes/OAuthApplication/$applicationId \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
   --header 'x-parse-session-token: '$SESSION_TOKEN
 
@@ -402,7 +402,7 @@ Each command in a batch has `method`, `path`, and `body` parameters that specify
 
 ```bash
 curl --request POST \
-  --url $API_URL/batch \
+  --url $CONNECT_URL/parse/batch \
   --header 'content-type: application/json' \
   --header 'x-parse-application-id: '$PARSE_APPLICATION \
 
