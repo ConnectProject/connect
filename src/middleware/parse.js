@@ -8,6 +8,8 @@ const {
   PARSE_MASTER_KEY,
   PARSE_READONLY_MASTER_KEY,
   PARSE_SILENT,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
 } = require('../config');
 const cloud = require('../parse/cloud/main');
 
@@ -48,6 +50,12 @@ module.exports = (parseCloudEvent) =>
       maxLimit: 100,
       serverURL: `${API_URL}/parse`,
       silent: PARSE_SILENT,
+      auth: {
+        github: {
+          id: GITHUB_CLIENT_ID,
+          access_token: GITHUB_CLIENT_SECRET,
+        },
+      },
     },
     parseCloudEvent,
   );

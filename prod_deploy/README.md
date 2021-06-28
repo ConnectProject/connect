@@ -23,10 +23,6 @@
   - `var passwd = "connect"`
   - `use connect`
   - `db.createUser({user: user, pwd: passwd, roles: ["readWrite"]});`
-  - `connect-api`
-  - `db.createUser({user: user, pwd: passwd, roles: ["readWrite"]});`
-  - `connect-sandbox`
-  - `db.createUser({user: user, pwd: passwd, roles: ["readWrite"]});`
 
 - Installer node et yarn (suivre https://classic.yarnpkg.com/en/docs/install/#centos-stable
 
@@ -64,7 +60,9 @@
   - `curl -v localhost:3001/parse-sandbox`
 
 ## Configure crontab to renew the certificate
+
 - run `sudo crontab -e` and add the following:
+
 ```
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
@@ -72,7 +70,9 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 ```
 
 ## Installation de webhook
+
 Configuration de webhook pour effectuer la mise à jour du serveur de manière automatique
+
 - `sudo mkdir /opt/webhook`
 - `sudo chown $USER /opt/webhook`
 - Download release from https://github.com/adnanh/webhook/releases and extract the `webhook` binary to `/opt/webhook`
@@ -85,11 +85,13 @@ Configuration de webhook pour effectuer la mise à jour du serveur de manière a
   - `curl localhost:9990/hooks/deploy-connect` should answer: `Hook rules were not satisfied.`
   - `sudo systemctl enable webhook`
 - Add the following redirection to the nginx server:
+
 ```
 location /hooks/ {
     proxy_pass http://127.0.0.1:9990;
 }
 ```
+
 - `sudo nginx -s reload`
 
 ## Pare-feu

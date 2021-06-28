@@ -54,7 +54,7 @@ const schemaTypeToSwaggerType = function (type) {
 const getPath = function (classes) {
   return {
     get: {
-      security: [{ ParseAppId: [], ParseSessionId: [] }],
+      security: [{ ParseAppId: [], ParseSessionId: [], OAuth2BearerToken: [] }],
       summary: `Get ${classes.className} data`,
       description:
         'Find queries documentation here https://docs.parseplatform.org/rest/guide/#queries',
@@ -73,7 +73,7 @@ const getPath = function (classes) {
       },
     },
     post: {
-      security: [{ ParseAppId: [], ParseSessionId: [] }],
+      security: [{ ParseAppId: [], OAuth2BearerToken: [] }],
       summary: 'Add object instance',
       description: 'Happy to access The System',
       tags: [`${classes.className}`],
@@ -116,6 +116,7 @@ const getPathById = function (classes) {
         {
           ParseAppId: [],
           ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: `Get ${classes.className} by id`,
@@ -147,7 +148,7 @@ const getPathById = function (classes) {
       security: [
         {
           ParseAppId: [],
-          ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: 'Update instance',
@@ -196,7 +197,7 @@ const getPathById = function (classes) {
       security: [
         {
           ParseAppId: [],
-          ParseSessionId: [],
+          OAuth2BearerToken: [],
         },
       ],
       summary: 'Delete instance',
@@ -240,13 +241,13 @@ const getPathById = function (classes) {
 
 /**
  *
- * @param {Object} classe server classes
+ * @param {Object} oneClass server class
  * @returns {Object} schema
  */
-const transformClasseToSchema = function (classe) {
+const transformClasseToSchema = function (oneClass) {
   const schema = { type: 'object', properties: {} };
 
-  classe.forEach((element, key) => {
+  Object.entries(oneClass.fields).forEach(([key, element]) => {
     if (key !== 'ACL') {
       schema.properties[key] = schemaTypeToSwaggerType(element.type);
     }
@@ -266,14 +267,15 @@ exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
   const newSpec = spec;
 
   for (const classes of schemas) {
-    if (!excludes.includes(classes.className)) {
-      newSpec.components.schemas[classes.className] = transformClasseToSchema(
-        classes,
-      );
+    if (
+      !excludes.includes(classes.className) &&
+      !classes.className.startsWith('Sandbox_')
+    ) {
+      newSpec.components.schemas[classes.className] =
+        transformClasseToSchema(classes);
       newSpec.paths[`/parse/classes/${classes.className}`] = getPath(classes);
-      newSpec.paths[`/parse/classes/${classes.className}/{id}`] = getPathById(
-        classes,
-      );
+      newSpec.paths[`/parse/classes/${classes.className}/{id}`] =
+        getPathById(classes);
     }
   }
 

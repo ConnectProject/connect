@@ -1,4 +1,5 @@
-/* eslint-disable no-undef */
+/* global Parse */
+
 const getOne = async function (name) {
   const Role = Parse.Object.extend('_Role');
   const query = new Parse.Query(Role);

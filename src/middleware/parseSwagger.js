@@ -7,5 +7,13 @@ module.exports = () =>
     apiRoot: '/parse',
     appId: PARSE_APP_ID,
     masterKey: PARSE_MASTER_KEY,
-    excludes: ['_User', '_Role', '_Product', '_Session'],
+    excludes: [
+      '_User',
+      '_Role',
+      '_Product',
+      '_Session',
+      'OAuthApplication',
+      'OAuthToken',
+      'OAuthAuthorizationCode',
+    ],
   });

@@ -1,33 +1,32 @@
+const validate = require('validate.js');
+
 export const validateFormField = (value, field) => {
-  let validated = false;
   const urlRegex = new RegExp(
     /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi,
   );
   switch (field) {
     case 'name':
     case 'description':
-      if (value.length === 0) {
-        validated = false;
-      } else {
-        validated = true;
-      }
-      break;
+      return value.length > 0;
 
-    case 'apple_store_link':
-    case 'google_market_link':
-      if (value.match(urlRegex) || value.length === 0) {
-        validated = true;
-      } else {
-        validated = false;
-      }
-      break;
+    case 'appleStoreLink':
+    case 'googleMarketLink':
+      return value.match(urlRegex) || value.length === 0;
+
+    case 'redirectUris':
+      return !value
+        .split(',')
+        .some(
+          (uri) =>
+            typeof validate(
+              { uri: uri.trim() },
+              { uri: { url: { schemes: ['.+'], allowLocal: true } } },
+            ) !== 'undefined',
+        );
 
     default:
-      validated = false;
-      break;
+      return false;
   }
-
-  return validated;
 };
 
 export const checkValid = (errorState) => {

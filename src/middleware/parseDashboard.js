@@ -19,13 +19,6 @@ module.exports = () =>
         readOnlyMasterKey: PARSE_READONLY_MASTER_KEY,
         appName: PARSE_APP_NAME,
       },
-      {
-        serverURL: `${PUBLIC_URL}/parse-sandbox`,
-        appId: `${PARSE_APP_ID}-sandbox`,
-        masterKey: PARSE_MASTER_KEY,
-        readOnlyMasterKey: PARSE_READONLY_MASTER_KEY,
-        appName: `${PARSE_APP_NAME}-sandbox`,
-      },
     ],
     users: [
       {

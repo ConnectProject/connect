@@ -10,7 +10,6 @@ jest.mock('../src/config', () => configMock);
 
 // Set up a default API server for testing with default configuration.
 const ConnectServer = require('../src/connectServer');
-const AuthService = require('../src/api/services/auth');
 
 const bindServer = function () {
   let server;
@@ -58,17 +57,8 @@ const bindAll = function () {
   bindGithub();
 };
 
-// the async call is on the return statement
-// eslint-disable-next-line require-await
-const getJwtToken = async function () {
-  const authService = new AuthService();
-
-  return authService.connectUser('lambda_github_code');
-};
-
 module.exports = {
   bindAll,
   bindServer,
   bindGithub,
-  getJwtToken,
 };

@@ -16,6 +16,11 @@
       "type": "apiKey",
       "name": "X-Parse-Session-Token",
       "in": "header"
+    },
+    "OAuth2BearerToken": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   },
   "basePath": "/",
@@ -54,8 +59,243 @@
             "type": "string"
           }
         }
+      },
+      "OAuthAccessToken": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string",
+            "enum": ["Bearer"]
+          },
+          "expires_in": {
+            "type": "number"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
       }
     }
   },
-  "paths": {}
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "summary": "POST OAuth Access Token",
+        "description": "Request an access token from an authorization code, or refresh an accessToken using the refreshToken. See https://github.com/ConnectProject/connect/blob/master/docs/usage.md#oauth-authentication. WARNING - the request body must have a \"Content-Type\": \"application/x-www-form-urlencoded\".",
+        "tags": ["OAuth"],
+        "consumes": ["application/x-www-form-urlencoded"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties marked as required are required for both requests. For confirming an authorization code, pass the code and redirect_uri, for refreshing a token, pass refresh_token.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "client_id": {
+                  "type": "string",
+                  "required": true,
+                  "example": "pub_XXXX",
+                  "description": "Found in your developer's dashboard on connect-project.io"
+                },
+                "client_secret": {
+                  "type": "string",
+                  "required": true,
+                  "example": "sec_XXXX",
+                  "description": "Found in your developer's dashboard on connect-project.io"
+                },
+                "grant_type": {
+                  "type": "string",
+                  "enum": ["authorization_code", "refresh_token"],
+                  "description": "Use authorization_code when requesting a token in the initial OAuth flow, and then use refresh_token to refresh the access token you obtained earlier."
+                },
+                "code": {
+                  "type": "string",
+                  "description": "When requesting a token, send the authorization_code in this field."
+                },
+                "redirect_uri": {
+                  "type": "string",
+                  "description": "When requesting a token, send the same redirectUri as used when initating the OAuth flow."
+                },
+                "refresh_token": {
+                  "type": "string",
+                  "description": "When refreshing a token, pass the refresh token here."
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/components/schemas/OAuthAccessToken"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server Internal error"
+          }
+        }
+      }
+    },
+    "/oauth/user": {
+      "get": {
+        "summary": "GET the currently authorized user",
+        "security": [
+          {
+            "OAuth2BearerToken": []
+          }
+        ],
+        "tags": ["OAuth"],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server Internal error"
+          }
+        }
+      }
+    },
+    "/parse/classes/OAuthApplication/": {
+      "get": {
+        "summary": "GET application's list",
+        "security": [
+          {
+            "ParseAppId": [],
+            "ParseSessionId": [],
+            "OAuth2BearerToken": []
+          }
+        ],
+        "tags": ["Application"],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "objectId": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "apple_store_link": {
+                    "type": "string"
+                  },
+                  "google_market_link": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updateAt": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server Internal error"
+          }
+        }
+      }
+    },
+    "/parse/classes/OAuthApplication/{id}": {
+      "get": {
+        "summary": "GET an application's details by its ID",
+        "security": [
+          {
+            "ParseAppId": [],
+            "ParseSessionId": [],
+            "OAuth2BearerToken": []
+          }
+        ],
+        "tags": ["Application"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "The id of the element you want to get.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "objectId": {
+                  "type": "string",
+                  "required": true
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "apple_store_link": {
+                  "type": "string"
+                },
+                "google_market_link": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updateAt": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Server Internal error"
+          }
+        }
+      }
+    }
+  }
 }

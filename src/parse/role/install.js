@@ -1,4 +1,5 @@
-/* eslint-disable no-undef */
+/* global Parse */
+
 const { getOne } = require('./get');
 
 module.exports = async () => {
