@@ -2,14 +2,13 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'; // ES6
 
 import * as React from 'react';
-import { hasJwt } from '../../services/auth';
+import UserService from '../../services/user-service';
+import LoginActions from '../../component/LoginActions';
 
 const styles = {
   card: {
@@ -20,14 +19,24 @@ const styles = {
   media: {
     height: 140,
   },
-  buttonContainer: {
-    'justify-content': 'center',
-  },
 };
 
 class LoginPage extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.onUserLoggedIn = this.onUserLoggedIn.bind(this);
+  }
+
   componentDidMount() {
-    if (hasJwt()) {
+    const currentUser = UserService.getCurrentUser();
+    if (currentUser) {
+      const { history } = this.props;
+      history.push('/home');
+    }
+  }
+
+  onUserLoggedIn(user) {
+    if (user) {
       const { history } = this.props;
       history.push('/home');
     }
@@ -49,20 +58,11 @@ class LoginPage extends React.PureComponent {
               Welcome
             </Typography>
             <Typography variant="body1" color="textSecondary" component="p">
-              To start using Connect, please use your GitHub to login.
+              To start using Connect, please use your GitHub account to login?
             </Typography>
           </CardContent>
         </CardContent>
-        <CardActions className={classes.buttonContainer}>
-          <a
-            href={`https://github.com/login/oauth/authorize?client_id=${window._env_.GITHUB_CLIENT_ID}`}
-            title="Connect with GitHub"
-          >
-            <Button size="large" color="primary">
-              Login
-            </Button>
-          </a>
-        </CardActions>
+        <LoginActions onUserLoggedIn={this.onUserLoggedIn} />
       </Card>
     );
   }

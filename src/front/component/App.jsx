@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'; // ES6
+import Parse from 'parse';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,10 +20,11 @@ import MenuList from '@material-ui/core/MenuList';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import { connectedState, logout } from '../services/auth';
 import Routes from './Router';
+import PubSub from '../utils/pub-sub';
+import UserService from '../services/user-service';
 
-const options = ['Documentation', 'My Profile'];
+const options = ['Home', 'Documentation', 'My Profile'];
 
 class App extends React.PureComponent {
   constructor() {
@@ -31,17 +33,13 @@ class App extends React.PureComponent {
       canBack: false,
       userConnected: false,
       anchorRef: { current: null },
-      selectedIndex: 0,
       open: false,
     };
   }
 
   componentDidMount() {
     const { history } = this.props;
-    if (
-      history.location.pathname !== '/home' &&
-      history.location.pathname !== '/'
-    ) {
+    if (!['/home', '/', '/authorize'].includes(history.location.pathname)) {
       this.setState({ canBack: true });
     }
     history.listen((location) => {
@@ -52,23 +50,33 @@ class App extends React.PureComponent {
       }
     });
 
-    connectedState.subscribe((userConnected) => {
-      // useful to avoid displaying user pages when logged out
-      if (!userConnected) {
+    const currentUser = UserService.getCurrentUser();
+    this.setState({ userConnected: currentUser !== null });
+    if (
+      currentUser === null &&
+      !['/', '/authorize'].includes(history.location.pathname)
+    ) {
+      history.push('/');
+    }
+    PubSub.subscribe(UserService.PubSubEvents.AUTH_STATUS_UPDATED, async () => {
+      const newUser = await UserService.getCurrentUserAsync();
+      if (!newUser) {
         history.push('/');
       }
-      this.setState({ userConnected });
+      this.setState({ userConnected: newUser !== null });
     });
   }
 
   handleMenuItemClick(event, index) {
     const { history } = this.props;
     if (index === 0) {
+      history.push('/');
+    } else if (index === 1) {
       window.open(
         'https://github.com/ConnectProject/connect/blob/master/docs/usage.md',
         '_blank',
       );
-    } else if (index === 1) {
+    } else if (index === 2) {
       history.push('/profile');
     }
 
@@ -99,13 +107,7 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const {
-      userConnected,
-      anchorRef,
-      selectedIndex,
-      open,
-      canBack,
-    } = this.state;
+    const { userConnected, anchorRef, open, canBack } = this.state;
 
     return (
       <div>
@@ -127,15 +129,14 @@ class App extends React.PureComponent {
             <Typography variant="h6" color="inherit">
               Connect
             </Typography>
-            <div className="spacer" />
-
+            <div className="spacer" style={{ flex: 1 }} />
             {userConnected && (
               <>
                 <ButtonGroup ref={anchorRef} aria-label="Split button">
                   <Button
                     color="inherit"
                     onClick={() => {
-                      logout();
+                      Parse.User.logOut();
                       window.location.href = '/';
                     }}
                   >
@@ -177,8 +178,7 @@ class App extends React.PureComponent {
                             {options.map((option, index) => (
                               <MenuItem
                                 key={option}
-                                disabled={index === 2}
-                                selected={index === selectedIndex}
+                                disabled={index === 3}
                                 onClick={(event) =>
                                   this.handleMenuItemClick(event, index)
                                 }

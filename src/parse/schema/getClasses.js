@@ -31,9 +31,12 @@ const swaggerTypeToParseType = function (element) {
   return parseType;
 };
 
-const getClass = function (file) {
+const getClass = function (file, isSandbox = false) {
   return new Promise((resolve, reject) => {
-    const className = path.parse(file).base.replace(/.schema.json$/, '');
+    let className = path.parse(file).base.replace(/.schema.json$/, '');
+    if (isSandbox) {
+      className = `Sandbox_${className}`;
+    }
     fs.readFile(file, 'utf8', (err, data) => {
       if (err) {
         reject(err);
@@ -67,6 +70,7 @@ module.exports = function getClasses() {
         const promises = [];
         for (const file of files) {
           promises.push(getClass(file));
+          promises.push(getClass(file, true));
         }
         Promise.all(promises).then((result) => {
           classes = result;

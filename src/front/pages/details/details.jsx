@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -13,8 +14,8 @@ import PropTypes from 'prop-types'; // ES6
 import Snackbar from '@material-ui/core/Snackbar';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { getApplication, updateApplication } from '../../services/api';
-import { checkValid, validateFormField } from '../../services/formValidator';
+import { validateFormField, checkValid } from '../../services/formValidator';
+import ApplicationsService from '../../services/applications-service';
 
 const styles = {
   root: {
@@ -65,19 +66,20 @@ class DetailsPage extends React.PureComponent {
       loading: true,
       updateLoading: false,
       application: {},
+      applicationUpdate: {},
       snackBarOpen: false,
       errors: {
         name: false,
         description: false,
-        apple_store_link: false,
-        google_market_link: false,
+        appleStoreLink: false,
+        googleMarketLink: false,
       },
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { match } = this.props;
-    getApplication(match.params.appId).then((res) => {
+    ApplicationsService.findById(match.params.appId).then((res) => {
       this.setState((prevState) => ({
         ...prevState,
         loading: false,
@@ -86,14 +88,14 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  handleChange(name, event) {
-    const { application, errors } = this.state;
+  handleChange (name, event) {
+    const { applicationUpdate, errors } = this.state;
     const { value } = event.target;
 
     const validated = validateFormField(value, name);
     this.setState({
-      application: {
-        ...application,
+      applicationUpdate: {
+        ...applicationUpdate,
         [name]: value,
       },
       errors: {
@@ -103,13 +105,13 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  handleClick() {
+  handleClick () {
     this.setState({
       snackBarOpen: true,
     });
   }
 
-  handleClose(event, reason) {
+  handleClose (event, reason) {
     if (reason === 'clickaway') {
       return;
     }
@@ -119,37 +121,45 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  goBack() {
+  goBack () {
     const { history } = this.props;
     history.goBack();
   }
 
-  async clickUpdateApplication() {
-    const { application } = this.state;
+  async clickUpdateApplication () {
+    const { application, applicationUpdate } = this.state;
     this.setState({
       updateLoading: true,
     });
-    const response = await updateApplication(application._id, application);
+
+    Object.entries(applicationUpdate).forEach(([key, value]) => {
+      application.set(key, value);
+    });
+    await application.save();
     this.setState({
       updateLoading: false,
-      application: response,
+      application,
+      applicationUpdate: {},
     });
   }
 
-  copyToClipboard(key) {
+  copyToClipboard (key) {
     const { application } = this.state;
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
-        navigator.clipboard.writeText(application[key]);
+        navigator.clipboard.writeText(
+          application.attributes[key] || application[key],
+        );
         this.setState({ snackBarOpen: true });
       }
     });
   }
 
-  render() {
+  render () {
     const { classes } = this.props;
     const {
       application,
+      applicationUpdate,
       errors,
       loading,
       updateLoading,
@@ -168,7 +178,9 @@ class DetailsPage extends React.PureComponent {
                 label="Name"
                 className={classes.textField}
                 fullWidth
-                value={application.name}
+                value={
+                  applicationUpdate.name ?? application.attributes.name ?? ''
+                }
                 onChange={(event) => this.handleChange('name', event)}
                 margin="normal"
                 variant="outlined"
@@ -180,7 +192,11 @@ class DetailsPage extends React.PureComponent {
                 label="Description"
                 className={classes.textField}
                 fullWidth
-                value={application.description}
+                value={
+                  applicationUpdate.description ??
+                  application.attributes.description ??
+                  ''
+                }
                 onChange={(event) => this.handleChange('description', event)}
                 margin="normal"
                 variant="outlined"
@@ -190,31 +206,135 @@ class DetailsPage extends React.PureComponent {
               />
 
               <TextField
-                id="apple_store_link"
+                id="appleStoreLink"
                 label="App Store Link"
                 className={classes.textField}
                 fullWidth
-                value={application.apple_store_link || ''}
-                onChange={(event) =>
-                  this.handleChange('apple_store_link', event)
+                value={
+                  applicationUpdate.appleStoreLink ??
+                  application.attributes.appleStoreLink ??
+                  ''
                 }
+                onChange={(event) => this.handleChange('appleStoreLink', event)}
                 margin="normal"
                 variant="outlined"
-                error={errors.apple_store_link}
+                error={errors.appleStoreLink}
               />
 
               <TextField
-                id="google_market_link"
+                id="googleMarketLink"
                 label="Play Store Link"
                 className={classes.textField}
                 fullWidth
-                value={application.google_market_link || ''}
+                value={
+                  applicationUpdate.googleMarketLink ??
+                  application.attributes.googleMarketLink ??
+                  ''
+                }
                 onChange={(event) =>
-                  this.handleChange('google_market_link', event)
+                  this.handleChange('googleMarketLink', event)
                 }
                 margin="normal"
                 variant="outlined"
-                error={errors.google_market_link}
+                error={errors.googleMarketLink}
+              />
+
+              <TextField
+                disabled
+                id="id"
+                label="OAuthApplication ID"
+                className={classes.textField}
+                fullWidth
+                helperText="Used to identify your application within the API"
+                value={application.id}
+                margin="normal"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('id');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                disabled
+                id="pub_key"
+                label="OAuth Client ID"
+                className={classes.textField}
+                fullWidth
+                helperText="Used to identify your application with the OAuth flow"
+                value={application.attributes.publicKey}
+                margin="normal"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('publicKey');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                disabled
+                id="sec_key"
+                label="OAuth Secret Key"
+                className={classes.textField}
+                fullWidth
+                helperText="Used to identify your application with the OAuth flow - not to be used on client side applications"
+                value={application.attributes.secretKey}
+                margin="normal"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Tooltip title="Copy to clipboard">
+                        <IconButton
+                          onClick={() => {
+                            this.copyToClipboard('secretKey');
+                          }}
+                        >
+                          <FileCopy />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                id="redirectUris"
+                label="OAuth Redirect URIs"
+                className={classes.textField}
+                fullWidth
+                helperText="Enter URIs your app can receive the OAuth response on. Separate multiple URIs by a coma. Can be a web url or a deeplink uri for mobile apps."
+                value={
+                  applicationUpdate.redirectUris ??
+                  application.attributes.redirectUris ??
+                  ''
+                }
+                onChange={(event) => this.handleChange('redirectUris', event)}
+                margin="normal"
+                variant="outlined"
+                error={errors.redirectUris}
               />
 
               <div className={classes.buttonContainer}>
@@ -236,87 +356,6 @@ class DetailsPage extends React.PureComponent {
                   )}
                 </div>
               </div>
-
-              <TextField
-                disabled
-                id="parse_name"
-                label="App ID"
-                className={classes.textField}
-                fullWidth
-                helperText="Used to identify your application with the API"
-                value={application.parse_name}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('parse_name');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                disabled
-                id="token"
-                label="Token"
-                className={classes.textField}
-                fullWidth
-                helperText="Production environment"
-                value={application.token}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('token');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                disabled
-                id="token_sandbox"
-                label="Token Sandbox"
-                className={classes.textField}
-                fullWidth
-                helperText="Test environment"
-                value={application.token_sandbox}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('token_sandbox');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
 
               <Snackbar
                 anchorOrigin={{

@@ -2,7 +2,7 @@ const getClasses = require('../schema/getClasses');
 
 module.exports = async (Parse) => {
   const schemaClasses = await getClasses();
-  for (const schemaClass of schemaClasses) {
+  for (const schemaClass of [...schemaClasses, { className: 'OAuthApplication' }]) {
     Parse.Cloud.afterFind(schemaClass.className, (req) => {
       if (req.master) {
         return;
@@ -13,7 +13,6 @@ module.exports = async (Parse) => {
       for (const object of req.objects) {
         const newObject = object.toJSON();
         delete newObject.ACL;
-        delete newObject.owner;
 
         // re-convert dates in JSON format
         for (const field of Object.keys(newObject)) {
@@ -28,4 +27,4 @@ module.exports = async (Parse) => {
       req.objects = objects;
     });
   }
-};
+}

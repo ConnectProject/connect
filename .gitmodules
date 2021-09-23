@@ -1,0 +1,3 @@
+[submodule "src/parse/schema/classes"]
+	path = src/parse/schema/classes
+	url = https://github.com/ConnectProject/schemas.git

@@ -1,40 +1,34 @@
 /* eslint-disable react/forbid-prop-types */
-import * as React from 'react';
 import PropTypes from 'prop-types'; // ES6
-
-import { setAuthToken } from '../../services/auth';
+import * as React from 'react';
+import UserService from '../../services/user-service';
 
 class Github extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { location, history } = this.props;
     const params = new URLSearchParams(location.search);
 
-    const responses = await fetch(`${window._env_.PUBLIC_URL}/api/auth`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify({ code: params.get('code') }),
-    });
-
-    if ((await responses.status) !== 200) {
-      return history.push('/');
-    }
-
-    setAuthToken(await responses.text());
-
-    return history.push('/home');
+    UserService.confirmGithubAuth({ code: params.get('code') })
+      .then(() => {
+        if (params.get('redirectPath')) {
+          history.push(params.get('redirectPath'));
+        } else {
+          history.push('/home');
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        history.push('/');
+      });
   }
 
   render() {
-    return <p>Redirection</p>;
+    return <p>Redirecting...</p>;
   }
 }
 
