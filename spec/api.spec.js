@@ -276,6 +276,7 @@ describe('Parse server', () => {
       playerName: 'test9',
       cheatMode: false,
       applicationId: application.objectId,
+      userId: endUserUserId,
     });
 
     createdGameScoreObjectId = data.objectId;
@@ -337,6 +338,7 @@ describe('Parse server', () => {
       playerName: 'test9',
       cheatMode: true,
       applicationId: application.objectId,
+      userId: endUserUserId,
     });
 
     gameScoreObject = data;
@@ -541,5 +543,41 @@ describe('Parse server', () => {
     } catch (err) {
       expect(err).toBeDefined();
     }
+  });
+
+  it('refuse DELETE GameScore event when owner on a different application', async () => {
+    const { accessToken: accessTokenApp2 } = await getAccessToken(
+      credentials.endUser.email,
+      credentials.endUser.password,
+      application2,
+    );
+    expect.assertions(1);
+    try {
+      await axios({
+        method: 'delete',
+        url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-parse-application-id': PARSE_APP_ID,
+          Authorization: 'Bearer ' + accessTokenApp2.access_token,
+        }
+      });
+    } catch (err) {
+      expect(err).toBeDefined();
+    }
+  });
+
+  it('DELETE GameScore event', async () => {
+    const { data } = await axios({
+      method: 'delete',
+      url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+    });
+
+    expect(data).toEqual({});
   });
 });

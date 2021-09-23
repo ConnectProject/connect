@@ -31,10 +31,10 @@ module.exports = async (Parse) => {
         );
       }
       if (
-        req.object.get('applicationId') &&
-        req.object.get('applicationId') !== application.id
+        req.original?.get('applicationId') &&
+        req.original.get('applicationId') !== application.id
       ) {
-        // trying to update the object that was cerated with this user, but with another application. Forbidden.
+        // trying to update the object that was created with this user, but with another application. Forbidden.
         throw new Parse.Error(403, 'Please use OAuth to authenticate');
       }
 
@@ -48,6 +48,7 @@ module.exports = async (Parse) => {
       delete jsonObject.updatedAt;
       delete jsonObject.objectId;
       delete jsonObject.applicationId;
+      delete jsonObject.userId;
       delete jsonObject.ACL;
 
       // convert Parse dates in iso format
@@ -74,11 +75,8 @@ module.exports = async (Parse) => {
         }
       }
 
-      req.object.set('owner', req.user);
-
-      if (!req.object.get('applicationId')) {
-        req.object.set('applicationId', application.id);
-      }
+      req.object.set('userId', endUser.id);
+      req.object.set('applicationId', application.id);
 
       const roleACL = new Parse.ACL();
 
@@ -103,9 +101,9 @@ module.exports = async (Parse) => {
 
     const existingObject = req.object.id
       ? await new Parse.Query(Parse.Object.extend('OAuthApplication')).get(
-          req.object.id,
-          { useMasterKey: true },
-        )
+        req.object.id,
+        { useMasterKey: true },
+      )
       : null;
     if (!existingObject || !existingObject.get('publicKey')) {
       req.object.set('publicKey', 'pub_' + uuidv4().replace(/-/g, ''));

@@ -77,7 +77,7 @@ class DetailsPage extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { match } = this.props;
     ApplicationsService.findById(match.params.appId).then((res) => {
       this.setState((prevState) => ({
@@ -88,7 +88,7 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  handleChange(name, event) {
+  handleChange (name, event) {
     const { applicationUpdate, errors } = this.state;
     const { value } = event.target;
 
@@ -105,13 +105,13 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  handleClick() {
+  handleClick () {
     this.setState({
       snackBarOpen: true,
     });
   }
 
-  handleClose(event, reason) {
+  handleClose (event, reason) {
     if (reason === 'clickaway') {
       return;
     }
@@ -121,12 +121,12 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  goBack() {
+  goBack () {
     const { history } = this.props;
     history.goBack();
   }
 
-  async clickUpdateApplication() {
+  async clickUpdateApplication () {
     const { application, applicationUpdate } = this.state;
     this.setState({
       updateLoading: true,
@@ -143,7 +143,7 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  copyToClipboard(key) {
+  copyToClipboard (key) {
     const { application } = this.state;
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
@@ -155,7 +155,7 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  render() {
+  render () {
     const { classes } = this.props;
     const {
       application,

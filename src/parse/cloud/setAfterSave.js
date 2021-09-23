@@ -28,7 +28,6 @@ module.exports = async (Parse) => {
   for (const schemaClass of schemaClasses) {
     Parse.Cloud.afterSave(schemaClass.className, (req) => {
       const jsonObject = req.object.toJSON();
-      delete jsonObject.owner;
       delete jsonObject.ACL;
 
       // re-convert dates in JSON format

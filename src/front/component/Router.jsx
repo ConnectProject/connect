@@ -10,7 +10,7 @@ import NoFound404Page from '../pages/notfound/notfound';
 import Github from '../pages/login/github';
 
 class Routes extends React.PureComponent {
-  render() {
+  render () {
     return (
       <Switch>
         <Route exact path="/login/github" component={Github} />

@@ -187,7 +187,8 @@ Response :
   "createdAt": "2019-07-15T14:06:53.659Z",
   "updatedAt": "2019-07-15T14:06:53.659Z",
   "objectId": "DFwP7JXoa0",
-  "applicationId": "[YOUR_APPLICATION_ID]"
+  "applicationId": "[YOUR_APPLICATION_ID]",
+  "userId": "[YOUR_USER_ID]"
 }
 ```
 
@@ -218,7 +219,8 @@ Response :
   "createdAt": "2019-07-15T14:06:53.659Z",
   "updatedAt": "2019-07-15T15:04:42.884Z",
   "objectId": "DFwP7JXoa0",
-  "applicationId": "[YOUR_APPLICATION_ID]"
+  "applicationId": "[YOUR_APPLICATION_ID]",
+  "userId": "[YOUR_USER_ID]"
 }
 ```
 
@@ -469,7 +471,7 @@ When a Pull Request is accepted, the change (add or update) will be apply at the
 A schema is the descriptor of a class. The name of class is the beggining of its file name, we use [JSON Schema](https://json-schema.org/) to describe the list of the fields.
 
 You can create a Pull Request with for title `[Schema][New] ClassName`.
-Write your schema file on `src/parse/schema/classes` folder with name `YOUR_CLASS_NAME.js`. A schema file should look like that :
+Write your schema file on `src/parse/schema/classes` folder with name `YOUR_CLASS_NAME.json`. A schema file should look like that :
 
 ```json
 {
