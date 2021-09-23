@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software
 
 ```
-node v12.5+
+node v14+
 yarn v1.16+
 docker-compose v1.23+ (or a Mongo database)
 ```
