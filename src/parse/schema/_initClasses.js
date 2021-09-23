@@ -13,10 +13,7 @@ module.exports = [
   },
   {
     className: '_User',
-    fields: {
-      applicationId: { type: 'String', required: false },
-      endUserId: { type: 'String', required: false },
-    },
+    fields: {},
     classLevelPermissions: {
       find: {},
       get: {},

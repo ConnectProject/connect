@@ -18,7 +18,7 @@ module.exports = (app) => {
 
   app.get('/oauth/user', oAuthMiddleware, (req, res, next) => {
     try {
-      const userId = req.user?.id;
+      const userId = req.userFromJWT?.id;
       if (!userId) {
         throw new Error('Not authenticated');
       }
