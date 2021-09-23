@@ -3,6 +3,7 @@ const schemaSync = require('../schema/sync');
 const roleInstall = require('../role/install');
 const setBeforeSave = require('./setBeforeSave');
 const setAfterSave = require('./setAfterSave');
+const setBeforeDelete = require('./setBeforeDelete')
 const setAfterFind = require('./setAfterFind');
 const initCloudFunctions = require('./functions');
 
@@ -15,6 +16,7 @@ const init = async function (Parse) {
 
   await setBeforeSave(Parse);
   await setAfterSave(Parse);
+  await setBeforeDelete(Parse)
   await setAfterFind(Parse);
 
   await initCloudFunctions(Parse);
