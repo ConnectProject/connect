@@ -22,6 +22,20 @@ docker-compose v1.23+ (or a Mongo database)
 
 ### Installing
 
+Clone the repo
+
+```
+git clone https://github.com/ConnectProject/connect
+```
+
+Init and update the submodules
+
+```
+cd connect
+git submodule init
+git submodule update
+```
+
 Setup env variables.
 
 ```
