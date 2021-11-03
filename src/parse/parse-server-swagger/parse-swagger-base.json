@@ -5,7 +5,6 @@
     "description": "Full API documentation of the connect api",
     "version": "1.0.0"
   },
-  "schemes": ["http", "https"],
   "securityDefinitions": {
     "ParseAppId": {
       "type": "apiKey",
@@ -24,7 +23,9 @@
     }
   },
   "basePath": "/",
-  "produces": ["application/json"],
+  "produces": [
+    "application/json"
+  ],
   "components": {
     "schemas": {
       "Batch": {
@@ -68,7 +69,9 @@
           },
           "token_type": {
             "type": "string",
-            "enum": ["Bearer"]
+            "enum": [
+              "Bearer"
+            ]
           },
           "expires_in": {
             "type": "number"
@@ -85,8 +88,12 @@
       "post": {
         "summary": "POST OAuth Access Token",
         "description": "Request an access token from an authorization code, or refresh an accessToken using the refreshToken. See https://github.com/ConnectProject/connect/blob/master/docs/usage.md#oauth-authentication. WARNING - the request body must have a \"Content-Type\": \"application/x-www-form-urlencoded\".",
-        "tags": ["OAuth"],
-        "consumes": ["application/x-www-form-urlencoded"],
+        "tags": [
+          "OAuth"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -110,7 +117,10 @@
                 },
                 "grant_type": {
                   "type": "string",
-                  "enum": ["authorization_code", "refresh_token"],
+                  "enum": [
+                    "authorization_code",
+                    "refresh_token"
+                  ],
                   "description": "Use authorization_code when requesting a token in the initial OAuth flow, and then use refresh_token to refresh the access token you obtained earlier."
                 },
                 "code": {
@@ -155,7 +165,9 @@
             "OAuth2BearerToken": []
           }
         ],
-        "tags": ["OAuth"],
+        "tags": [
+          "OAuth"
+        ],
         "responses": {
           "200": {
             "schema": {
@@ -189,7 +201,9 @@
             "OAuth2BearerToken": []
           }
         ],
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "responses": {
           "200": {
             "schema": {
@@ -245,7 +259,9 @@
             "OAuth2BearerToken": []
           }
         ],
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "in": "path",
