@@ -1,5 +1,3 @@
-// this option is given to pass the linter but the functions are not working
-/* eslint-disable no-invalid-this */
 // All credit to https://github.com/bhtz/parse-server-swagger
 // the code is adapted for our use case
 
@@ -44,7 +42,7 @@ const ParseSwagger = function (config) {
       });
   });
 
-  const swagOpts = { swaggerUrl: `${config.host}/api-docs` };
+  const swagOpts = { swaggerUrl: `/api-docs` };
   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(null, swagOpts));
 
   return app;
