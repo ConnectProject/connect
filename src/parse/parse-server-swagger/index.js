@@ -3,9 +3,9 @@
 
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const request = require('request-promise');
-const { parseSchemaToSwagger } = require('./schema-to-swagger');
+const { jsonSchemasToSwagger } = require('./schema-to-swagger');
 const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
+const getSchemas = require('../schema/getSchemas');
 
 /**
  * constructor
@@ -15,31 +15,21 @@ const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
 const ParseSwagger = function (config) {
   const app = express();
 
-  app.use('/api-docs', (_, res) => {
-    const apiDocsOptions = {
-      url: `${config.host}${config.apiRoot}/schemas`,
-      method: 'GET',
-      json: true,
-      headers: {
-        'X-Parse-Application-Id': config.appId,
-        'X-Parse-Master-Key': config.masterKey,
-      },
-    };
+  app.use('/api-docs', async (_, res) => {
 
-    const excludes = config.excludes || [];
-
-    request(apiDocsOptions)
-      .then((data) => {
-        const swagger = parseSchemaToSwagger(
-          parseBaseSwaggerSpec,
-          data.results,
-          excludes,
-        );
-        res.json(swagger);
-      })
-      .catch((error) => {
-        res.send(`Request failed with response code ${error.status}`);
-      });
+    try {
+      const excludes = config.excludes || [];
+      const schemas = await getSchemas()
+      const swagger = jsonSchemasToSwagger(
+        parseBaseSwaggerSpec,
+        schemas,
+        excludes,
+      );
+      res.json(swagger);
+    }
+    catch (error) {
+      res.send(`Request failed with response code ${error.status}`);
+    }
   });
 
   const swagOpts = { swaggerUrl: `/api-docs` };

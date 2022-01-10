@@ -197,7 +197,9 @@
         "security": [
           {
             "ParseAppId": [],
-            "ParseSessionId": [],
+            "ParseSessionId": []
+          },
+          {
             "OAuth2BearerToken": []
           }
         ],
@@ -255,7 +257,9 @@
         "security": [
           {
             "ParseAppId": [],
-            "ParseSessionId": [],
+            "ParseSessionId": []
+          },
+          {
             "OAuth2BearerToken": []
           }
         ],

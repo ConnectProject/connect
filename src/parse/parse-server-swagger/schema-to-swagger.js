@@ -1,5 +1,6 @@
 /**
  * Cast parse type to swagger type
+ * no longer used
  * @param {string} type Parse type
  * @returns {string} swagger type
  */
@@ -48,22 +49,22 @@ const schemaTypeToSwaggerType = function (type) {
 
 /**
  * Get swagger configuration (CREATE, READ) for parse endpoint
- * @param {*} classes classes
+ * @param {*} schema schema
  * @returns {Object} path
  */
-const getPath = function (classes) {
+const getPath = function (schema) {
   return {
     get: {
       security: [{ ParseAppId: [], ParseSessionId: [], OAuth2BearerToken: [] }],
-      summary: `Get ${classes.className} data`,
+      summary: `Get ${schema.className} data`,
       description:
         'Find queries documentation here https://docs.parseplatform.org/rest/guide/#queries',
-      tags: [`${classes.className}`],
+      tags: [`${schema.className}`],
       responses: {
         200: {
-          description: `Return ${classes.className} data`,
+          description: `Return ${schema.className} data`,
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
         400: { description: 'Bad Request' },
@@ -76,7 +77,7 @@ const getPath = function (classes) {
       security: [{ ParseAppId: [], OAuth2BearerToken: [] }],
       summary: 'Add object instance',
       description: 'Happy to access The System',
-      tags: [`${classes.className}`],
+      tags: [`${schema.className}`],
       parameters: [
         {
           in: 'body',
@@ -84,15 +85,15 @@ const getPath = function (classes) {
           description: 'object that needs to be added to the store',
           required: true,
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
       ],
       responses: {
         200: {
-          description: `Returns ${classes.className} data`,
+          description: `Returns ${schema.className} data`,
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
         400: { description: 'Bad Request' },
@@ -106,10 +107,10 @@ const getPath = function (classes) {
 
 /**
  * Get swagger configuration (UPDATE, READ, DELETE) for parse endpoint
- * @param {*} classes classes
+ * @param {Object} schema schema
  * @returns {Object} path
  */
-const getPathById = function (classes) {
+const getPathById = function (schema) {
   return {
     get: {
       security: [
@@ -119,9 +120,9 @@ const getPathById = function (classes) {
           OAuth2BearerToken: [],
         },
       ],
-      summary: `Get ${classes.className} by id`,
+      summary: `Get ${schema.className} by id`,
       description: 'Happy to access The System',
-      tags: [`${classes.className}`],
+      tags: [`${schema.className}`],
       parameters: [
         {
           in: 'path',
@@ -135,7 +136,7 @@ const getPathById = function (classes) {
         200: {
           description: 'Returns data',
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
         400: { description: 'Bad Request' },
@@ -153,7 +154,7 @@ const getPathById = function (classes) {
       ],
       summary: 'Update instance',
       description: 'Happy to access The System',
-      tags: [`${classes.className}`],
+      tags: [`${schema.className}`],
       parameters: [
         {
           in: 'path',
@@ -168,7 +169,7 @@ const getPathById = function (classes) {
           description: 'The element you want update with.',
           required: true,
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
       ],
@@ -176,7 +177,7 @@ const getPathById = function (classes) {
         200: {
           description: 'Returns instance data',
           schema: {
-            $ref: `#/components/schemas/${classes.className}`,
+            $ref: `#/components/schemas/${schema.className}`,
           },
         },
         400: {
@@ -202,7 +203,7 @@ const getPathById = function (classes) {
       ],
       summary: 'Delete instance',
       description: 'Happy to access The System',
-      tags: [`${classes.className}`],
+      tags: [`${schema.className}`],
       parameters: [
         {
           in: 'path',
@@ -240,7 +241,7 @@ const getPathById = function (classes) {
 };
 
 /**
- *
+ * no longer used
  * @param {Object} oneClass server class
  * @returns {Object} schema
  */
@@ -258,24 +259,48 @@ const transformClasseToSchema = function (oneClass) {
 
 /**
  * Transform Parse Server schema.json to swagger.json
+ * no longer used
  * @param {object} spec spec
  * @param {object} schemas schemas
  * @param {array} excludes exclude list
  * @returns {Object} spec
  */
 exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
-  const newSpec = spec;
 
-  for (const classes of schemas) {
+  for (const schema of schemas) {
     if (
-      !excludes.includes(classes.className) &&
-      !classes.className.startsWith('Sandbox_')
+      !excludes.includes(schema.className) &&
+      !schema.className.startsWith('Sandbox_')
     ) {
-      newSpec.components.schemas[classes.className] =
-        transformClasseToSchema(classes);
-      newSpec.paths[`/parse/classes/${classes.className}`] = getPath(classes);
-      newSpec.paths[`/parse/classes/${classes.className}/{id}`] =
-        getPathById(classes);
+      spec.components.schemas[schema.className] =
+        transformClasseToSchema(schema);
+      spec.paths[`/parse/classes/${schema.className}`] = getPath(schema);
+      spec.paths[`/parse/classes/${schema.className}/{id}`] =
+        getPathById(schema);
+    }
+  }
+
+  return spec;
+};
+
+/**
+ * Transform JSON schemas.json to swagger.json
+ * @param {object} spec spec
+ * @param {object} schemas schemas
+ * @param {array} excludes exclude list
+ * @returns {Object} spec
+ */
+exports.jsonSchemasToSwagger = (spec, schemas, excludes) => {
+
+  for (const schema of schemas) {
+    if (
+      !excludes.includes(schema.className) &&
+      !schema.className.startsWith('Sandbox_')
+    ) {
+      spec.components.schemas[schema.className] = schema.schema
+      spec.paths[`/parse/classes/${schema.className}`] = getPath(schema);
+      spec.paths[`/parse/classes/${schema.className}/{id}`] =
+        getPathById(schema);
     }
   }
 
