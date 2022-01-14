@@ -42,7 +42,7 @@ class OAuthAuthorizePage extends React.PureComponent {
     this.confirmAuthorization = this.confirmAuthorization.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { location, history } = this.props;
     const params = new URLSearchParams(location.search);
 
@@ -77,11 +77,11 @@ class OAuthAuthorizePage extends React.PureComponent {
       });
   }
 
-  onUserLoggedIn(currentUser) {
+  onUserLoggedIn (currentUser) {
     this.setState({ currentUser });
   }
 
-  confirmAuthorization() {
+  confirmAuthorization () {
     const { location } = this.props;
     const params = new URLSearchParams(location.search);
     oauthService
@@ -92,9 +92,15 @@ class OAuthAuthorizePage extends React.PureComponent {
       .then((authorizationCode) => {
         const url = new URL(authorizationCode.redirectUri);
         url.searchParams.set(
-          'authorization_code',
+          'code',
           authorizationCode.authorizationCode,
         );
+        if (params.get('state')) {
+          url.searchParams.set(
+            'state',
+            params.get('state')
+          );
+        }
         window.location.href = url.href;
       })
       .catch((err) => {
@@ -103,7 +109,7 @@ class OAuthAuthorizePage extends React.PureComponent {
       });
   }
 
-  render() {
+  render () {
     const { classes } = this.props;
     const {
       loading,
@@ -184,9 +190,7 @@ class OAuthAuthorizePage extends React.PureComponent {
                   </Typography>
                   <LoginActions
                     onUserLoggedIn={this.onUserLoggedIn}
-                    redirectPath={`/authorize?client_id=${params.get(
-                      'client_id',
-                    )}&redirect_uri=${params.get('redirect_uri')}`}
+                    redirectPath={`/authorize?${params.toString()}`}
                   />
                 </>
               )}
