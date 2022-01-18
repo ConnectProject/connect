@@ -11,8 +11,6 @@ const parseSwagger = require('./middleware/parseSwagger');
 const sandboxMiddleware = require('./middleware/sandboxMiddleware');
 const oauthMiddleware = require('./oauth/oauth-middleware');
 
-const configFront = require('./config/front');
-
 class ConnectServer {
   constructor(app, server) {
     this.app = app;
@@ -20,7 +18,7 @@ class ConnectServer {
   }
 
   // eslint-disable-next-line max-statements
-  static async start(port, parseCloudEvent) {
+  static async start (port, parseCloudEvent) {
     logger.info(`start connect express server on port ${port}.`);
 
     process.on('unhandledRejection', (err) => {
@@ -55,22 +53,17 @@ class ConnectServer {
     // handle all routing for /oauth/*
     oauthApi(app);
 
-    app.get('/envConfig.js', (_, res) => res.send(configFront));
-
     if (process.env.NODE_ENV === 'development') {
-      /* eslint-disable */
+      /* eslint-disable global-require, import/no-extraneous-dependencies */
       const webpack = require('webpack');
       const middleware = require('webpack-dev-middleware');
-      const webpackConfig = require('../webpack.config.js')('development', {
-        mode: 'development',
-        hot: true,
-      });
+      const webpackConfig = require('../webpack.config');
       const compiler = webpack(webpackConfig);
       const { publicPath } = webpackConfig.output;
       var history = require('connect-history-api-fallback');
-      /* eslint-enable */
       app.use(history());
       app.use(middleware(compiler, { publicPath }));
+      /* eslint-enable global-require, import/no-extraneous-dependencies */
     } else {
       // Serve any static files
       app.use(express.static(path.join(__dirname, './../build')));

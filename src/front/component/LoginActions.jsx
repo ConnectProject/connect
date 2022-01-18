@@ -33,14 +33,14 @@ class LoginActions extends React.PureComponent {
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
-  handleDialogClose() {
+  handleDialogClose () {
     this.setState({
       isDialogSignupOpened: false,
       isDialogLoginOpened: false,
     });
   }
 
-  async onSubmitForm() {
+  async onSubmitForm () {
     const { isDialogLoginOpened, isDialogSignupOpened, email, password } =
       this.state;
     let user;
@@ -60,7 +60,7 @@ class LoginActions extends React.PureComponent {
     }
   }
 
-  render() {
+  render () {
     const { classes, redirectPath } = this.props;
     const {
       isDialogLoginOpened,
@@ -70,7 +70,7 @@ class LoginActions extends React.PureComponent {
       errorMessage,
     } = this.state;
 
-    let githubRedirectUri = window._env_.PUBLIC_URL + '/login/github';
+    let githubRedirectUri = process.env.PUBLIC_URL + '/login/github';
     if (redirectPath) {
       githubRedirectUri =
         githubRedirectUri + '?redirectPath=' + encodeURIComponent(redirectPath);
@@ -101,7 +101,7 @@ class LoginActions extends React.PureComponent {
           <Button
             size="large"
             color="primary"
-            href={`https://github.com/login/oauth/authorize?client_id=${window._env_.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUri}`}
+            href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUri}`}
           >
             Login with Github
           </Button>
