@@ -7,6 +7,7 @@ module.exports = (app) => {
     try {
       const response = new Response(res);
       const token = await oauthServer.token(new Request(req), response);
+      // doesn't seem to be useful
       res.locals.oauth = { token: token };
 
       res.set(response.headers);

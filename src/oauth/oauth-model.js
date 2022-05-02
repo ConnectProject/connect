@@ -1,7 +1,7 @@
 /* global Parse */
 
 module.exports = {
-  isRedirectUriValidity(redirectUri, validRedirectUris) {
+  isRedirectUriValidity (redirectUri, validRedirectUris) {
     const allowedUris = validRedirectUris.split(',').map((elt) => elt.trim());
     if (!allowedUris.includes(redirectUri.trim())) {
       return false;
@@ -10,7 +10,7 @@ module.exports = {
     return true;
   },
 
-  async getClient(clientId) {
+  async getClient (clientId) {
     if (!clientId) {
       return null;
     }
@@ -25,12 +25,12 @@ module.exports = {
         name: client.get('name'),
         description: client.get('description'),
         redirectUris: client.get('redirectUris') ?? '',
-        grants: ['authorization_code', 'refresh_token'],
+        grants: ['authorization_code', 'refresh_token'].concat(client.get('allowImplicitGrant') ? ['implicit'] : []),
       };
     }
   },
 
-  async saveToken(token, client, user) {
+  async saveToken (token, client, user) {
     let savedToken = await new Parse.Query('OAuthToken')
       .equalTo('applicationId', client.id)
       .equalTo('userId', user.id)
@@ -68,7 +68,7 @@ module.exports = {
     }
   },
 
-  async getAccessToken(accessToken) {
+  async getAccessToken (accessToken) {
     const token = await new Parse.Query('OAuthToken')
       .equalTo('accessToken', accessToken)
       .first({ useMasterKey: true });
@@ -97,7 +97,7 @@ module.exports = {
     }
   },
 
-  async getRefreshToken(refreshToken) {
+  async getRefreshToken (refreshToken) {
     const token = await new Parse.Query('OAuthToken')
       .equalTo('refreshToken', refreshToken)
       .first({ useMasterKey: true });
@@ -125,7 +125,7 @@ module.exports = {
     }
   },
 
-  async revokeToken(token) {
+  async revokeToken (token) {
     const foundCode = await new Parse.Query('OAuthToken')
       .equalTo('refreshToken', token.refreshToken)
       .first({ useMasterKey: true });
@@ -136,7 +136,7 @@ module.exports = {
     return true;
   },
 
-  async saveAuthorizationCode(code, client, user) {
+  async saveAuthorizationCode (code, client, user) {
     let authorizationCodeSaved = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('applicationId', client.id)
       .equalTo('userId', user.id)
@@ -176,7 +176,7 @@ module.exports = {
   },
 
   //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#getauthorizationcode-authorizationcode-callback
-  async getAuthorizationCode(authorizationCode) {
+  async getAuthorizationCode (authorizationCode) {
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode)
       .first({ useMasterKey: true });
@@ -196,7 +196,7 @@ module.exports = {
   },
 
   //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#revokeauthorizationcode-code-callback
-  async revokeAuthorizationCode(authorizationCode) {
+  async revokeAuthorizationCode (authorizationCode) {
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode.authorizationCode)
       .first({ useMasterKey: true });
@@ -208,7 +208,7 @@ module.exports = {
     return true;
   },
 
-  verifyScope() {
+  verifyScope () {
     return true;
   },
 };

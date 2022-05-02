@@ -88,9 +88,9 @@ In order to send items (i.e. create or update objects in classes), you need to a
   - a `publicKey`, which is used in your app to initiate the OAuth flow
   - a `secretKey`, which _should be kept secret_ and used only from your server (not the clientside app) at the end of the OAuth flow
 - Still in the dashboard, update your application to enter one or multiple `redirectUris` (separated by a comma). Declaring your `redirectUris` let Connect knows where we can redirect the user after they grant access to your app. It could be something like `https://yourwebsite.com/connectOAuthRedirect` or for mobile apps `deeplinkscheme://connectOAuthRedirect`
-- In your app, add a button somewhere (for example in your user's preference), that say "Link with Connect", and on click open a browser at the url `https://connect-project.io/authorize?client_id=[publicKey]&redirect_uri=[redirectUri]` (don't forget to replace the `publicKey` with yours, and the `redirectUri` with one from the list you declared in the dashboard)
+- In your app, add a button somewhere (for example in your user's preference), that say "Link with Connect", and on click open a browser at the url `https://connect-project.io/authorize?client_id=[publicKey]&redirect_uri=[redirectUri]&response_type=code` (don't forget to replace the `publicKey` with yours, and the `redirectUri` with one from the list you declared in the dashboard)
 - After opening the previous url in a browser, the user is guided by Connect to login and grant access to your app
-- If the user grants you access, then we will redirect him to `[redirectUri]?authorization_code=[authorization_code]`
+- If the user grants you access, then we will redirect him to `[redirectUri]?code=[authorization_code]`
 - Your app should get the `authorization_code`, send it to your own server, which will perform the secure call to get the access token:
 
 ```bash
@@ -160,6 +160,14 @@ This way, you will get both a new `access_token` and a new `refresh_token`, and 
 #### <a name="oauth-authentication-usage">OAuth Access token usage</a>
 
 Once you get an access token from the previous flow, you can use it to authenticate methods to send data to the Connect system. Just use the `access_token` in an authorization header in every request: `Authorization: Bearer $access_token`
+
+#### <a name="oauth-implicit-flow">OAuth Implicit Flow (not recommended)</a>
+
+If your application does not have a backend, you can use the OAuth implicit flow which doesn't require a secret key:
+- It is disabled by default so you first need to enable it in your application dashboard
+- To use it, the "Link with Connect" must link to the url `https://connect-project.io/authorize?client_id=[publicKey]&redirect_uri=[redirectUri]&response_type=token`
+- After the user has granted the access, the browser will redirect to `[redirectUri]#access_token=[access_token]` so your app will be able to get the access token from the URI fragment.
+- This grant is less secure than with the authorization code flow and no refresh token will be provided
 
 ### <a name="create-object">Create object</a>
 

@@ -94,7 +94,8 @@ describe('Parse server', () => {
     const newlyCreatedApp2 = new Application({
       name: 'Another Test App',
       description: 'The worst app ever.',
-      redirectUris: 'localhost:9275/test',
+      redirectUris: 'http://localhost:9275/test',
+      allowImplicitGrant: true
     });
     await newlyCreatedApp2.save(null, {
       sessionToken: developer.getSessionToken(),
@@ -113,7 +114,7 @@ describe('Parse server', () => {
     await appFromParse.save(
       {
         name: 'Test App v2',
-        redirectUris: 'localhost:9275/test, myawesomeapp://oauthresult',
+        redirectUris: 'http://localhost:9275/test, myawesomeapp://oauthresult',
       },
       { sessionToken: developer.getSessionToken() },
     );
@@ -129,7 +130,7 @@ describe('Parse server', () => {
   it('fail oauth-get-application with wrong parameter', async () => {
     const endUser = await logEndUserIn();
 
-    const notFoundCauseWrongRedirectUri = await Parse.Cloud.run(
+    const notFoundCauseWrongRedirectUri = Parse.Cloud.run(
       'oauth-get-application',
       {
         clientId: application.publicKey,
@@ -137,18 +138,18 @@ describe('Parse server', () => {
       },
       { sessionToken: endUser.getSessionToken() },
     );
-    expect(notFoundCauseWrongRedirectUri).toBeNull();
+    await expect(notFoundCauseWrongRedirectUri).rejects.toHaveProperty('code', 141);
 
-    const notFoundCauseWrongClientId = await Parse.Cloud.run(
+    const notFoundCauseWrongClientId = Parse.Cloud.run(
       'oauth-get-application',
       {
         clientId: application.secretKey,
-        redirectUri: 'localhost:9275/test',
+        redirectUri: 'http://localhost:9275/test',
       },
       { sessionToken: endUser.getSessionToken() },
     );
 
-    expect(notFoundCauseWrongClientId).toBeNull();
+    await expect(notFoundCauseWrongClientId).rejects.toHaveProperty('code', 141);
   });
 
   const getAccessToken = async (username, password, fromApp = application) => {
@@ -158,19 +159,22 @@ describe('Parse server', () => {
       'oauth-get-application',
       {
         clientId: fromApp.publicKey,
-        redirectUri: 'localhost:9275/test',
+        redirectUri: 'http://localhost:9275/test',
       },
       { sessionToken: user.getSessionToken() },
     );
 
-    const authorizationCode = await Parse.Cloud.run(
-      'oauth-create-authorization-code',
+    const redirection = await Parse.Cloud.run(
+      'oauth-authorize-request',
       {
-        clientId: fromApp.publicKey,
-        redirectUri: 'localhost:9275/test',
+        client_id: fromApp.publicKey,
+        redirect_uri: 'http://localhost:9275/test',
+        response_type: 'code'
       },
       { sessionToken: user.getSessionToken() },
     );
+
+    const authorizationCode = new URL(redirection).searchParams.get('code')
 
     // simulate confirmation by the app's backend
     const { data } = await axios.post(
@@ -179,18 +183,19 @@ describe('Parse server', () => {
         client_id: fromApp.publicKey,
         client_secret: fromApp.secretKey,
         grant_type: 'authorization_code',
-        code: authorizationCode.authorizationCode,
-        redirect_uri: 'localhost:9275/test',
+        code: authorizationCode,
+        redirect_uri: 'http://localhost:9275/test',
       }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
     );
 
-    return { oAuthApplication, user, authorizationCode, accessToken: data };
+    return { oAuthApplication, user, redirection, authorizationCode, accessToken: data };
   };
 
   it('perform nominal OAuth flow', async () => {
     const {
       oAuthApplication,
+      redirection,
       authorizationCode,
       accessToken: data,
     } = await getAccessToken(
@@ -198,15 +203,19 @@ describe('Parse server', () => {
       credentials.endUser.password,
     );
 
+    accessToken = data;
+
     expect(oAuthApplication).toEqual({
       id: application.objectId,
       name: application.name,
       description: application.description,
-      redirectUri: 'localhost:9275/test',
+      redirectUri: 'http://localhost:9275/test',
+      allowImplicitGrant: false
     });
 
-    expect(authorizationCode.authorizationCode.length).toBeGreaterThan(0);
-    expect(authorizationCode.redirectUri).toBe('localhost:9275/test');
+    expect(authorizationCode.length).toBeGreaterThan(0);
+    expect(redirection).toBe(`http://localhost:9275/test?code=${authorizationCode
+      }`);
 
     expect(data.token_type).toBe('Bearer');
     expect(data.access_token.length).toBeGreaterThan(0);
@@ -214,11 +223,9 @@ describe('Parse server', () => {
     expect(data.scope).toEqual([]);
     const ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;
     expect(data.expires_in).toBeGreaterThan(ONE_MONTH_IN_SECONDS - 5);
-
-    accessToken = data;
   });
 
-  it('GET valid OAuth accessToken', async () => {
+  it('GET the user id associated to the accessToken', async () => {
     const { data } = await axios.get(API_URL + '/oauth/user', {
       headers: { Authorization: 'Bearer ' + accessToken.access_token },
     });
@@ -249,6 +256,47 @@ describe('Parse server', () => {
 
     accessToken = data;
   });
+
+  const getAccessTokenImplicit = async (username, password, fromApp = application) => {
+    const user = await logAUser(username, password);
+
+    const redirection = await Parse.Cloud.run(
+      'oauth-authorize-request',
+      {
+        client_id: fromApp.publicKey,
+        redirect_uri: 'http://localhost:9275/test',
+        response_type: 'token'
+      },
+      { sessionToken: user.getSessionToken() },
+    );
+
+    const token = new URL(redirection.replace('#', '?')).searchParams.get('access_token')
+
+    return token;
+  };
+
+  it('cannot use implicit grant if not allowed by the application', async () => {
+    const token = getAccessTokenImplicit(
+      credentials.endUser.email,
+      credentials.endUser.password,
+      application,
+    );
+
+    await expect(token).rejects.toHaveProperty('code', 141);
+  })
+
+  it('perform implicit OAuth flow', async () => {
+    const token = await getAccessTokenImplicit(
+      credentials.endUser.email,
+      credentials.endUser.password,
+      application2,
+    );
+
+    const { data } = await axios.get(API_URL + '/oauth/user', {
+      headers: { Authorization: 'Bearer ' + token },
+    });
+    expect(data.id).toBe(endUserUserId);
+  })
 
   let createdGameScoreObjectId;
 

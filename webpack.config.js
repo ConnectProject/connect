@@ -60,6 +60,7 @@ module.exports = {
     path: dist,
     publicPath: '/',
     filename: '[name].[contenthash].js',
+    clean: true,
   },
   module: {
     rules: [
@@ -87,12 +88,21 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]',
         },
       },
+      {
+        // failed tentative to get manifest.json in build folder
+        test: /\.json$/,
+        type: 'asset/resource',
+        generator: {
+          filename: '[path][name][ext]'
+        }
+      },
     ],
   },
   resolve: {
     modules: ['src/front', 'node_modules'],
     extensions: ['.jsx', '.js', '.json'],
-    fallback: { crypto: false },
+    // does not seem useful
+    // fallback: { crypto: false },
   },
   plugins,
   watchOptions: {

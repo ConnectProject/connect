@@ -16,4 +16,8 @@ module.exports = new OAuth2Server({
     authorization_code: true,
     refresh_token: true,
   },
+  allowEmptyState: true,
+  authenticateHandler: {
+    handle: req => req.user
+  }
 });

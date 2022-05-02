@@ -1,3 +1,7 @@
+// fields properties have to be changed manually in mongo db so changes take effect
+// for example: db.getCollection('_SCHEMA').update({_id:'OAuthToken'}, {$set: {'_metadata.fields_options.refreshToken.required': false}})
+// https://community.parseplatform.org/t/is-there-any-way-i-can-update-a-schema-to-mark-a-field-as-required/1526/6
+
 module.exports = [
   {
     className: '_Role',
@@ -93,8 +97,8 @@ module.exports = [
     fields: {
       accessToken: { type: 'String', required: true },
       accessTokenExpirationAt: { type: 'Date', required: true },
-      refreshToken: { type: 'String', required: true },
-      refreshTokenExpirationAt: { type: 'Date', required: true },
+      refreshToken: { type: 'String', required: false },
+      refreshTokenExpirationAt: { type: 'Date', required: false },
       userId: { type: 'String', required: true },
       applicationId: { type: 'String', required: true },
     },

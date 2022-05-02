@@ -1,4 +1,4 @@
-const uuidv4 = require('uuid/v4');
+const { Request, Response } = require('oauth2-server');
 const oauthModel = require('../../../oauth/oauth-model');
 const oauthServer = require('../../../oauth/oauth-server');
 
@@ -6,18 +6,22 @@ module.exports = (Parse) => {
   Parse.Cloud.define('oauth-get-application', async (request) => {
     const { clientId, redirectUri } = request.params;
 
-    if (!clientId || !redirectUri) {
-      return null;
+    if (!clientId) {
+      throw new Error('No client provided')
     }
 
     const client = await oauthModel.getClient(clientId);
 
     if (!client) {
-      return null;
+      throw new Error('Client not found')
+    }
+
+    if (!redirectUri) {
+      throw new Error('No redirect URI provided')
     }
 
     if (!oauthModel.isRedirectUriValidity(redirectUri, client.redirectUris)) {
-      return null;
+      throw new Error('Incorrect redirect URI specified')
     }
 
     return {
@@ -25,41 +29,31 @@ module.exports = (Parse) => {
       name: client.name,
       description: client.description,
       redirectUri,
+      allowImplicitGrant: client.grants.includes('implicit')
     };
   });
 
-  Parse.Cloud.define('oauth-create-authorization-code', async (request) => {
-    if (!request.user) {
-      throw new Error('User not authenticated');
-    }
-    const { clientId, redirectUri } = request.params;
+  Parse.Cloud.define('oauth-authorize-request', async (request) => {
 
-    if (!clientId || !redirectUri) {
-      throw new Error('Missing clientId or redirectUri');
-    }
+    const oauthRequest = new Request({
+      body: request.params,
+      headers: {},
+      method: {},
+      query: {},
+      user: request.user
+    });
 
-    const client = await oauthModel.getClient(clientId);
+    const response = new Response({
+      body: {},
+      headers: {},
+      method: {},
+      query: {}
+    });
 
-    if (!oauthModel.isRedirectUriValidity(redirectUri, client.redirectUris)) {
-      return null;
-    }
 
-    const user = {
-      id: request.user.id,
-    };
+    // eslint-disable-next-line no-unused-vars
+    const codeOrToken = await oauthServer.authorize(oauthRequest, response);
 
-    const authorizationCode = await oauthModel.saveAuthorizationCode(
-      {
-        authorizationCode: uuidv4().replace(/-/g, ''),
-        expiresAt: new Date(
-          Date.now() + oauthServer.options.authorizationCodeLifetime * 1000,
-        ),
-        redirectUri,
-      },
-      client,
-      user,
-    );
-
-    return authorizationCode;
+    return response.headers.location
   });
 };

@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FileCopy from '@material-ui/icons/FileCopy';
 import PropTypes from 'prop-types'; // ES6
 import Snackbar from '@material-ui/core/Snackbar';
@@ -57,6 +59,9 @@ const styles = {
     margin: 0,
     position: 'relative',
   },
+  formControlLabel: {
+    marginLeft: 16
+  }
 };
 
 class DetailsPage extends React.PureComponent {
@@ -67,7 +72,7 @@ class DetailsPage extends React.PureComponent {
       updateLoading: false,
       application: {},
       applicationUpdate: {},
-      snackBarOpen: false,
+      snackBarText: '',
       errors: {
         name: false,
         description: false,
@@ -105,9 +110,16 @@ class DetailsPage extends React.PureComponent {
     });
   }
 
-  handleClick () {
+
+  handleToggle (name, event) {
+    const { applicationUpdate } = this.state;
+    const { checked } = event.target;
+
     this.setState({
-      snackBarOpen: true,
+      applicationUpdate: {
+        ...applicationUpdate,
+        [name]: checked,
+      },
     });
   }
 
@@ -117,7 +129,7 @@ class DetailsPage extends React.PureComponent {
     }
 
     this.setState({
-      snackBarOpen: false,
+      snackBarText: '',
     });
   }
 
@@ -140,6 +152,7 @@ class DetailsPage extends React.PureComponent {
       updateLoading: false,
       application,
       applicationUpdate: {},
+      snackBarText: "Application successfully updated"
     });
   }
 
@@ -150,7 +163,7 @@ class DetailsPage extends React.PureComponent {
         navigator.clipboard.writeText(
           application.attributes[key] || application[key],
         );
-        this.setState({ snackBarOpen: true });
+        this.setState({ snackBarText: "Copied!" });
       }
     });
   }
@@ -163,7 +176,7 @@ class DetailsPage extends React.PureComponent {
       errors,
       loading,
       updateLoading,
-      snackBarOpen,
+      snackBarText,
     } = this.state;
 
     return (
@@ -240,9 +253,9 @@ class DetailsPage extends React.PureComponent {
               />
 
               <TextField
-                disabled
+                readOnly
                 id="id"
-                label="OAuthApplication ID"
+                label="Application ID"
                 className={classes.textField}
                 fullWidth
                 helperText="Used to identify your application within the API"
@@ -267,7 +280,7 @@ class DetailsPage extends React.PureComponent {
               />
 
               <TextField
-                disabled
+                readOnly
                 id="pub_key"
                 label="OAuth Client ID"
                 className={classes.textField}
@@ -294,7 +307,7 @@ class DetailsPage extends React.PureComponent {
               />
 
               <TextField
-                disabled
+                readOnly
                 id="sec_key"
                 label="OAuth Secret Key"
                 className={classes.textField}
@@ -337,6 +350,23 @@ class DetailsPage extends React.PureComponent {
                 error={errors.redirectUris}
               />
 
+              <FormControlLabel
+                className={classes.formControlLabel}
+                sx={{ 'margin-left': '16px' }}
+                control={
+                  <Switch
+                    color="primary"
+                    checked={
+                      applicationUpdate.allowImplicitGrant ??
+                      application.attributes.allowImplicitGrant ??
+                      false
+                    }
+                    onChange={(event) => this.handleToggle('allowImplicitGrant', event)}
+                  />
+                }
+                label="Allow implicit grant (less secure)"
+              />
+
               <div className={classes.buttonContainer}>
                 <div className={classes.wrapper}>
                   <Button
@@ -362,12 +392,12 @@ class DetailsPage extends React.PureComponent {
                   vertical: 'bottom',
                   horizontal: 'right',
                 }}
-                open={snackBarOpen}
+                open={!!snackBarText}
                 autoHideDuration={1000}
                 onClose={() => {
                   this.handleClose();
                 }}
-                message={<span>Copied!</span>}
+                message={snackBarText}
               />
             </>
           )}

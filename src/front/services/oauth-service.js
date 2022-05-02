@@ -9,19 +9,16 @@ const getOAuthApplication = async ({ clientId, redirectUri }) => {
   return application;
 };
 
-const grantAccess = async ({ clientId, redirectUri }) => {
-  const authorizationCode = await Parse.Cloud.run(
-    'oauth-create-authorization-code',
-    {
-      clientId,
-      redirectUri,
-    },
+const authorize = async (params) => {
+  const redirection = await Parse.Cloud.run(
+    'oauth-authorize-request',
+    params,
   );
 
-  return authorizationCode;
+  return redirection;
 };
 
 export default {
   getOAuthApplication,
-  grantAccess,
+  authorize
 };

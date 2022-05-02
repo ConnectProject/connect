@@ -88,11 +88,11 @@ class ProfilePage extends React.PureComponent {
     this.deleteToken = this.deleteToken.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.refreshGrantedTokens();
   }
 
-  async handleClose(userToBeDeleted) {
+  async handleClose (userToBeDeleted) {
     if (userToBeDeleted) {
       await UserService.deleteCurrentUser();
       const { history } = this.props;
@@ -102,13 +102,13 @@ class ProfilePage extends React.PureComponent {
     }
   }
 
-  handleCloseSnackbar(event, reason) {
+  handleCloseSnackbar (event, reason) {
     if (reason !== 'clickaway') {
       this.setState({ snackBarOpen: false });
     }
   }
 
-  copyToClipboard() {
+  copyToClipboard () {
     const { user } = this.state;
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
@@ -118,17 +118,17 @@ class ProfilePage extends React.PureComponent {
     });
   }
 
-  goBack() {
+  goBack () {
     const { history } = this.props;
     history.goBack();
   }
 
-  async refreshGrantedTokens() {
+  async refreshGrantedTokens () {
     const tokens = await UserTokensManagementService.getGrantedTokens();
     this.setState({ grantedTokens: tokens || [] });
   }
 
-  async deleteToken() {
+  async deleteToken () {
     const { tokenToRevokeInDialog } = this.state;
     await UserTokensManagementService.revokeToken({
       tokenId: tokenToRevokeInDialog.id,
@@ -137,7 +137,7 @@ class ProfilePage extends React.PureComponent {
     await this.refreshGrantedTokens();
   }
 
-  render() {
+  render () {
     const { classes } = this.props;
     const {
       user,
@@ -153,7 +153,7 @@ class ProfilePage extends React.PureComponent {
           <div className={classes.nameContainer}>
             <TextField
               id="name"
-              disabled
+              readOnly
               label="Username"
               className={classes.textField}
               fullWidth
@@ -165,7 +165,7 @@ class ProfilePage extends React.PureComponent {
           <div className={classes.nameContainer}>
             <TextField
               id="sessionToken"
-              disabled
+              readOnly
               label="Session token"
               helperText={
                 <>

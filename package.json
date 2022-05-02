@@ -48,9 +48,9 @@
     "lodash.flow": "^3.5.0",
     "moment": "^2.24.0",
     "mongoose": "^5.7.5",
-    "oauth2-server": "^3.1.1",
+    "oauth2-server": "oauthjs/node-oauth2-server#4.x",
     "parse": "^3.2.0",
-    "parse-dashboard": "^2.1.0",
+    "parse-dashboard": "^3.3.0",
     "parse-server": "^4.5.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -78,7 +78,7 @@
     "css-loader": "^5.0.1",
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-naat": "git+https://github.com/neuroanatomy/eslint-config-naat",
+    "eslint-config-naat": "neuroanatomy/eslint-config-naat",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.3.1",
@@ -101,8 +101,5 @@
     "webpack": "^5.12.3",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.7.2"
-  },
-  "resolutions": {
-    "graphql": "^14.2.1"
   }
 }

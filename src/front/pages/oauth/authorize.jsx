@@ -32,7 +32,7 @@ class OAuthAuthorizePage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      applicationError: false,
+      applicationError: null,
       authorizationError: false,
       application: null,
       currentUser: null,
@@ -44,28 +44,41 @@ class OAuthAuthorizePage extends React.PureComponent {
 
   componentDidMount () {
     const { location, history } = this.props;
-    const params = new URLSearchParams(location.search);
+    const urlParams = new URLSearchParams(location.search);
+    const params = Object.fromEntries(urlParams);
 
     Promise.all([
       oauthService.getOAuthApplication({
-        clientId: params.get('client_id'),
-        redirectUri: params.get('redirect_uri'),
+        clientId: params.client_id,
+        redirectUri: params.redirect_uri
       }),
       UserService.getCurrentUserAsync(),
     ])
       .then(([application, currentUser]) => {
         console.log({ application, currentUser });
-        if (!application) {
+
+        let error;
+        switch (params.response_type) {
+          case 'code':
+            break
+          case 'token':
+            if (!application.allowImplicitGrant)
+              error = new Error('Implicit grant not allowed for this application')
+            break
+          default:
+            error = new Error('Invalid response_type parameter')
+        }
+        if (error) {
           this.setState({
             loading: false,
-            applicationError: true,
+            applicationError: error,
           });
 
-          return;
+          return
         }
 
         this.setState({
-          applicationError: false,
+          applicationError: null,
           application,
           currentUser,
           loading: false,
@@ -73,7 +86,14 @@ class OAuthAuthorizePage extends React.PureComponent {
       })
       .catch((err) => {
         console.error(err);
-        history.push('/');
+        if (err.code === 141) {
+          this.setState({
+            loading: false,
+            applicationError: err,
+          });
+        } else {
+          history.push('/');
+        }
       });
   }
 
@@ -81,32 +101,16 @@ class OAuthAuthorizePage extends React.PureComponent {
     this.setState({ currentUser });
   }
 
-  confirmAuthorization () {
+  async confirmAuthorization () {
     const { location } = this.props;
-    const params = new URLSearchParams(location.search);
-    oauthService
-      .grantAccess({
-        clientId: params.get('client_id'),
-        redirectUri: params.get('redirect_uri'),
-      })
-      .then((authorizationCode) => {
-        const url = new URL(authorizationCode.redirectUri);
-        url.searchParams.set(
-          'code',
-          authorizationCode.authorizationCode,
-        );
-        if (params.get('state')) {
-          url.searchParams.set(
-            'state',
-            params.get('state')
-          );
-        }
-        window.location.href = url.href;
-      })
-      .catch((err) => {
-        console.log({ err });
-        this.setState({ authorizationError: true });
-      });
+    const urlParams = new URLSearchParams(location.search);
+    const params = Object.fromEntries(urlParams);
+    try {
+      window.location.href = await oauthService.authorize(params);
+    } catch (err) {
+      console.log({ err });
+      this.setState({ authorizationError: true });
+    };
   }
 
   render () {
@@ -119,7 +123,7 @@ class OAuthAuthorizePage extends React.PureComponent {
       authorizationError,
     } = this.state;
     const { location } = this.props;
-    const params = new URLSearchParams(location.search);
+    const urlParams = new URLSearchParams(location.search);
 
     return (
       <Card className={classes.card}>
@@ -133,7 +137,7 @@ class OAuthAuthorizePage extends React.PureComponent {
           )}
           {!loading && applicationError && (
             <Typography color="error">
-              Application could not be found. If you are the developer, please
+              {applicationError.message}. If you are the developer, please
               ensure your OAuth flow is setup correctly.
             </Typography>
           )}
@@ -190,7 +194,7 @@ class OAuthAuthorizePage extends React.PureComponent {
                   </Typography>
                   <LoginActions
                     onUserLoggedIn={this.onUserLoggedIn}
-                    redirectPath={`/authorize?${params.toString()}`}
+                    redirectPath={`/authorize?${urlParams.toString()}`}
                   />
                 </>
               )}

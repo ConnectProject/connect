@@ -37,7 +37,7 @@ class App extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { history } = this.props;
     if (!['/home', '/', '/authorize'].includes(history.location.pathname)) {
       this.setState({ canBack: true });
@@ -67,7 +67,7 @@ class App extends React.PureComponent {
     });
   }
 
-  handleMenuItemClick(event, index) {
+  handleMenuItemClick (event, index) {
     const { history } = this.props;
     if (index === 0) {
       history.push('/');
@@ -83,14 +83,14 @@ class App extends React.PureComponent {
     this.handleToggle();
   }
 
-  handleToggle() {
+  handleToggle () {
     const { open } = this.state;
     this.setState({
       open: !open,
     });
   }
 
-  handleClose(event) {
+  handleClose (event) {
     const { anchorRef } = this.state;
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
@@ -101,12 +101,12 @@ class App extends React.PureComponent {
     });
   }
 
-  goBack() {
+  goBack () {
     const { history } = this.props;
     history.goBack();
   }
 
-  render() {
+  render () {
     const { userConnected, anchorRef, open, canBack } = this.state;
 
     return (
