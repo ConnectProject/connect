@@ -46,7 +46,7 @@
     "glob": "^7.1.4",
     "jsonschema": "^1.2.6",
     "lodash.flow": "^3.5.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.7.5",
     "oauth2-server": "oauthjs/node-oauth2-server#4.x",
     "parse": "^3.2.0",
