@@ -469,17 +469,16 @@ Just add the following header to every requests you make to `/classes/*` or `/ba
 
 ## <a name="schema-contribute">Schema Contribute</a>
 
-The schema is a database model that will be use by everyone to get and set object.
+The schema is a database model that will be use by everyone to get and set object. We use [JSON Schema](https://json-schema.org/) to describe the list of the fields. All JSON schemas used by connect are located at the [Schemas repository](https://github.com/ConnectProject/schemas).
 Any User can contribute to the schema using Pull Request system. The CRI will accept or refuse the Pull Request after review of it.
 
 When a Pull Request is accepted, the change (add or update) will be apply at the next deployment of the connect api (except for some specific change).
 
 ### <a name="add-class">Add a new Class</a>
 
-A schema is the descriptor of a class. The name of class is the beggining of its file name, we use [JSON Schema](https://json-schema.org/) to describe the list of the fields.
+A schema is the descriptor of a class. The name of class is the beggining of its file name.
 
-You can create a Pull Request with for title `[Schema][New] ClassName`.
-Write your schema file on `src/parse/schema/classes` folder with name `YOUR_CLASS_NAME.json`. A schema file should look like that :
+You can create a Pull Request with for title `[Schema][New] ClassName` on https://github.com/ConnectProject/schemas. A schema file shall look like that:
 
 ```json
 {
@@ -518,10 +517,10 @@ You can only add new field. For that edit the schema of the class and add the fi
 
 Same as before do a Pull Request with title `[Schema][Type-Field] ClassName`.
 
-**The system will not do the update automatically.** Only the CRI can do the manipulation because it mean to delete the field data include and recreate the field with the new type. This update have a risk to loose data and should be avoid.
+**The system will not do the update automatically.** Only the CRI can do the manipulation because it mean to delete the field data include and recreate the field with the new type. This update have a risk to lose data and should be avoided.
 
 #### <a name="remove-field">Remove field</a>
 
 Same as before do a Pull Request with title `[Schema][Delete-Field] ClassName`.
 
-**The system will not do the update automatically.** Only the CRI can do the manipulation because it mean to delete the field and data associet to it. This update have a risk to loose data for other contributor and should be avoid.
+**The system will not do the update automatically.** Only the CRI can do the manipulation because it mean to delete the field and data associet to it. This update have a risk to lose data for other contributor and should be avoided.
