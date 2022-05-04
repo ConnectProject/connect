@@ -1794,15 +1794,15 @@
   resolved "https://registry.yarnpkg.com/@parse/fs-files-adapter/-/fs-files-adapter-1.2.0.tgz#a84396417d1605a8951df349ad3441657c9d267b"
   integrity sha512-kr7Ti2eYOm14p05S86yriJdMtawL6qln3Dn5eekrwY14ih4jrjH/E+QlEpBUSBzN64fluFxciFOyjdbwDGWsGw==
 
-"@parse/node-apn@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@parse/node-apn/-/node-apn-4.1.1.tgz#ff1e59fea9a788795f9f0105b77cb10ec91eccbf"
-  integrity sha512-stWlQE95w5T0vkVYscoq/S3eXPQ1qzdQbKKQ8GAdw4CSNxRWLWgOH50byUR30thnQ93RshLCH5ROkvXMqzzLtw==
+"@parse/node-apn@5.1.3":
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/@parse/node-apn/-/node-apn-5.1.3.tgz#58cdecf14d872e3183046c58f2cfb87d41afb5e1"
+  integrity sha512-Bwhmbm895lEIF2772PJ8dSvBjrtOG9/q/TDMxmX40IgZxQFoXS73+JUIKTq3CA7SUB/Szu5roJINQ0L2U/1MJw==
   dependencies:
-    debug "4.3.2"
+    debug "4.3.3"
     jsonwebtoken "8.5.1"
-    node-forge "0.10.0"
-    verror "1.10.0"
+    node-forge "1.3.0"
+    verror "1.10.1"
 
 "@parse/node-gcm@1.0.2":
   version "1.0.2"
@@ -1813,15 +1813,15 @@
     lodash "^4.17.10"
     request "2.88.0"
 
-"@parse/push-adapter@3.4.1":
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/@parse/push-adapter/-/push-adapter-3.4.1.tgz#d796b5f17e1d62b139600e917356c4fb3907a0a4"
-  integrity sha512-iev69kbwhXbez5nfEwB2GkCWBLUmRlImQTmHPpLnHBJfATYKyXf/H41WQhBPuwwScZBVp9ABsIsjjKy8iKg3fw==
+"@parse/push-adapter@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@parse/push-adapter/-/push-adapter-4.1.2.tgz#1ecb96aa885bc13714f9bcdd7d525b783b1c2c09"
+  integrity sha512-034vZTlAzgdfefIY4+Q4j8DHS/VwUAIVoh1JeRkHNfyQmUQ++uKbQbUQdJ/nf11HHS69kwLENs13BmhlHMpyHQ==
   dependencies:
-    "@parse/node-apn" "4.1.1"
+    "@parse/node-apn" "5.1.3"
     "@parse/node-gcm" "1.0.2"
     npmlog "4.1.2"
-    parse "3.3.0"
+    parse "3.4.0"
 
 "@parse/s3-files-adapter@1.6.2":
   version "1.6.2"
@@ -4420,7 +4420,7 @@ debug@3.1.0, debug@~3.1.0:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.3:
+debug@4, debug@4.3.3, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -5678,15 +5678,10 @@ fn.name@1.x.x:
   resolved "https://registry.yarnpkg.com/fn.name/-/fn.name-1.1.0.tgz#26cad8017967aea8731bc42961d04a3d5988accc"
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
 
-follow-redirects@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
-  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
-
-follow-redirects@^1.0.0, follow-redirects@^1.14.0:
-  version "1.14.7"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
-  integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
+follow-redirects@1.14.8, follow-redirects@^1.0.0, follow-redirects@^1.14.0:
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
+  integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -6097,12 +6092,10 @@ graphql-list-fields@2.0.2:
   resolved "https://registry.yarnpkg.com/graphql-list-fields/-/graphql-list-fields-2.0.2.tgz#a4ade3cfa2028a2ac32d3f2870f5f8c5b5d5b466"
   integrity sha512-9TSAwcVA3KWw7JWYep5NCk2aw3wl1ayLtbMpmG7l26vh1FZ+gZexNPP+XJfUFyJa71UU0zcKSgtgpsrsA3Xv9Q==
 
-graphql-relay@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/graphql-relay/-/graphql-relay-0.6.0.tgz#18ec36b772cfcb3dbb9bd369c3f8004cf42c7b93"
-  integrity sha512-OVDi6C9/qOT542Q3KxZdXja3NrDvqzbihn1B44PH8P/c5s0Q90RyQwT6guhGqXqbYEH6zbeLJWjQqiYvcg2vVw==
-  dependencies:
-    prettier "^1.16.0"
+graphql-relay@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/graphql-relay/-/graphql-relay-0.7.0.tgz#e5c7a4bb52ede09e90e92dfd7b89d5947362278b"
+  integrity sha512-P8eS3IbZRhbfbcfud1Q6VPrIru4hchkb15MuOij+WQo9r0chD5NBIxiVjuRE2iG2EMHxIOrZb8LnMe82+YdITA==
 
 graphql-sse@^1.0.1:
   version "1.0.6"
@@ -6162,10 +6155,10 @@ graphql-ws@^5.4.1:
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.5.5.tgz#f375486d3f196e2a2527b503644693ae3a8670a9"
   integrity sha512-hvyIS71vs4Tu/yUYHPvGXsTgo0t3arU820+lT5VjZS2go0ewp2LqyCgxEN56CzOG7Iys52eRhHBiD1gGRdiQtw==
 
-graphql@15.4.0:
-  version "15.4.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.4.0.tgz#e459dea1150da5a106486ba7276518b5295a4347"
-  integrity sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA==
+graphql@15.5.1:
+  version "15.5.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.5.1.tgz#f2f84415d8985e7b84731e7f3536f8bb9d383aad"
+  integrity sha512-FeTRX67T3LoE3LWAxxOlW2K3Bz+rMYAC18rRguK4wgXaTZMiJwSUwDmPFo3UadAKbzirKIg5Qy+sNJXbpPRnQw==
 
 graphql@15.6.1:
   version "15.6.1"
@@ -8708,7 +8701,12 @@ node-fetch@^2.6.1, node-fetch@^2.6.5:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-forge@0.10.0, node-forge@^0.10.0:
+node-forge@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.0.tgz#37a874ea723855f37db091e6c186e5b67a01d4b2"
+  integrity sha512-08ARB91bUi6zNKzVmaj3QO7cr397uiDT2nJ63cHjyNtCTWIgvS47j3eT0WfzUwS9+6Z5YshRaoasFkXCKrIYbA==
+
+node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
@@ -9271,17 +9269,17 @@ parse-json@^5.0.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-parse-server@^4.5.0:
-  version "4.10.4"
-  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-4.10.4.tgz#93345bfa1867acc548598944078785451bbef655"
-  integrity sha512-43WseBkTqs+UsZfX83msJkFloX94POeGonbfpemuUJJD/ujJeHSxQbu/6c1uqzKxaYB2bd+apoKDi98ODtg9TQ==
+parse-server@^4.10.10:
+  version "4.10.10"
+  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-4.10.10.tgz#8783f8ac66570cd81c2ff16237ffdb7713690206"
+  integrity sha512-be574RHTuNKCjAK2jMVqIhe45ql9v78aXfn1TSnPkv6R2eQymwYhMrrhikgnclMEM25r3MI78oE+FKwcZ+3vfA==
   dependencies:
     "@apollographql/graphql-playground-html" "1.6.26"
     "@graphql-tools/links" "6.2.5"
     "@graphql-tools/stitch" "6.2.4"
     "@graphql-tools/utils" "6.2.4"
     "@parse/fs-files-adapter" "1.2.0"
-    "@parse/push-adapter" "3.4.1"
+    "@parse/push-adapter" "4.1.2"
     "@parse/s3-files-adapter" "1.6.2"
     "@parse/simple-mailgun-adapter" "1.1.0"
     apollo-server-express "2.19.0"
@@ -9291,10 +9289,10 @@ parse-server@^4.5.0:
     cors "2.8.5"
     deepcopy "2.1.0"
     express "4.17.1"
-    follow-redirects "1.13.0"
-    graphql "15.4.0"
+    follow-redirects "1.14.8"
+    graphql "15.5.1"
     graphql-list-fields "2.0.2"
-    graphql-relay "0.6.0"
+    graphql-relay "0.7.0"
     graphql-tag "2.12.5"
     graphql-upload "11.0.0"
     intersect "1.0.1"
@@ -9350,6 +9348,21 @@ parse@3.3.1:
     react-native-crypto-js "1.0.0"
     uuid "3.4.0"
     ws "7.5.0"
+    xmlhttprequest "1.8.0"
+  optionalDependencies:
+    crypto-js "4.1.1"
+
+parse@3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/parse/-/parse-3.4.0.tgz#de39edd0918ae77baed9c249793d4a09bb734d14"
+  integrity sha512-FMZLxPW6PvrBgxkXc9AmnYsFKvPwiS4G2n9OI4mdfiSoNzIVLc+bXzlUdJ+I7hiqHsBTP0BrdQczw2/cnVkJ6w==
+  dependencies:
+    "@babel/runtime" "7.15.4"
+    "@babel/runtime-corejs3" "7.14.7"
+    idb-keyval "5.0.6"
+    react-native-crypto-js "1.0.0"
+    uuid "3.4.0"
+    ws "7.5.1"
     xmlhttprequest "1.8.0"
   optionalDependencies:
     crypto-js "4.1.1"
@@ -9732,11 +9745,6 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
-
-prettier@^1.16.0:
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
-  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
 prettier@^2:
   version "2.5.1"
@@ -12245,7 +12253,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-verror@^1.8.1:
+verror@1.10.1, verror@^1.8.1:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.10.1.tgz#4bf09eeccf4563b109ed4b3d458380c972b0cdeb"
   integrity sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==
