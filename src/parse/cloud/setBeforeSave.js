@@ -12,6 +12,9 @@ module.exports = async (Parse) => {
   for (const schemaClass of schemaClasses) {
     // eslint-disable-next-line max-statements
     Parse.Cloud.beforeSave(schemaClass.className, async (req) => {
+      if (req.master) {
+        return;
+      }
       if (!req.user) {
         // user is not authenticated, Forbidden.
         throw new Error('User should be authenticated.');
@@ -78,6 +81,7 @@ module.exports = async (Parse) => {
       req.object.set('userId', endUser.id);
       req.object.set('applicationId', application.id);
 
+      // Those ACL should not be useful as CLP are more restrictive
       const roleACL = new Parse.ACL();
 
       roleACL.setReadAccess(req.user, true);
