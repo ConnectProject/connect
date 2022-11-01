@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { once } = require('events');
+const { EventEmitter, once } = require('events');
 
 const logger = require('./logger');
 const oauthApi = require('./oauth/oauth-routes');
@@ -11,14 +11,8 @@ const parseSwagger = require('./middleware/parseSwagger');
 const sandboxMiddleware = require('./middleware/sandboxMiddleware');
 const oauthMiddleware = require('./oauth/oauth-middleware');
 
-class ConnectServer {
-  constructor(app, server) {
-    this.app = app;
-    this.server = server;
-  }
-
   // eslint-disable-next-line max-statements
-  static async start (port, parseCloudEvent) {
+  const start = async function (port, parseCloudEvent) {
     logger.info(`start connect express server on port ${port}.`);
 
     process.on('unhandledRejection', (err) => {
@@ -60,7 +54,7 @@ class ConnectServer {
       const webpackConfig = require('../webpack.config');
       const compiler = webpack(webpackConfig);
       const { publicPath } = webpackConfig.output;
-      var history = require('connect-history-api-fallback');
+      const history = require('connect-history-api-fallback');
       app.use(history());
       app.use(middleware(compiler, { publicPath }));
       /* eslint-enable global-require, import/no-extraneous-dependencies */
@@ -74,14 +68,16 @@ class ConnectServer {
       });
     }
 
+    const ee = new EventEmitter()
+
     const server = app.listen(port, () => {
       logger.info(`connect running on port ${port}.`);
+      ee.emit('listening')
     });
 
-    await once(server, 'listening');
+    await once(ee, 'listening');
 
-    return new ConnectServer(app, server);
+    return {app, server};
   }
-}
 
-module.exports = ConnectServer;
+module.exports = {start};
