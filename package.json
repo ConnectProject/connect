@@ -49,7 +49,7 @@
     "mongoose": "^5.7.5",
     "oauth2-server": "oauthjs/node-oauth2-server#4.x",
     "parse": "^3.2.0",
-    "parse-dashboard": "^3.3.0",
+    "parse-dashboard": "^5.0.0",
     "parse-server": "^5",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
