@@ -63,7 +63,7 @@ module.exports = [
       update: { 'role:Administrator': true },
       delete: { 'role:Administrator': true },
       protectedFields: {
-        '*': ['owner', 'publicKey', 'secretKey', 'redirectUris'],
+        '*': ['publicKey', 'secretKey', 'redirectUris'],
         'userField:owner': [],
         'role:Administrator': [],
       },
