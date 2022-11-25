@@ -4,7 +4,6 @@ const { EventEmitter, once } = require('events');
 
 const configMock = require('./__mock__/config');
 
-configMock.MONGO_URI = 'mongodb://localhost:46347/connect';
 process.env = Object.assign(process.env, configMock);
 jest.mock('../src/config', () => configMock);
 

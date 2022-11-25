@@ -11,7 +11,7 @@ module.exports = {
   PARSE_DASHBOARD_MAINTENER_PWD: 'test',
   PARSE_DASHBOARD_ROOT_PWD: 'test',
   PARSE_SILENT: true,
-  MONGO_URI: 'mongodb://test:test@localhost:27017/test',
+  MONGO_URI: 'mongodb://127.0.0.1:46347/connect',
   AUTH_SECRET: 'test',
   GITHUB_CLIENT_ID: 'test',
   GITHUB_CLIENT_SECRET: 'test',
