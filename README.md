@@ -71,7 +71,6 @@ yarn build.dev
 The project is ready to run
 
 ```
-yarn start.sandbox
 yarn start
 ```
 

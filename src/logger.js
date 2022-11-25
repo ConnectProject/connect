@@ -1,7 +1,5 @@
 const winston = require('winston');
 const flow = require('lodash.flow');
-const debug = require('debug');
-const { DEBUG } = require('./config');
 
 const { combine, timestamp, json } = winston.format;
 
@@ -69,18 +67,6 @@ const addSeverity = function (severity) {
   });
 };
 
-const createDebugLogger = function (appName) {
-  if (!appName) {
-    throw new Error('Missing mandatory parameters appName');
-  }
-
-  return {
-    info: debug(`${appName}::info`),
-    warn: debug(`${appName}::warn`),
-    error: debug(`${appName}::error`),
-  };
-};
-
 /**
  * Create a new logger for the app named appName
  * @param {string} appName app name
@@ -111,7 +97,6 @@ const createLogger = function (appName) {
   };
 };
 
-const connectServerLog =
-  DEBUG === true ? createDebugLogger('connect') : createLogger('connect');
+const connectServerLog = createLogger('connect');
 
 module.exports = connectServerLog;

@@ -11,8 +11,6 @@ const testConfig = function (config, name) {
   }
 };
 
-const DEBUG = process.env.DEBUG || false;
-
 const { PUBLIC_URL } = process.env;
 testConfig(PUBLIC_URL, 'PUBLIC_URL');
 
@@ -72,7 +70,6 @@ const { GITHUB_CLIENT_SECRET } = process.env;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 module.exports = {
-  DEBUG,
   PUBLIC_URL,
   API_URL,
   APP_PORT,
