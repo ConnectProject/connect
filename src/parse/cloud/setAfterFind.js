@@ -21,7 +21,8 @@ module.exports = async (Parse) => {
           }
         }
 
-        objects.push({ toJSON: () => newObject });
+        newObject.className = object.className
+        objects.push( Parse.Object.fromJSON(newObject) );
       }
 
       req.objects = objects;

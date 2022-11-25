@@ -2,6 +2,7 @@ module.exports = {
   mongodbMemoryServerOptions: {
     instance: {
       port: 46347,
+      ip: 'localhost'
     },
     binary: {
       version: '3.6.10',

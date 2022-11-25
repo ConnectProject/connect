@@ -56,6 +56,8 @@ module.exports = (parseCloudEvent) =>
           access_token: GITHUB_CLIENT_SECRET,
         },
       },
+      directAccess: true,
+      enforcePrivateUsers: true
     },
     parseCloudEvent,
   );

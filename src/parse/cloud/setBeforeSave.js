@@ -3,7 +3,7 @@
 const fs = require('fs').promises;
 const { Validator } = require('jsonschema');
 const Config = require('parse-server/lib/Config');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const getClasses = require('../schema/getClasses');
 const { getOAuthUserFromRequest } = require('../../oauth/oauth-service');
 
