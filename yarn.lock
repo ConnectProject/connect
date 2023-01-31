@@ -8309,10 +8309,10 @@ parse-json@^5.0.0, parse-json@^5.2.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-parse-server@^5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-5.4.0.tgz#ed913c9698d6b27864ebf49c43abda5d21277357"
-  integrity sha512-IWb35n+XumONh7uWh99nkIVWdUWVr0TwCmlyEqd84pPG2qkKWnd4K+tERhlRa6ZIVNt/ZCX9A+l2g4VNjD1SRQ==
+parse-server@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-5.4.1.tgz#1f0dcd85852b2ed5414b225f123f427167b65e7a"
+  integrity sha512-61xGFaRbAi/Djx0d0FmPIfnbBznQNbvMfcA3/XhAoNHi7gX7bWOVMU9Az4xOW9Qf8ePuQvCBXzVGV4JvOFygrQ==
   dependencies:
     "@graphql-tools/merge" "8.3.6"
     "@graphql-tools/schema" "9.0.4"

@@ -51,7 +51,7 @@
     "oauth2-server": "oauthjs/node-oauth2-server#4.x",
     "parse": "^3.5.1",
     "parse-dashboard": "^5.0.0",
-    "parse-server": "^5.4.0",
+    "parse-server": "^5.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
