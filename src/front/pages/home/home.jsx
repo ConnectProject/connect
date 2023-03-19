@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -123,6 +124,7 @@ class HomePage extends React.PureComponent {
         apple_store_link: false,
         google_market_link: false,
       },
+      errorMessage: null
     });
   }
 
@@ -143,9 +145,14 @@ class HomePage extends React.PureComponent {
 
   async clickCreateApplication() {
     const { newApplication } = this.state;
+    try{
     const app = await ApplicationsService.create(newApplication);
     const { history } = this.props;
     history.push(`/application/${app.id}`);
+  } catch (err) {
+    console.error(err, err.message);
+    this.setState({ errorMessage: err.message || 'An error occured.' });
+  }
   }
 
   render() {
@@ -156,6 +163,7 @@ class HomePage extends React.PureComponent {
       dialogNewApplicationOpen,
       newApplication,
       errors,
+      errorMessage
     } = this.state;
 
     return (
@@ -288,6 +296,11 @@ class HomePage extends React.PureComponent {
               variant="outlined"
               error={errors.googleMarketLink}
             />
+            {errorMessage && (
+              <DialogContentText align="right" color="error">
+                {errorMessage}
+              </DialogContentText>
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.handleClose()} color="primary">

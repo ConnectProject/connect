@@ -29,6 +29,15 @@ const registerWithEmail = async ({ email, password }) => {
   return newlyLoggedInUser;
 };
 
+const resetPassword = ({email}) => {
+  Parse.User.requestPasswordReset(email)
+}
+
+const verifyEmail = ({email}) => {
+  Parse.User.requestEmailVerification(email)
+}
+
+
 const confirmGithubAuth = async ({ code }) => {
   const authData = await Parse.Cloud.run('get-github-auth-data', {
     code: code,
@@ -59,4 +68,6 @@ export default {
   confirmGithubAuth,
   logout,
   deleteCurrentUser,
+  resetPassword,
+  verifyEmail
 };

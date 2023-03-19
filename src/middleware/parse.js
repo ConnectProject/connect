@@ -1,6 +1,10 @@
+const path = require('path');
+const nodemailer = require('nodemailer');
+
 const { ParseServer } = require('parse-server');
 const {
   API_URL,
+  PUBLIC_URL,
   MONGO_URI,
   PARSE_APP_NAME,
   PARSE_APP_ID,
@@ -10,6 +14,10 @@ const {
   PARSE_SILENT,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASS
 } = require('../config');
 const cloud = require('../parse/cloud/main');
 
@@ -36,8 +44,55 @@ class ParseMiddelware {
   }
 }
 
-module.exports = (parseCloudEvent) =>
-  ParseMiddelware.start(
+module.exports = (parseCloudEvent) => {
+  // Configure mail client
+  // const customMail = require('customMail.js');
+  // const customMailClient = customMail.configure({});
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASS
+    }
+  });
+
+  const emailAdapter = {
+    module: 'parse-server-api-mail-adapter',
+    options: {
+      sender: 'no-reply@connect-project.io',
+      templates: {
+        // The template used by Parse Server to send an email for password
+        // reset; this is a reserved template name.
+        passwordResetEmail: {
+          subjectPath: path.join(__dirname, 'templates/password_reset_email_subject.txt'),
+          textPath: path.join(__dirname, 'templates/password_reset_email.txt'),
+          htmlPath: path.join(__dirname, 'templates/password_reset_email.html')
+        },
+        // The template used by Parse Server to send an email for email
+        // address verification; this is a reserved template name.
+        verificationEmail: {
+          subjectPath: path.join(__dirname, 'templates/verification_email_subject.txt'),
+          textPath: path.join(__dirname, 'templates/verification_email.txt'),
+          htmlPath: path.join(__dirname, 'templates/verification_email.html')
+        }
+      },
+      // eslint-disable-next-line require-await
+      apiCallback: async ({ payload }) => {
+        // eslint-disable-next-line no-unused-vars
+        const mailOptions = {
+          from: payload.from,
+          to: payload.to,
+          subject: payload.subject,
+          text: payload.text
+        };
+        await transporter.sendMail(payload)
+        console.log('email sent');
+      }
+    }
+  }
+
+  return ParseMiddelware.start(
     {
       databaseURI: MONGO_URI,
       appId: PARSE_APP_ID,
@@ -49,6 +104,7 @@ module.exports = (parseCloudEvent) =>
       enableAnonymousUsers: false,
       maxLimit: 100,
       serverURL: `${API_URL}/parse`,
+      publicServerURL: `${PUBLIC_URL}/parse`,
       silent: PARSE_SILENT,
       auth: {
         github: {
@@ -57,7 +113,11 @@ module.exports = (parseCloudEvent) =>
         },
       },
       directAccess: true,
-      enforcePrivateUsers: true
+      enforcePrivateUsers: true,
+      verifyUserEmails: true,
+      preventLoginWithUnverifiedEmail: false,
+      emailAdapter
     },
     parseCloudEvent,
   );
+}
