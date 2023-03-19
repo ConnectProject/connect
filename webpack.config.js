@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const getPath = path.join.bind(path, __dirname);
@@ -46,6 +47,17 @@ const plugins = [
     inject: true,
     template: indexTemplate,
   }),
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: getPath('src/front/public'),
+        to: dist,
+        globOptions: {
+          ignore: ['**/index.html'],
+        },
+      },
+    ]
+  }),
 ];
 
 if (production) {
@@ -87,14 +99,6 @@ module.exports = {
           limit: 10000,
           name: 'static/media/[name].[hash:8].[ext]',
         },
-      },
-      {
-        // failed tentative to get manifest.json in build folder
-        test: /\.json$/,
-        type: 'asset/resource',
-        generator: {
-          filename: '[path][name][ext]'
-        }
       },
     ],
   },

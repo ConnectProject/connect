@@ -18,6 +18,7 @@ const styles = {
   },
   media: {
     height: 140,
+    'background-size': 'contain'
   },
 };
 
@@ -50,15 +51,15 @@ class LoginPage extends React.PureComponent {
         <CardContent>
           <CardMedia
             className={classes.media}
-            image="/image.png"
-            title="Connect title"
+            image="/connect.jpg"
+            title="Connect image"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               Welcome
             </Typography>
             <Typography variant="body1" color="textSecondary" component="p">
-              To start using Connect, please use your GitHub account to login?
+              To start using Connect, please use your email or your GitHub account to login.
             </Typography>
           </CardContent>
         </CardContent>
