@@ -70,7 +70,7 @@ const { GITHUB_CLIENT_SECRET } = process.env;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 
-const { SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASS } = process.env
+const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SENDER } = process.env
 
 module.exports = {
   PUBLIC_URL,
@@ -91,5 +91,6 @@ module.exports = {
   SMTP_HOST,
   SMTP_PORT,
   SMTP_USER,
-  SMTP_PASS
+  SMTP_PASS,
+  SMTP_SENDER
 };

@@ -17,7 +17,8 @@ const {
   SMTP_HOST,
   SMTP_PORT,
   SMTP_USER,
-  SMTP_PASS
+  SMTP_PASS,
+  SMTP_SENDER
 } = require('../config');
 const cloud = require('../parse/cloud/main');
 
@@ -60,7 +61,7 @@ module.exports = (parseCloudEvent) => {
   const emailAdapter = {
     module: 'parse-server-api-mail-adapter',
     options: {
-      sender: 'no-reply@connect-project.io',
+      sender: SMTP_SENDER,
       templates: {
         // The template used by Parse Server to send an email for password
         // reset; this is a reserved template name.
@@ -86,8 +87,13 @@ module.exports = (parseCloudEvent) => {
           subject: payload.subject,
           text: payload.text
         };
-        await transporter.sendMail(payload)
-        console.log('email sent');
+        try {
+          await transporter.sendMail(payload)
+          console.log('email sent');
+        } catch (err) {
+          console.log('error when sending a mail')
+          console.error(err)
+        }
       }
     }
   }

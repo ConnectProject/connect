@@ -14,4 +14,9 @@ module.exports = {
   AUTH_SECRET: 'test',
   GITHUB_CLIENT_ID: 'test',
   GITHUB_CLIENT_SECRET: 'test',
+  SMTP_HOST: "xxxxxx",
+  SMTP_PORT: 587,
+  SMTP_USER: "xxxxxx",
+  SMTP_PASS: "xxxxxx",
+  SMTP_SENDER: "no-reply@connect-project.io",
 };
