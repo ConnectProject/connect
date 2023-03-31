@@ -80,13 +80,6 @@ module.exports = (parseCloudEvent) => {
       },
       // eslint-disable-next-line require-await
       apiCallback: async ({ payload }) => {
-        // eslint-disable-next-line no-unused-vars
-        const mailOptions = {
-          from: payload.from,
-          to: payload.to,
-          subject: payload.subject,
-          text: payload.text
-        };
         try {
           await transporter.sendMail(payload)
           console.log('email sent');
