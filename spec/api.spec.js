@@ -438,22 +438,28 @@ describe('Parse server', () => {
     expect(data.results[0]).toEqual(gameScoreObject);
   });
 
-  it('refuse PUT GameScore event even for the creator of the object', async () => {
-    expect.assertions(1);
-    try {
-      await axios({
-        method: 'put',
-        url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessToken.access_token,
-        },
-        data: { score: 1338, cheatMode: true },
-      });
-    } catch (err) {
-      expect(err).toBeDefined();
-    }
+  it('allow PUT GameScore event for the creator of the object', async () => {
+    const { data } = await axios({
+      method: 'put',
+      url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+      data: { score: 1338, cheatMode: true },
+    });
+
+    expect(data).toEqual({
+      objectId: data.objectId,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      score: 1338,
+      playerName: 'test9',
+      cheatMode: true,
+      applicationId: application.objectId,
+      userId: endUserUserId,
+    });
   });
 
   it('refuse PUT GameScore event when owner on a different application', async () => {
@@ -603,20 +609,17 @@ describe('Parse server', () => {
     }
   });
 
-  it('refuse DELETE GameScore event even for the creator on the same application', async () => {
-    expect.assertions(1);
-    try {
-      await axios({
-        method: 'delete',
-        url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessToken.access_token,
-        },
-      });
-    } catch (err) {
-      expect(err).toBeDefined();
-    }
+  it('allow DELETE GameScore event for the creator on the same application', async () => {
+    const { data } = await axios({
+      method: 'delete',
+      url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+    });
+
+    expect(data).toEqual({});
   });
 });

@@ -59,8 +59,8 @@ There is two way of authenticating against the API, depending on the request you
 | GET /classes/ClassName              |      ✅       |     ✅      |
 | GET /classes/ClassName/:objectId    |      ✅       |     ✅      |
 | POST /classes/ClassName             |      ❌       |     ✅      |
-| PUT /classes/ClassName/:objectId    |      ❌       |     ❌      |
-| DELETE /classes/ClassName/:objectId |      ❌       |     ❌      |
+| PUT /classes/ClassName/:objectId    |      ❌       |     ✅      |
+| DELETE /classes/ClassName/:objectId |      ❌       |     ✅      |
 
 ### <a name="authentication">Session token Authentication</a>
 
@@ -333,11 +333,46 @@ Since this requests a count as well as limiting to zero results, there will be a
 
 ### <a name="update-object">Update object</a>
 
-⚠️ To ensure integrity of the log, developers are not allowed to modify objects they sent.
+> ⚠️ Update requests can only be performed with an [OAuth token](#oauth-authentication)
+To update an object send a PUT request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+```bash
+OBJECT_ID=DFwP7JXoa0
+curl --request PUT \
+  --url $CONNECT_URL/parse/classes/GameScore/$OBJECT_ID \
+  --header 'content-type: application/json' \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'Authorization: Bearer '$access_token \
+  --data '{
+	"score":1338,
+	"playerName":"sample",
+	"cheatMode":false,
+}'
+Response :
+{
+  "score": 1338,
+  "playerName": "sample",
+  "cheatMode": false,
+  "createdAt": "2019-07-15T14:06:53.659Z",
+  "updatedAt": "2019-07-15T15:04:42.884Z",
+  "objectId": "DFwP7JXoa0",
+  "applicationId": "[YOUR_APPLICATION_ID]",
+  "userId": "[YOUR_USER_ID]"
+}
+```
+> ⚠️ **Only the owner of the data can update an object. If you did not create this object with the same user, you will have an error message** ⚠️
 
 ### <a name="delete-object">Delete object</a>
 
-⚠️ Like for modification, developers are not allowed to modify objects they sent. If for some reasons you need to remove some objects, you should contact the administrators/ 
+To delete an object send a DELETE request to the endpoint `/parse/classes/:OBJECTNAME/:OBJECTID` :
+```bash
+curl --request DELETE \
+  --url $CONNECT_URL/parse/classes/GameScore/DFwP7JXoa0 \
+  --header 'x-parse-application-id: '$PARSE_APPLICATION \
+  --header 'Authorization: Bearer '$access_token
+Response:
+{}
+```
+> ⚠️ **Like for update, only the owner of the data can delete an object. If you did not create this object you will have an error message** ⚠️
 
 ### <a name="app-details">Getting an app details from their ID</a>
 
@@ -389,6 +424,19 @@ curl --request POST \
 				"score": 1337,
 				"playerName": "Sean Plott"
 			}
+		},
+		{
+			"method": "PUT",
+			"path": "/parse/classes/GameScore/JhKvT9HrWJ",
+			"body": {
+				"score": 1337,
+				"playerName": "Sean Plott 2"
+			}
+		},
+		{
+			"method": "DELETE",
+			"path": "/parse/classes/GameScore/RAdL53JiZV",
+			"body": {}
 		},
 		{
 			"method": "GET",

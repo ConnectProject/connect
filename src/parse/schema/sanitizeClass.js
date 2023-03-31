@@ -15,8 +15,8 @@ module.exports = (schemaClass) => {
     find: { 'role:Developer': true, 'role:Administrator': true },
     get: { 'role:Developer': true, 'role:Administrator': true },
     create: { 'role:Developer': true, 'role:Administrator': true },
-    update: { 'role:Administrator': true },
-    delete: { 'role:Administrator': true },
+    update: { 'role:Developer': true, 'role:Administrator': true },
+    delete: { 'role:Developer': true, 'role:Administrator': true },
   };
 
   return newSchemaClass;
