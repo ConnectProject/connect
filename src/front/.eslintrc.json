@@ -1,0 +1,12 @@
+{
+  "globals": {
+    "process": "readonly"
+  },
+  "rules": {
+    "import/extensions": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": false
+  }
+}

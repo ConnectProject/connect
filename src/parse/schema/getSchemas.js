@@ -1,16 +1,18 @@
-const util = require('util');
-const glob = util.promisify(require('glob'));
-const path = require('path');
-const fs = require('fs');
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import glob from 'glob-promise';
 
 let schemas;
 
-module.exports = async function getSchemas () {
+export default async function getSchemas() {
   if (typeof schemas !== 'undefined') {
     return schemas;
   }
 
-  const files = await glob(`${__dirname}/classes/*.schema.json`)
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const files = await glob(`${__dirname}/classes/*.schema.json`);
 
   const promises = [];
   for (const file of files) {
@@ -27,10 +29,10 @@ module.exports = async function getSchemas () {
           });
         }
       });
-    }))
+    }));
   }
 
-  schemas = await Promise.all(promises)
+  schemas = await Promise.all(promises);
 
-  return schemas
+  return schemas;
 }

@@ -1,10 +1,12 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import dotenv from 'dotenv';
+import path from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const getPath = path.join.bind(path, __dirname);
 
 const sources = getPath('src/front');
@@ -40,8 +42,8 @@ const plugins = [
     ...envKeys,
   }),
   new MiniCssExtractPlugin({
-    filename: EXTRACT_CSS ? '[name].[hash].css' : '[name].css',
-    chunkFilename: EXTRACT_CSS ? '[id].[hash].css' : '[id].css',
+    filename: EXTRACT_CSS ? '[name].[contenthash].css' : '[name].css',
+    chunkFilename: EXTRACT_CSS ? '[id].[contenthash].css' : '[id].css',
   }),
   new HtmlWebpackPlugin({
     inject: true,
@@ -64,10 +66,10 @@ if (production) {
   plugins.push(new webpack.ids.HashedModuleIdsPlugin());
 }
 
-module.exports = {
+export default {
   mode: process.env.NODE_ENV || 'development',
   devtool: production ? false : 'eval-source-map',
-  entry: ['@babel/polyfill', sources],
+  entry: sources,
   output: {
     path: dist,
     publicPath: '/',
@@ -79,6 +81,9 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: 'babel-loader',
+        resolve: {
+          fullySpecified: false,
+        }
       },
       {
         test: [/\.scss$/, /\.css$/],
@@ -92,14 +97,14 @@ module.exports = {
           localIdentName: '[name]__[local]--[hash:base64:5]',
         }),
       },
-      {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
-        loader: require.resolve('url-loader'),
-        options: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
-        },
-      },
+      // {
+      //   test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
+      //   loader: 'url-loader',
+      //   options: {
+      //     limit: 10000,
+      //     name: 'static/media/[name].[hash:8].[ext]',
+      //   },
+      // },
     ],
   },
   resolve: {

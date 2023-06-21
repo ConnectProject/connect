@@ -1,5 +1,5 @@
-const winston = require('winston');
-const flow = require('lodash.flow');
+import winston from 'winston';
+import flow from 'lodash.flow';
 
 const { combine, timestamp, json } = winston.format;
 
@@ -99,4 +99,4 @@ const createLogger = function (appName) {
 
 const connectServerLog = createLogger('connect');
 
-module.exports = connectServerLog;
+export default connectServerLog;

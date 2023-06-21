@@ -1,7 +1,7 @@
-const getClasses = require('../schema/getClasses');
-const roleGet = require('../role/get');
+import getClasses from '../schema/getClasses.js';
+import roleGet from '../role/get.js';
 
-module.exports = async (Parse) => {
+export default async (Parse) => {
   Parse.Cloud.afterSave(Parse.User, async (req) => {
     if (req.object.existed()) {
       return;

@@ -1,11 +1,14 @@
 // All credit to https://github.com/bhtz/parse-server-swagger
 // the code is adapted for our use case
 
-const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const { jsonSchemasToSwagger } = require('./schema-to-swagger');
+import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { createRequire } from 'node:module';
+import { jsonSchemasToSwagger } from './schema-to-swagger.js';
+import getSchemas from '../schema/getSchemas.js';
+
+const require = createRequire(import.meta.url);
 const parseBaseSwaggerSpec = require('./parse-swagger-base.json');
-const getSchemas = require('../schema/getSchemas');
 
 /**
  * constructor
@@ -19,7 +22,7 @@ const ParseSwagger = function (config) {
 
     try {
       const excludes = config.excludes || [];
-      const schemas = await getSchemas()
+      const schemas = await getSchemas();
       const swagger = jsonSchemasToSwagger(
         parseBaseSwaggerSpec,
         schemas,
@@ -38,4 +41,4 @@ const ParseSwagger = function (config) {
   return app;
 };
 
-module.exports = ParseSwagger;
+export default ParseSwagger;

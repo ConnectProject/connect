@@ -265,7 +265,7 @@ const transformClasseToSchema = function (oneClass) {
  * @param {array} excludes exclude list
  * @returns {Object} spec
  */
-exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
+export const parseSchemaToSwagger = (spec, schemas, excludes) => {
 
   for (const schema of schemas) {
     if (
@@ -290,14 +290,14 @@ exports.parseSchemaToSwagger = (spec, schemas, excludes) => {
  * @param {array} excludes exclude list
  * @returns {Object} spec
  */
-exports.jsonSchemasToSwagger = (spec, schemas, excludes) => {
+export const jsonSchemasToSwagger = (spec, schemas, excludes) => {
 
   for (const schema of schemas) {
     if (
       !excludes.includes(schema.className) &&
       !schema.className.startsWith('Sandbox_')
     ) {
-      spec.components.schemas[schema.className] = schema.schema
+      spec.components.schemas[schema.className] = schema.schema;
       spec.paths[`/parse/classes/${schema.className}`] = getPath(schema);
       spec.paths[`/parse/classes/${schema.className}/{id}`] =
         getPathById(schema);

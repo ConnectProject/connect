@@ -1,4 +1,4 @@
-module.exports = (Parse) => {
+export default (Parse) => {
   Parse.Cloud.define('get-granted-tokens', async (request) => {
     if (!request.user) {
       return [];
@@ -20,8 +20,8 @@ module.exports = (Parse) => {
       applicationIds.length === 0
         ? []
         : await new Parse.Query(Parse.Object.extend('OAuthApplication'))
-            .containedIn('id', applicationIds)
-            .findAll({ useMasterKey: true });
+          .containedIn('id', applicationIds)
+          .findAll({ useMasterKey: true });
 
     return tokens.map((elt) => {
       const app = applications.find((a) => a.id === elt.get('applicationId'));

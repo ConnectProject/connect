@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types'; // ES6
+import React from 'react';
+import { useHistory } from "react-router-dom";
 import Parse from 'parse';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -26,32 +25,28 @@ import UserService from '../services/user-service';
 
 const options = ['Home', 'Documentation', 'My Profile'];
 
-class App extends React.PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      canBack: false,
-      userConnected: false,
-      anchorRef: { current: null },
-      open: false,
-    };
-  }
+const App = function () {
+  const [canBack, setCanBack] = React.useState(false);
+  const [userConnected, setUserConnected] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const history = useHistory();
 
-  componentDidMount () {
-    const { history } = this.props;
+  const open = Boolean(anchorEl);
+
+  React.useEffect(() => {
     if (!['/home', '/', '/authorize'].includes(history.location.pathname)) {
-      this.setState({ canBack: true });
+      setCanBack(true);
     }
     history.listen((location) => {
       if (location.pathname !== '/home' && location.pathname !== '/') {
-        this.setState({ canBack: true });
+        setCanBack(true);
       } else {
-        this.setState({ canBack: false });
+        setCanBack(false);
       }
     });
 
     const currentUser = UserService.getCurrentUser();
-    this.setState({ userConnected: currentUser !== null });
+    setUserConnected(currentUser !== null);
     if (
       currentUser === null &&
       !['/', '/authorize'].includes(history.location.pathname)
@@ -63,12 +58,19 @@ class App extends React.PureComponent {
       if (!newUser) {
         history.push('/');
       }
-      this.setState({ userConnected: newUser !== null });
+      setUserConnected(newUser !== null);
     });
-  }
+  }, []);
 
-  handleMenuItemClick (event, index) {
-    const { history } = this.props;
+  const handleMenuClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget.parentNode);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (event, index) => {
     if (index === 0) {
       history.push('/');
     } else if (index === 1) {
@@ -80,131 +82,102 @@ class App extends React.PureComponent {
       history.push('/profile');
     }
 
-    this.handleToggle();
-  }
+    handleClose();
+  };
 
-  handleToggle () {
-    const { open } = this.state;
-    this.setState({
-      open: !open,
-    });
-  }
-
-  handleClose (event) {
-    const { anchorRef } = this.state;
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    this.setState({
-      open: false,
-    });
-  }
-
-  goBack () {
-    const { history } = this.props;
+  const goBack = () => {
     history.goBack();
-  }
+  };
 
-  render () {
-    const { userConnected, anchorRef, open, canBack } = this.state;
+  return (
+    <div>
+      <AppBar position="static" color="default">
+        <Toolbar>
+          {canBack && (
+            <IconButton
+              edge="start"
+              className="margin-right': 16"
+              color="inherit"
+              onClick={goBack}
+            >
+              <ArrowBack />
+            </IconButton>
+          )}
 
-    return (
-      <div>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            {canBack && (
-              <IconButton
-                edge="start"
-                className="margin-right': 16"
-                color="inherit"
-                onClick={() => {
-                  this.goBack();
-                }}
+          <Typography variant="h6" color="inherit">
+            Connect
+          </Typography>
+          <div className="spacer" style={{ flex: 1 }} />
+          {userConnected && (
+            <>
+              <ButtonGroup aria-label="Split button">
+                <Button
+                  color="inherit"
+                  onClick={() => {
+                    Parse.User.logOut();
+                    window.location.href = '/';
+                  }}
+                >
+                  Logout
+                </Button>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  aria-owns={open ? 'menu-list-grow' : null}
+                  aria-haspopup="true"
+                  onClick={handleMenuClick}
+                >
+                  <ArrowDropDownIcon />
+                </Button>
+              </ButtonGroup>
+              <Popper
+                open={open}
+                anchorEl={anchorEl}
+                transition
+                disablePortal
               >
-                <ArrowBack />
-              </IconButton>
-            )}
-
-            <Typography variant="h6" color="inherit">
-              Connect
-            </Typography>
-            <div className="spacer" style={{ flex: 1 }} />
-            {userConnected && (
-              <>
-                <ButtonGroup ref={anchorRef} aria-label="Split button">
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      Parse.User.logOut();
-                      window.location.href = '/';
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    /* eslint-disable-next-line react/jsx-props-no-spreading */
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === 'bottom'
+                          ? 'center top'
+                          : 'center bottom',
                     }}
                   >
-                    Logout
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    size="small"
-                    aria-owns={open ? 'menu-list-grow' : null}
-                    aria-haspopup="true"
-                    onClick={() => this.handleToggle()}
-                  >
-                    <ArrowDropDownIcon />
-                  </Button>
-                </ButtonGroup>
-                <Popper
-                  open={open}
-                  anchorEl={anchorRef.current}
-                  transition
-                  disablePortal
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      /* eslint-disable-next-line react/jsx-props-no-spreading */
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === 'bottom'
-                            ? 'center top'
-                            : 'center bottom',
-                      }}
-                    >
-                      <Paper id="menu-list-grow">
-                        <ClickAwayListener
-                          onClickAway={() => this.handleClose()}
-                        >
-                          <MenuList>
-                            {options.map((option, index) => (
-                              <MenuItem
-                                key={option}
-                                disabled={index === 3}
-                                onClick={(event) =>
-                                  this.handleMenuItemClick(event, index)
-                                }
-                              >
-                                {option}
-                              </MenuItem>
-                            ))}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </>
-            )}
-          </Toolbar>
-        </AppBar>
+                    <Paper id="menu-list-grow">
+                      <ClickAwayListener
+                        onClickAway={handleClose}
+                      >
+                        <MenuList>
+                          {options.map((option, index) => (
+                            <MenuItem
+                              key={option}
+                              disabled={index === 3}
+                              onClick={(event) =>
+                                handleMenuItemClick(event, index)
+                              }
+                            >
+                              {option}
+                            </MenuItem>
+                          ))}
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
 
-        <Routes />
-      </div>
-    );
-  }
-}
-
-App.propTypes = {
-  history: PropTypes.instanceOf(Object).isRequired,
+      <Routes />
+    </div >
+  );
 };
 
-export default withRouter(App);
+export default App;

@@ -1,17 +1,17 @@
 /* global Parse */
 
-const { getOne } = require('./get');
+import roleGet from './get.js';
 
-module.exports = async () => {
+export default async () => {
   const roleACL = new Parse.ACL();
   roleACL.setPublicReadAccess(true);
 
-  if (!(await getOne('Administrator'))) {
+  if (!(await roleGet.getOne('Administrator'))) {
     const adminRole = new Parse.Role('Administrator', roleACL);
     adminRole.save(null, { useMasterKey: true });
   }
 
-  if (!(await getOne('Developer'))) {
+  if (!(await roleGet.getOne('Developer'))) {
     const devRole = new Parse.Role('Developer', roleACL);
     devRole.save(null, { useMasterKey: true });
   }

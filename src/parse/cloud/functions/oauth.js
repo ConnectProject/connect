@@ -1,27 +1,27 @@
-const { Request, Response } = require('oauth2-server');
-const oauthModel = require('../../../oauth/oauth-model');
-const oauthServer = require('../../../oauth/oauth-server');
+import { Request, Response } from 'oauth2-server';
+import oauthModel from '../../../oauth/oauth-model.js';
+import oauthServer from '../../../oauth/oauth-server.js';
 
-module.exports = (Parse) => {
+export default (Parse) => {
   Parse.Cloud.define('oauth-get-application', async (request) => {
     const { clientId, redirectUri } = request.params;
 
     if (!clientId) {
-      throw new Error('No client provided')
+      throw new Error('No client provided');
     }
 
     const client = await oauthModel.getClient(clientId);
 
     if (!client) {
-      throw new Error('Client not found')
+      throw new Error('Client not found');
     }
 
     if (!redirectUri) {
-      throw new Error('No redirect URI provided')
+      throw new Error('No redirect URI provided');
     }
 
     if (!oauthModel.isRedirectUriValidity(redirectUri, client.redirectUris)) {
-      throw new Error('Incorrect redirect URI specified')
+      throw new Error('Incorrect redirect URI specified');
     }
 
     return {
@@ -54,6 +54,6 @@ module.exports = (Parse) => {
     // eslint-disable-next-line no-unused-vars
     const codeOrToken = await oauthServer.authorize(oauthRequest, response);
 
-    return response.headers.location
+    return response.headers.location;
   });
 };

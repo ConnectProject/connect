@@ -1,11 +1,10 @@
-const Config = require('parse-server/lib/Config');
-const getClasses = require('./getClasses');
-const sanitizeClass = require('./sanitizeClass');
-const initClasses = require('./_initClasses');
+/* global Parse */
+import getClasses from './getClasses.js';
+import sanitizeClass from './sanitizeClass.js';
+import initClasses from './_initClasses.js';
 
 // Retrieve the fields not already setup on the parse schema installed
-const getNewFields = async function (schema, schemaClass) {
-  const actualSchemaClass = await schema.getOneSchema(schemaClass.className);
+const getNewFields = function (actualSchemaClass, schemaClass) {
 
   const newFields = {};
   for (const field of Object.keys(schemaClass.fields)) {
@@ -18,36 +17,33 @@ const getNewFields = async function (schema, schemaClass) {
 };
 
 // Create or Update the schema
-const applySchemaSync = async function (schema, schemaClass) {
-  if (await schema.hasClass(schemaClass.className)) {
-    const newFields = await getNewFields(schema, schemaClass);
-    await schema.updateClass(
-      schemaClass.className,
-      newFields,
-      schemaClass.classLevelPermissions,
-    );
+const applySchemaSync = async function (actualSchemas, schemaClass) {
+  const actualSchemaClass = actualSchemas.find((schema) => schema.className === schemaClass.className);
+  const schemaObject = new Parse.Schema(schemaClass.className);
+  if (actualSchemaClass) {
+    const newFields = getNewFields(actualSchemaClass, schemaClass);
+    schemaObject._fields = newFields;
+    await schemaObject.update();
   } else {
-    await schema.addClassIfNotExists(
-      schemaClass.className,
-      schemaClass.fields,
-      schemaClass.classLevelPermissions,
-    );
+    schemaObject._fields = schemaClass.fields;
+    schemaObject.setCLP(schemaClass.classLevelPermissions);
+    await schemaObject.save();
   }
 };
 
-module.exports = async (appId) => {
+export default async () => {
   const schemaClasses = await getClasses();
-  const schema = await Config.get(appId).database.loadSchema();
+  const actualSchemas = await Parse.Schema.all();
 
   const schemaSyncs = [];
   for (const schemaClass of initClasses) {
-    schemaSyncs.push(applySchemaSync(schema, schemaClass));
+    schemaSyncs.push(applySchemaSync(actualSchemas, schemaClass));
   }
 
   for (const schemaClass of schemaClasses) {
     // a schemaClass should have at least a className and a field
-    if (schemaClass.className || schemaClass.fields) {
-      schemaSyncs.push(applySchemaSync(schema, sanitizeClass(schemaClass)));
+    if (schemaClass.className && schemaClass.fields) {
+      schemaSyncs.push(applySchemaSync(actualSchemas, sanitizeClass(schemaClass)));
     }
   }
 

@@ -1,4 +1,4 @@
-module.exports = (schemaClass) => {
+export default (schemaClass) => {
   const newSchemaClass = schemaClass;
   // even if it's set on the schema classes we remove it to be sure the correct type an properties is setup
   if (newSchemaClass.fields.userId) {

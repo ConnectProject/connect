@@ -29,9 +29,9 @@ const registerWithEmail = async ({ email, password }) => {
   return newlyLoggedInUser;
 };
 
-const resetPassword = ({email}) => Parse.User.requestPasswordReset(email)
+const resetPassword = ({ email }) => Parse.User.requestPasswordReset(email);
 
-const verifyEmail = ({email}) => Parse.User.requestEmailVerification(email)
+const verifyEmail = ({ email }) => Parse.User.requestEmailVerification(email);
 
 
 const confirmGithubAuth = async ({ code }) => {

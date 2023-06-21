@@ -1,7 +1,7 @@
 /* global Parse */
 
-const { Request, Response } = require('oauth2-server');
-const oauthServer = require('./oauth-server');
+import { Request, Response } from 'oauth2-server';
+import oauthServer from './oauth-server.js';
 
 const getOAuthUserFromRequest = async (req, res) => {
   try {
@@ -31,6 +31,7 @@ const getOAuthUserFromRequest = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
+  // eslint-disable-next-line import/prefer-default-export
   getOAuthUserFromRequest,
 };

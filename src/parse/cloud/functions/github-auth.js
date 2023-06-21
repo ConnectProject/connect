@@ -1,7 +1,7 @@
-const axios = require('axios');
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../../../config');
+import axios from 'axios';
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '../../../config/index.js';
 
-module.exports = (Parse) => {
+export default (Parse) => {
   Parse.Cloud.define('get-github-auth-data', async (request) => {
     const result = await axios.post(
       'https://github.com/login/oauth/access_token',

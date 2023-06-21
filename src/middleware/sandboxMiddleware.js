@@ -1,11 +1,11 @@
-/* eslint-disable max-statements */
-
-const fs = require('fs');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const changeUrl = (req, toReplace, replacement) => {
   req.url = req.url.replace(toReplace, replacement);
-  req.originalUrl = req.originalUrl.replace(toReplace, replacement);
-  req.path = req.path.replace(toReplace, replacement);
+  // req.originalUrl = req.originalUrl.replace(toReplace, replacement);
+  // req.path = req.path.replace(toReplace, replacement);
 };
 
 const transformPathForSandbox = (originalPath) => {
@@ -18,14 +18,15 @@ const transformPathForSandbox = (originalPath) => {
   }
 };
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   if (req.headers['x-is-sandbox'] === 'true') {
     const matchClass = req.originalUrl.match(/\/parse\/classes\/([a-zA-Z_]+)/);
     if (matchClass && matchClass.length > 1) {
       const className = matchClass[1];
+      const __dirname = path.dirname(fileURLToPath(import.meta.url));
       if (!className.startsWith('Sandbox_')) {
         fs.access(
-          `${__dirname}/../schema/classes/${className}.schema.json`,
+          `${__dirname}/../parse/schema/classes/${className}.schema.json`,
           fs.constants.F_OK,
           (err) => {
             if (!err) {

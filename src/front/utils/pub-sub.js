@@ -1,8 +1,9 @@
 /* eslint-env browser */
 
-if (!global.window) {
-  global.window = {};
-}
+// global object not defined in browsers only defined in node
+// if (!globalThis.window) {
+//   global.window = {};
+// }
 
 window.subscribers = window.subscribers || {};
 

@@ -1,14 +1,17 @@
-const mongoose = require('mongoose');
-const nock = require('nock');
-const { EventEmitter, once } = require('events');
+import mongoose from 'mongoose';
+import nock from 'nock';
+import { EventEmitter, once } from 'events';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { jest } from '@jest/globals';
 
-const configMock = require('./__mock__/config');
+import configMock from './__mock__/config';
 
 process.env = Object.assign(process.env, configMock);
-jest.mock('../src/config', () => configMock);
+// jest.mock('../src/config', () => configMock);
+jest.unstable_mockModule('../src/config', () => configMock);
 
 // Set up a default API server for testing with default configuration.
-const ConnectServer = require('../src/connectServer');
+const ConnectServer = (await import('../src/connectServer')).default;
 
 const bindServer = function () {
   let server;
@@ -56,7 +59,7 @@ const bindAll = function () {
   bindGithub();
 };
 
-module.exports = {
+export {
   bindAll,
   bindServer,
   bindGithub,

@@ -1,8 +1,8 @@
-const { Request, Response } = require('oauth2-server');
-const oAuthMiddleware = require('./oauth-middleware');
-const oauthServer = require('./oauth-server');
+import { Request, Response } from 'oauth2-server';
+import oAuthMiddleware from './oauth-middleware.js';
+import oauthServer from './oauth-server.js';
 
-module.exports = (app) => {
+export default (app) => {
   app.post('/oauth/token', async (req, res, next) => {
     try {
       const response = new Response(res);

@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 
 const testConfig = function (config, name) {
   if (
@@ -52,13 +52,11 @@ testConfig(MONGO_DB_NAME, 'MONGO_DB_NAME');
 const { MONGO_USERNAME } = process.env;
 const { MONGO_PASSWORD } = process.env;
 
-let MONGO_URI;
 if (MONGO_USERNAME) {
   testConfig(MONGO_PASSWORD, 'MONGO_PASSWORD');
-  MONGO_URI = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`;
-} else {
-  MONGO_URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`;
 }
+const MONGO_URI = MONGO_USERNAME ? `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`
+  : `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`;
 
 const { AUTH_SECRET } = process.env;
 testConfig(AUTH_SECRET, 'AUTH_SECRET');
@@ -70,9 +68,11 @@ const { GITHUB_CLIENT_SECRET } = process.env;
 testConfig(GITHUB_CLIENT_SECRET, 'GITHUB_CLIENT_SECRET');
 
 
-const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SENDER } = process.env
+const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SENDER } = process.env;
 
-module.exports = {
+export const PARSE_SILENT = false;
+
+export {
   PUBLIC_URL,
   API_URL,
   APP_PORT,
@@ -83,7 +83,6 @@ module.exports = {
   PARSE_READONLY_MASTER_KEY,
   PARSE_DASHBOARD_MAINTENER_PWD,
   PARSE_DASHBOARD_ROOT_PWD,
-  PARSE_SILENT: false,
   MONGO_URI,
   AUTH_SECRET,
   GITHUB_CLIENT_ID,

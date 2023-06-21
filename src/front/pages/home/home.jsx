@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
-import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -64,269 +64,247 @@ const styles = {
   },
 };
 
-class HomePage extends React.PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      loading: true,
-      dialogNewApplicationOpen: false,
-      developerApplications: [],
-      newApplication: {
-        name: '',
-        description: '',
-        appleStoreLink: '',
-        googleMarketLink: '',
-      },
-      errors: {
-        name: false,
-        description: false,
-        appleStoreLink: false,
-        googleMarketLink: false,
-      },
-    };
-  }
+const HomePage = function ({ classes }) {
+  const [loading, setLoading] = useState(true);
+  const [dialogNewApplicationOpen, setDialogNewApplicationOpen] = useState(false);
+  const [developerApplications, setDeveloperApplications] = useState([]);
+  const [newApplication, setNewApplication] = useState({
+    name: '',
+    description: '',
+    appleStoreLink: '',
+    googleMarketLink: '',
+  });
+  const [errors, setErrors] = useState({
+    name: false,
+    description: false,
+    appleStoreLink: false,
+    googleMarketLink: false,
+  });
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  componentDidMount() {
+  const history = useHistory();
+
+  useEffect(() => {
     ApplicationsService.listApplications()
       .then((applications) => {
-        this.setState({
-          loading: false,
-          developerApplications: applications,
-        });
+        setLoading(false);
+        setDeveloperApplications(applications);
       })
       .catch((err) => {
         console.error(err);
-        this.setState({
-          loading: false,
-          developerApplications: [],
-        });
+        setLoading(false);
+        setDeveloperApplications([]);
       });
-  }
+  }, []);
 
-  handleClickOpen() {
-    this.setState({
-      dialogNewApplicationOpen: true,
+  const handleClickOpen = function () {
+    setDialogNewApplicationOpen(true);
+  };
+
+  const handleClose = function () {
+    setDialogNewApplicationOpen(false);
+    setNewApplication({
+      name: '',
+      description: '',
+      apple_store_link: '',
+      google_market_link: '',
     });
-  }
-
-  handleClose() {
-    this.setState({
-      dialogNewApplicationOpen: false,
-      newApplication: {
-        name: '',
-        description: '',
-        apple_store_link: '',
-        google_market_link: '',
-      },
-      errors: {
-        name: false,
-        description: false,
-        apple_store_link: false,
-        google_market_link: false,
-      },
-      errorMessage: null
+    setErrors({
+      name: false,
+      description: false,
+      apple_store_link: false,
+      google_market_link: false,
     });
-  }
+    setErrorMessage(null);
+  };
 
-  handleChange(name, event) {
-    const { newApplication, errors } = this.state;
+  const handleChange = function (name, event) {
     const { value } = event.target;
     const validated = validateFormField(value, name);
-    this.setState({
-      newApplication: { ...newApplication, [name]: value },
-      errors: { ...errors, [name]: !validated },
-    });
-  }
+    setNewApplication(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+    setErrors(prevState => ({
+      ...prevState,
+      [name]: !validated
+    }));
+  };
 
-  rowClick(application) {
-    const { history } = this.props;
+  const rowClick = function (application) {
     history.push(`/application/${application.id}`);
-  }
+  };
 
-  async clickCreateApplication() {
-    const { newApplication } = this.state;
-    try{
-    const app = await ApplicationsService.create(newApplication);
-    const { history } = this.props;
-    history.push(`/application/${app.id}`);
-  } catch (err) {
-    console.error(err, err.message);
-    this.setState({ errorMessage: err.message || 'An error occured.' });
-  }
-  }
+  const clickCreateApplication = async function () {
+    try {
+      const app = await ApplicationsService.create(newApplication);
+      history.push(`/application/${app.id}`);
+    } catch (err) {
+      console.error(err, err.message);
+      setErrorMessage(err.message || 'An error occured.');
+    }
+  };
 
-  render() {
-    const { classes } = this.props;
-    const {
-      developerApplications,
-      loading,
-      dialogNewApplicationOpen,
-      newApplication,
-      errors,
-      errorMessage
-    } = this.state;
+  return (
+    <>
+      <List className={classes.root}>
+        {loading && <CircularProgress className={classes.progress} />}
 
-    return (
-      <>
-        <List className={classes.root}>
-          {loading && <CircularProgress className={classes.progress} />}
+        {!loading &&
+          developerApplications.map((application) => (
+            <div key={application.id} className={classes.listContainer}>
+              <ListItem
+                alignItems="flex-start"
+                button
+                onClick={() => rowClick(application)}
+              >
+                <ListItemText
+                  primary={
+                    <>
+                      {application.attributes.name}
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        {' - '}
+                        <Moment format="YYYY-MM-DD HH:mm">
+                          {application.attributes.updatedAt}
+                        </Moment>
+                      </Typography>
+                    </>
+                  }
+                  secondary={application.attributes.description}
+                />
+              </ListItem>
+              <Divider component="li" />
+            </div>
+          ))}
+      </List>
 
-          {!loading &&
-            developerApplications.map((application) => (
-              <div key={application.id} className={classes.listContainer}>
-                <ListItem
-                  alignItems="flex-start"
-                  button
-                  onClick={() => this.rowClick(application)}
-                >
-                  <ListItemText
-                    primary={
-                      <>
-                        {application.attributes.name}
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          {' - '}
-                          <Moment format="YYYY-MM-DD HH:mm">
-                            {application.attributes.updatedAt}
-                          </Moment>
-                        </Typography>
-                      </>
-                    }
-                    secondary={application.attributes.description}
-                  />
-                </ListItem>
-                <Divider component="li" />
-              </div>
-            ))}
-        </List>
+      {developerApplications.length === 0 && !loading && (
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              <DeveloperModeIcon />
+              {'  '} Welcome
+            </Typography>
+            <Typography variant="body1" component="p">
+              Add your first application with the bottom right button.
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small">Go to documentation</Button>
+          </CardActions>
+        </Card>
+      )}
 
-        {developerApplications.length === 0 && !loading && (
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                <DeveloperModeIcon />
-                {'  '} Welcome
-              </Typography>
-              <Typography variant="body1" component="p">
-                Add your first application with the bottom right button.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Go to documentation</Button>
-            </CardActions>
-          </Card>
-        )}
+      <Fab
+        variant="extended"
+        size="large"
+        color="primary"
+        aria-label="Add"
+        className={classes.fab}
+        onClick={() => handleClickOpen()}
+      >
+        <AddIcon className={classes.extendedIcon} />
+        New application
+      </Fab>
 
-        <Fab
-          variant="extended"
-          size="large"
-          color="primary"
-          aria-label="Add"
-          className={classes.fab}
-          onClick={() => this.handleClickOpen()}
-        >
-          <AddIcon className={classes.extendedIcon} />
-          New application
-        </Fab>
+      <Dialog
+        open={dialogNewApplicationOpen}
+        onClose={() => handleClose()}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">New Application</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Fill in the required fields to create a new application. It will
+            allow you to get Token to use Connect API.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            required
+            id="name"
+            label="Name"
+            className={classes.textField}
+            fullWidth
+            value={newApplication.name}
+            onChange={(event) => handleChange('name', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.name}
+          />
 
-        <Dialog
-          open={dialogNewApplicationOpen}
-          onClose={() => this.handleClose()}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">New Application</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Fill in the required fields to create a new application. It will
-              allow you to get Token to use Connect API.
+          <TextField
+            required
+            id="description"
+            label="Description"
+            className={classes.textField}
+            fullWidth
+            value={newApplication.description}
+            onChange={(event) => handleChange('description', event)}
+            margin="normal"
+            variant="outlined"
+            multiline
+            rows="4"
+            error={errors.description}
+          />
+
+          <TextField
+            id="appleStoreLink"
+            label="App Store Link"
+            className={classes.textField}
+            fullWidth
+            value={newApplication.appleStoreLink}
+            onChange={(event) => handleChange('appleStoreLink', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.appleStoreLink}
+          />
+
+          <TextField
+            id="googleMarketLink"
+            label="Play Store Link"
+            className={classes.textField}
+            fullWidth
+            value={newApplication.googleMarketLink}
+            onChange={(event) => handleChange('googleMarketLink', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.googleMarketLink}
+          />
+          {errorMessage && (
+            <DialogContentText align="right" color="error">
+              {errorMessage}
             </DialogContentText>
-            <TextField
-              autoFocus
-              required
-              id="name"
-              label="Name"
-              className={classes.textField}
-              fullWidth
-              value={newApplication.name}
-              onChange={(event) => this.handleChange('name', event)}
-              margin="normal"
-              variant="outlined"
-              error={errors.name}
-            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose()} color="primary">
+            Cancel
+          </Button>
+          <Button
+            disabled={
+              !checkValid(errors) ||
+              !newApplication.name ||
+              !newApplication.description
+            }
+            onClick={() => clickCreateApplication()}
+            color="primary"
+          >
+            Create application
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
-            <TextField
-              required
-              id="description"
-              label="Description"
-              className={classes.textField}
-              fullWidth
-              value={newApplication.description}
-              onChange={(event) => this.handleChange('description', event)}
-              margin="normal"
-              variant="outlined"
-              multiline
-              rows="4"
-              error={errors.description}
-            />
-
-            <TextField
-              id="appleStoreLink"
-              label="App Store Link"
-              className={classes.textField}
-              fullWidth
-              value={newApplication.appleStoreLink}
-              onChange={(event) => this.handleChange('appleStoreLink', event)}
-              margin="normal"
-              variant="outlined"
-              error={errors.appleStoreLink}
-            />
-
-            <TextField
-              id="googleMarketLink"
-              label="Play Store Link"
-              className={classes.textField}
-              fullWidth
-              value={newApplication.googleMarketLink}
-              onChange={(event) => this.handleChange('googleMarketLink', event)}
-              margin="normal"
-              variant="outlined"
-              error={errors.googleMarketLink}
-            />
-            {errorMessage && (
-              <DialogContentText align="right" color="error">
-                {errorMessage}
-              </DialogContentText>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.handleClose()} color="primary">
-              Cancel
-            </Button>
-            <Button
-              disabled={
-                !checkValid(errors) ||
-                !newApplication.name ||
-                !newApplication.description
-              }
-              onClick={() => this.clickCreateApplication()}
-              color="primary"
-            >
-              Create application
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  }
-}
 
 HomePage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
-  history: PropTypes.instanceOf(Object).isRequired,
 };
 
-export default withRouter(withStyles(styles)(HomePage));
+export default withStyles(styles)(HomePage);

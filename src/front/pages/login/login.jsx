@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -6,7 +5,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'; // ES6
 
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import UserService from '../../services/user-service';
 import LoginActions from '../../component/LoginActions';
 
@@ -22,56 +22,48 @@ const styles = {
   },
 };
 
-class LoginPage extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.onUserLoggedIn = this.onUserLoggedIn.bind(this);
-  }
+const LoginPage = function ({ classes }) {
+  const history = useHistory();
 
-  componentDidMount() {
+  useEffect(() => {
     const currentUser = UserService.getCurrentUser();
     if (currentUser) {
-      const { history } = this.props;
       history.push('/home');
     }
-  }
+  });
 
-  onUserLoggedIn(user) {
+  const onUserLoggedIn = function (user) {
     if (user) {
-      const { history } = this.props;
       history.push('/home');
     }
-  }
+  };
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Card className={classes.card}>
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        <CardMedia
+          className={classes.media}
+          image="/connect.jpg"
+          title="Connect image"
+        />
         <CardContent>
-          <CardMedia
-            className={classes.media}
-            image="/connect.jpg"
-            title="Connect image"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Welcome
-            </Typography>
-            <Typography variant="body1" color="textSecondary" component="p">
-              To start using Connect, please use your email or your GitHub account to login.
-            </Typography>
-          </CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            Welcome
+          </Typography>
+          <Typography variant="body1" color="textSecondary" component="p">
+            To start using Connect, please use your email or your GitHub account to login.
+          </Typography>
         </CardContent>
-        <LoginActions onUserLoggedIn={this.onUserLoggedIn} />
-      </Card>
-    );
-  }
-}
+      </CardContent>
+      <LoginActions onUserLoggedIn={(user) => onUserLoggedIn(user)} />
+    </Card>
+  );
+
+};
+
 
 LoginPage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
-  history: PropTypes.instanceOf(Object).isRequired,
 };
 
-export default withRouter(withStyles(styles)(LoginPage));
+export default withStyles(styles)(LoginPage);

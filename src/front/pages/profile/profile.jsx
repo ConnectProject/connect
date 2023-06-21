@@ -10,8 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types'; // ES6
-import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -72,256 +72,234 @@ const styles = {
   },
 };
 
-class ProfilePage extends React.PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      user: UserService.getCurrentUser(),
-      dialogOpen: false,
-      snackBarOpen: false,
-      grantedTokens: [],
-      tokenToRevokeInDialog: null,
-    };
-    this.copyToClipboard = this.copyToClipboard.bind(this);
-    this.handleCloseSnackbar = this.handleCloseSnackbar.bind(this);
-    this.refreshGrantedTokens = this.refreshGrantedTokens.bind(this);
-    this.deleteToken = this.deleteToken.bind(this);
-  }
+const ProfilePage = function ({ classes }) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [grantedTokens, setGrantedTokens] = useState([]);
+  const [tokenToRevokeInDialog, setTokenToRevokeInDialog] = useState(null);
 
-  componentDidMount () {
-    this.refreshGrantedTokens();
-  }
+  const user = UserService.getCurrentUser();
 
-  async handleClose (userToBeDeleted) {
+  const handleClose = async function (userToBeDeleted) {
     if (userToBeDeleted) {
       await UserService.deleteCurrentUser();
-      const { history } = this.props;
+      const history = useHistory();
       history.push('/');
     } else {
-      this.setState({ dialogOpen: false });
+      setDialogOpen(false);
     }
-  }
+  };
 
-  handleCloseSnackbar (event, reason) {
+  const handleCloseSnackbar = function (event, reason) {
     if (reason !== 'clickaway') {
-      this.setState({ snackBarOpen: false });
+      setSnackBarOpen(false);
     }
-  }
+  };
 
-  copyToClipboard () {
-    const { user } = this.state;
+  const copyToClipboard = function () {
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(user.getSessionToken());
-        this.setState({ snackBarOpen: true });
+        setSnackBarOpen(true);
       }
     });
-  }
+  };
 
-  goBack () {
-    const { history } = this.props;
-    history.goBack();
-  }
+  // goBack() {
+  //   const history = useHistory();
+  //   history.goBack();
+  // }
 
-  async refreshGrantedTokens () {
+  const refreshGrantedTokens = async function () {
     const tokens = await UserTokensManagementService.getGrantedTokens();
-    this.setState({ grantedTokens: tokens || [] });
-  }
+    setGrantedTokens(tokens || []);
+  };
 
-  async deleteToken () {
-    const { tokenToRevokeInDialog } = this.state;
+  const deleteToken = async function () {
     await UserTokensManagementService.revokeToken({
       tokenId: tokenToRevokeInDialog.id,
     });
-    this.setState({ tokenToRevokeInDialog: null });
-    await this.refreshGrantedTokens();
-  }
+    setTokenToRevokeInDialog(null);
+    await refreshGrantedTokens();
+  };
 
-  render () {
-    const { classes } = this.props;
-    const {
-      user,
-      dialogOpen,
-      snackBarOpen,
-      grantedTokens,
-      tokenToRevokeInDialog,
-    } = this.state;
+  useEffect(() => {
+    refreshGrantedTokens();
+  }, []);
 
-    return (
-      <>
-        <div className={classes.root}>
-          <div className={classes.nameContainer}>
-            <TextField
-              id="name"
-              readOnly
-              label="Username"
-              className={classes.textField}
-              fullWidth
-              value={user.get('username')}
-              margin="normal"
-              variant="outlined"
-            />
-          </div>
-          <div className={classes.nameContainer}>
-            <TextField
-              id="sessionToken"
-              readOnly
-              label="Session token"
-              helperText={
-                <>
-                  Your personal access token to access the API in read-only
-                  mode. See{' '}
-                  <a
-                    href="https://github.com/ConnectProject/connect/blob/master/docs/usage.md"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    usage documentation
-                  </a>
-                  .
-                </>
-              }
-              className={classes.textField}
-              fullWidth
-              value={user.getSessionToken()}
-              margin="normal"
-              variant="outlined"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Tooltip title="Copy to clipboard">
-                      <IconButton onClick={this.copyToClipboard}>
-                        <FileCopy />
-                      </IconButton>
-                    </Tooltip>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-
-          <div className={classes.buttonContainer}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              className={classes.button}
-              onClick={() => this.setState({ dialogOpen: true })}
-            >
-              Delete Profile
-            </Button>
-          </div>
+  return (
+    <>
+      <div className={classes.root}>
+        <div className={classes.nameContainer}>
+          <TextField
+            id="name"
+            readOnly
+            label="Username"
+            className={classes.textField}
+            fullWidth
+            value={user.get('username')}
+            margin="normal"
+            variant="outlined"
+          />
+        </div>
+        <div className={classes.nameContainer}>
+          <TextField
+            id="sessionToken"
+            readOnly
+            label="Session token"
+            helperText={
+              <>
+                Your personal access token to access the API in read-only
+                mode. See{' '}
+                <a
+                  href="https://github.com/ConnectProject/connect/blob/master/docs/usage.md"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  usage documentation
+                </a>
+                .
+              </>
+            }
+            className={classes.textField}
+            fullWidth
+            value={user.getSessionToken()}
+            margin="normal"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Copy to clipboard">
+                    <IconButton onClick={() => copyToClipboard()}>
+                      <FileCopy />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
 
-        {grantedTokens.length > 0 && (
-          <div className={classes.root}>
-            <Typography variant="h3" component="h5">
-              Apps you granted access to
-            </Typography>
-            <List className={classes.root}>
-              {grantedTokens.map((token) => (
-                <div key={token.id} className={classes.listContainer}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemText
-                      flex={1}
-                      primary={
-                        <>
-                          {token.application.name}
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {' — access granted on '}
-                            <Moment format="YYYY-MM-DD HH:mm">
-                              {token.grantedAt}
-                            </Moment>
-                          </Typography>
-                        </>
-                      }
-                      secondary={token.application.description}
-                    />
-                    <Button
-                      onClick={() =>
-                        this.setState({ tokenToRevokeInDialog: token })
-                      }
-                      color="secondary"
-                    >
-                      Revoke
-                    </Button>
-                  </ListItem>
-                  <Divider component="li" />
-                </div>
-              ))}
-            </List>
-          </div>
-        )}
+        <div className={classes.buttonContainer}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            className={classes.button}
+            onClick={() => setDialogOpen(true)}
+          >
+            Delete Profile
+          </Button>
+        </div>
+      </div>
 
-        <Dialog open={dialogOpen} onClose={() => this.handleClose(false)}>
-          <DialogTitle>Delete your profile?</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Your profile will be deleted forever and your applications will
-              stop working.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.handleClose(true)} color="secondary">
-              Delete
-            </Button>
-            <Button
-              onClick={() => this.handleClose(false)}
-              color="primary"
-              autoFocus
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+      {grantedTokens.length > 0 && (
+        <div className={classes.root}>
+          <Typography variant="h3" component="h5">
+            Apps you granted access to
+          </Typography>
+          <List className={classes.root}>
+            {grantedTokens.map((token) => (
+              <div key={token.id} className={classes.listContainer}>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    flex={1}
+                    primary={
+                      <>
+                        {token.application.name}
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          {' — access granted on '}
+                          <Moment format="YYYY-MM-DD HH:mm">
+                            {token.grantedAt}
+                          </Moment>
+                        </Typography>
+                      </>
+                    }
+                    secondary={token.application.description}
+                  />
+                  <Button
+                    onClick={() =>
+                      setTokenToRevokeInDialog(token)
+                    }
+                    color="secondary"
+                  >
+                    Revoke
+                  </Button>
+                </ListItem>
+                <Divider component="li" />
+              </div>
+            ))}
+          </List>
+        </div>
+      )}
 
-        <Dialog
-          open={!!tokenToRevokeInDialog}
-          onClose={() => this.setState({ tokenToRevokeInDialog: null })}
-        >
-          <DialogTitle>
-            Remove access from {tokenToRevokeInDialog?.application.name}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              The app {tokenToRevokeInDialog?.application.name} will not be able
-              to send data in your name to Connect anymore. Previously sent data
-              will not be deleted.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => this.setState({ tokenToRevokeInDialog: null })}
-              color="primary"
-              autoFocus
-            >
-              Cancel
-            </Button>
-            <Button onClick={this.deleteToken} color="secondary">
-              Revoke access from {tokenToRevokeInDialog?.application.name}
-            </Button>
-          </DialogActions>
-        </Dialog>
+      <Dialog open={dialogOpen} onClose={() => handleClose(false)}>
+        <DialogTitle>Delete your profile?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Your profile will be deleted forever and your applications will
+            stop working.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose(true)} color="secondary">
+            Delete
+          </Button>
+          <Button
+            onClick={() => handleClose(false)}
+            color="primary"
+            autoFocus
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-        <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={snackBarOpen}
-          autoHideDuration={1000}
-          onClose={this.handleCloseSnackbar}
-          message={<span>Copied!</span>}
-        />
-      </>
-    );
-  }
-}
+      <Dialog
+        open={!!tokenToRevokeInDialog}
+        onClose={() => setTokenToRevokeInDialog(null)}
+      >
+        <DialogTitle>
+          Remove access from {tokenToRevokeInDialog?.application.name}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            The app {tokenToRevokeInDialog?.application.name} will not be able
+            to send data in your name to Connect anymore. Previously sent data
+            will not be deleted.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setTokenToRevokeInDialog(null)}
+            color="primary"
+            autoFocus
+          >
+            Cancel
+          </Button>
+          <Button onClick={() => deleteToken()} color="secondary">
+            Revoke access from {tokenToRevokeInDialog?.application.name}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={snackBarOpen}
+        autoHideDuration={1000}
+        onClose={(event, reason) => handleCloseSnackbar(event, reason)}
+        message={<span>Copied!</span>}
+      />
+    </>
+  );
+};
 
 ProfilePage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
-  history: PropTypes.instanceOf(Object).isRequired,
 };
 
-export default withRouter(withStyles(styles)(ProfilePage));
+export default withStyles(styles)(ProfilePage);

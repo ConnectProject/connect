@@ -1,8 +1,8 @@
-const githubAuth = require('./github-auth');
-const userTokensManagementService = require('./user-tokens-management');
-const OAuth = require('./oauth');
+import githubAuth from './github-auth.js';
+import userTokensManagementService from './user-tokens-management.js';
+import OAuth from './oauth.js';
 
-module.exports = (Parse) => {
+export default (Parse) => {
   userTokensManagementService(Parse);
   githubAuth(Parse);
   OAuth(Parse);

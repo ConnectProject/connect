@@ -9,26 +9,38 @@ import ProfilePage from '../pages/profile/profile';
 import NoFound404Page from '../pages/notfound/notfound';
 import Github from '../pages/login/github';
 
-class Routes extends React.PureComponent {
-  render () {
-    return (
-      <Switch>
-        <Route exact path="/login/github" component={Github} />
+const Routes = function () {
+  return (
+    <Switch>
+      <Route exact path="/login/github">
+        <Github />
+      </Route>
 
-        <Route exact path="/application/:appId" component={DetailsPage} />
+      <Route exact path="/application/:appId">
+        <DetailsPage />
+      </Route>
 
-        <Route exact path="/profile" component={ProfilePage} />
+      <Route exact path="/profile">
+        <ProfilePage />
+      </Route>
 
-        <Route exact path="/home" component={HomePage} />
+      <Route exact path="/home">
+        <HomePage />
+      </Route>
 
-        <Route exact path="/authorize" component={OAuthAuthorizePage} />
+      <Route exact path="/authorize">
+        <OAuthAuthorizePage />
+      </Route>
 
-        <Route exact path="/" component={LoginPage} />
+      <Route exact path="/">
+        <LoginPage />
+      </Route>
 
-        <Route component={NoFound404Page} />
-      </Switch>
-    );
-  }
-}
+      <Route>
+        <NoFound404Page />
+      </Route>
+    </Switch>
+  );
+};
 
 export default Routes;

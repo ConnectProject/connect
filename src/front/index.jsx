@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import Parse from 'parse';
 
@@ -9,9 +9,9 @@ import './index.css';
 Parse.initialize(process.env.PARSE_APP_ID);
 Parse.serverURL = `${process.env.PUBLIC_URL}/parse`;
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  document.getElementById('root'),
+  </BrowserRouter>
 );

@@ -9,6 +9,4 @@ const getOne = async function (name) {
   return result;
 };
 
-module.exports = {
-  getOne,
-};
+export default { getOne };

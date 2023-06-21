@@ -2,7 +2,7 @@
 // for example: db.getCollection('_SCHEMA').update({_id:'OAuthToken'}, {$set: {'_metadata.fields_options.refreshToken.required': false}})
 // https://community.parseplatform.org/t/is-there-any-way-i-can-update-a-schema-to-mark-a-field-as-required/1526/6
 
-module.exports = [
+export default [
   {
     className: '_Role',
     fields: {},

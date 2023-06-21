@@ -1,6 +1,6 @@
-const getClasses = require('../schema/getClasses');
+import getClasses from '../schema/getClasses.js';
 
-module.exports = async (Parse) => {
+export default async (Parse) => {
   const schemaClasses = await getClasses();
   for (const schemaClass of [...schemaClasses, { className: 'OAuthApplication' }]) {
     Parse.Cloud.afterFind(schemaClass.className, (req) => {
@@ -21,11 +21,11 @@ module.exports = async (Parse) => {
           }
         }
 
-        newObject.className = object.className
-        objects.push( Parse.Object.fromJSON(newObject) );
+        newObject.className = object.className;
+        objects.push(Parse.Object.fromJSON(newObject));
       }
 
       req.objects = objects;
     });
   }
-}
+};

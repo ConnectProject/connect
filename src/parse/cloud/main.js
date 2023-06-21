@@ -1,28 +1,28 @@
-const logger = require('../../logger');
-const schemaSync = require('../schema/sync');
-const roleInstall = require('../role/install');
-const setBeforeSave = require('./setBeforeSave');
-const setAfterSave = require('./setAfterSave');
-const setBeforeDelete = require('./setBeforeDelete')
-const setAfterFind = require('./setAfterFind');
-const initCloudFunctions = require('./functions');
+import logger from '../../logger.js';
+import schemaSync from '../schema/sync.js';
+import roleInstall from '../role/install.js';
+import setBeforeSave from './setBeforeSave.js';
+import setAfterSave from './setAfterSave.js';
+import setBeforeDelete from './setBeforeDelete.js';
+import setAfterFind from './setAfterFind.js';
+import initCloudFunctions from './functions/index.js';
 
 const init = async function (Parse) {
   await roleInstall();
   logger.info('Role correctly setup');
 
-  await schemaSync(Parse.applicationId);
+  await schemaSync();
   logger.info('Schema correctly sync');
 
   await setBeforeSave(Parse);
   await setAfterSave(Parse);
-  await setBeforeDelete(Parse)
+  await setBeforeDelete(Parse);
   await setAfterFind(Parse);
 
   await initCloudFunctions(Parse);
 };
 
-module.exports = (Parse, event) => {
+export default (Parse, event) => {
   init(Parse)
     .then(() => {
       if (event) {

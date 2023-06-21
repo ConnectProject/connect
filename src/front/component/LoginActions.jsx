@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -17,34 +17,21 @@ const styles = {
   },
 };
 
-class LoginActions extends React.PureComponent {
-  constructor(props) {
-    super(props);
+const LoginActions = function ({ classes, redirectPath, onUserLoggedIn }) {
 
-    this.state = {
-      isDialogSignupOpened: false,
-      isDialogLoginOpened: false,
-      email: '',
-      password: '',
-      textMessage: null
-    };
+  const [isDialogSignupOpened, setIsDialogSignupOpened] = useState(false);
+  const [isDialogLoginOpened, setIsDialogLoginOpened] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [textMessage, setTextMessage] = useState(null);
 
-    this.handleDialogClose = this.handleDialogClose.bind(this);
-    this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.passwordReset = this.passwordReset.bind(this);
-  }
+  const handleDialogClose = function () {
+    setIsDialogSignupOpened(false);
+    setIsDialogLoginOpened(false);
+    setTextMessage(null);
+  };
 
-  handleDialogClose() {
-    this.setState({
-      isDialogSignupOpened: false,
-      isDialogLoginOpened: false,
-      textMessage: null
-    });
-  }
-
-  async onSubmitForm() {
-    const { isDialogLoginOpened, isDialogSignupOpened, email, password } =
-      this.state;
+  const onSubmitForm = async function () {
     let user;
     try {
       if (isDialogLoginOpened) {
@@ -53,169 +40,152 @@ class LoginActions extends React.PureComponent {
         user = await UserService.registerWithEmail({ email, password });
       }
     } catch (err) {
-      console.log('error code:', err.code)
+      console.log('error code:', err.code);
       console.error(err);
-      this.setState({
-        textMessage: {
-          color: 'error',
-          text: err.message || 'An error occured.'
-        }
+      setTextMessage({
+        color: 'error',
+        text: err.message || 'An error occured.'
       });
     }
-    const { onUserLoggedIn } = this.props;
     if (onUserLoggedIn) {
       onUserLoggedIn(user);
     }
-  }
+  };
 
-  async passwordReset() {
-    const { email } = this.state
+  const passwordReset = async function () {
     try {
       if (!document.forms[0].email.reportValidity()) {
-        return
+        return;
       }
       await UserService.resetPassword({ email });
-      this.setState({
-        textMessage: {
-          color: 'textPrimary',
-          text: `Password reset link sent to ${ email }`
-        }
-      })
+      setTextMessage({
+        color: 'textPrimary',
+        text: `Password reset link sent to ${email}`
+      }
+      );
     } catch (err) {
       console.error(err, err.message);
-      this.setState({
-        textMessage: {
-          color: 'error',
-          text: err.message || 'An error occured.'
-        }
-      })
+      setTextMessage({
+        color: 'error',
+        text: err.message || 'An error occured.'
+      });
     }
+  };
+
+
+  let githubRedirectUri = process.env.PUBLIC_URL + '/login/github';
+  if (redirectPath) {
+    githubRedirectUri =
+      githubRedirectUri + '?redirectPath=' + encodeURIComponent(redirectPath);
   }
+  githubRedirectUri = encodeURIComponent(githubRedirectUri);
 
-  render() {
-    const { classes, redirectPath } = this.props;
-    const {
-      isDialogLoginOpened,
-      isDialogSignupOpened,
-      email,
-      password,
-      textMessage,
-    } = this.state;
-
-    let githubRedirectUri = process.env.PUBLIC_URL + '/login/github';
-    if (redirectPath) {
-      githubRedirectUri =
-        githubRedirectUri + '?redirectPath=' + encodeURIComponent(redirectPath);
-    }
-    githubRedirectUri = encodeURIComponent(githubRedirectUri);
-
-    return (
-      <>
-        <CardActions className={classes.buttonContainer}>
-          <Button
-            size="large"
-            color="primary"
-            onClick={() => this.setState({ isDialogLoginOpened: true })}
-          >
-            Login with email
-          </Button>
-        </CardActions>
-        <CardActions className={classes.buttonContainer}>
-          <Button
-            size="large"
-            color="primary"
-            onClick={() => this.setState({ isDialogSignupOpened: true })}
-          >
-            Sign up with email
-          </Button>
-        </CardActions>
-        <CardActions className={classes.buttonContainer}>
-          <Button
-            size="large"
-            color="primary"
-            href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUri}`}
-          >
-            Login with Github
-          </Button>
-        </CardActions>
-        <Dialog
-          open={isDialogSignupOpened || isDialogLoginOpened}
-          onClose={() => this.handleDialogClose}
-          aria-labelledby="form-dialog-title"
+  return (
+    <>
+      <CardActions className={classes.buttonContainer}>
+        <Button
+          size="large"
+          color="primary"
+          onClick={() => setIsDialogLoginOpened(true)}
         >
+          Login with email
+        </Button>
+      </CardActions>
+      <CardActions className={classes.buttonContainer}>
+        <Button
+          size="large"
+          color="primary"
+          onClick={() => setIsDialogSignupOpened(true)}
+        >
+          Sign up with email
+        </Button>
+      </CardActions>
+      <CardActions className={classes.buttonContainer}>
+        <Button
+          size="large"
+          color="primary"
+          href={`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUri}`}
+        >
+          Login with Github
+        </Button>
+      </CardActions>
+      <Dialog
+        open={isDialogSignupOpened || isDialogLoginOpened}
+        onClose={() => handleDialogClose}
+        aria-labelledby="form-dialog-title"
+      >
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              this.onSubmitForm();
-            }}
-          >
-            <DialogTitle id="form-dialog-title">
-              {isDialogLoginOpened ? 'Login' : 'Sign up'}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Please enter your email and password.
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmitForm();
+          }}
+        >
+          <DialogTitle id="form-dialog-title">
+            {isDialogLoginOpened ? 'Login' : 'Sign up'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please enter your email and password.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              required
+              id="email"
+              label="Email"
+              className={classes.textField}
+              fullWidth
+              value={email}
+              type="email"
+              onChange={(event) => setEmail(event.target.value)}
+              margin="normal"
+              variant="outlined"
+            />
+
+            <TextField
+              required
+              id="password"
+              label="Password"
+              className={classes.textField}
+              fullWidth
+              value={password}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
+              margin="normal"
+              variant="outlined"
+              type="password"
+            />
+            {textMessage && (
+              <DialogContentText align="right" color={textMessage.color}>
+                {textMessage.text}
               </DialogContentText>
-              <TextField
-                autoFocus
-                required
-                id="email"
-                label="Email"
-                className={classes.textField}
-                fullWidth
-                value={email}
-                type="email"
-                onChange={(event) => this.setState({ email: event.target.value })}
-                margin="normal"
-                variant="outlined"
-              />
-
-              <TextField
-                required
-                id="password"
-                label="Password"
-                className={classes.textField}
-                fullWidth
-                value={password}
-                onChange={(event) =>
-                  this.setState({ password: event.target.value })
-                }
-                margin="normal"
-                variant="outlined"
-                type="password"
-              />
-              {textMessage && (
-                <DialogContentText align="right" color={textMessage.color}>
-                  {textMessage.text}
-                </DialogContentText>
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleDialogClose} color="primary">
-                Cancel
-              </Button>
-              {isDialogLoginOpened &&
-                <Button
-                  disabled={email.length === 0}
-                  onClick={this.passwordReset} color="primary"
-                >
-                  Reset password
-                </Button>}
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleDialogClose()} color="primary">
+              Cancel
+            </Button>
+            {isDialogLoginOpened &&
               <Button
-                disabled={email.length === 0 || password.length === 0}
-                type="submit"
-                color="primary"
+                disabled={email.length === 0}
+                onClick={() => passwordReset()} color="primary"
               >
-                {isDialogLoginOpened ? 'Login' : 'Sign up'}
-              </Button>
-            </DialogActions>
-          </form>
-        </Dialog>
-      </>
-    );
-  }
-}
+                Reset password
+              </Button>}
+            <Button
+              disabled={email.length === 0 || password.length === 0}
+              type="submit"
+              color="primary"
+            >
+              {isDialogLoginOpened ? 'Login' : 'Sign up'}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </>
+  );
+};
 
 LoginActions.defaultProps = {
   redirectPath: null,

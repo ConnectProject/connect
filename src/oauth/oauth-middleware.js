@@ -1,8 +1,8 @@
 /* eslint-disable max-statements */
 
-const { getOAuthUserFromRequest } = require('./oauth-service');
+import { getOAuthUserFromRequest } from './oauth-service.js';
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   try {
     const { token, client, user } = await getOAuthUserFromRequest(req, res);
 
@@ -15,6 +15,7 @@ module.exports = async (req, res, next) => {
       // the next line is useless since the request gets cleaned by Parse
       req.application = client;
 
+      // used to tell Parse that the user is authenticated with JWT
       req.userFromJWT = user;
     }
   } catch (_err) {

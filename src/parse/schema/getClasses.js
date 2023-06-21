@@ -1,4 +1,4 @@
-const getSchemas = require('./getSchemas')
+import getSchemas from './getSchemas.js';
 
 const swaggerTypeToParseType = function (element) {
   let parseType;
@@ -30,7 +30,7 @@ const swaggerTypeToParseType = function (element) {
 };
 
 const getClass = function (schema, isSandbox = false) {
-  const className = isSandbox ? `Sandbox_${schema.className}` : schema.className
+  const className = isSandbox ? `Sandbox_${schema.className}` : schema.className;
 
   const parseClass = {
     className,
@@ -43,20 +43,20 @@ const getClass = function (schema, isSandbox = false) {
   return parseClass;
 };
 
-var classes;
+let classes;
 
-module.exports = async function getClasses () {
+export default async function getClasses() {
   if (typeof classes !== 'undefined') {
     return classes;
   }
 
-  const schemas = await getSchemas()
+  const schemas = await getSchemas();
 
-  classes = []
+  classes = [];
   for (const schema of schemas) {
-    classes.push(getClass(schema))
-    classes.push(getClass(schema, true))
+    classes.push(getClass(schema));
+    classes.push(getClass(schema, true));
   }
 
-  return classes
+  return classes;
 };

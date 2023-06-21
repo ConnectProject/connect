@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
-import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -64,353 +64,310 @@ const styles = {
   }
 };
 
-class DetailsPage extends React.PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      loading: true,
-      updateLoading: false,
-      application: {},
-      applicationUpdate: {},
-      snackBarText: '',
-      errors: {
-        name: false,
-        description: false,
-        appleStoreLink: false,
-        googleMarketLink: false,
-      },
-    };
-  }
+const DetailsPage = function ({ classes }) {
+  const { appId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [application, setApplication] = useState({});
+  const [applicationUpdate, setApplicationUpdate] = useState({});
+  const [snackBarText, setSnackBarText] = useState('');
+  const [errors, setErrors] = useState({
+    name: false,
+    description: false,
+    appleStoreLink: false,
+    googleMarketLink: false,
+  });
 
-  componentDidMount () {
-    const { match } = this.props;
-    ApplicationsService.findById(match.params.appId).then((res) => {
-      this.setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        application: res,
-      }));
+  useEffect(() => {
+    ApplicationsService.findById(appId).then((res) => {
+      setLoading(false);
+      setApplication(res);
     });
-  }
+  }, [appId]);
 
-  handleChange (name, event) {
-    const { applicationUpdate, errors } = this.state;
+  const handleChange = function (name, event) {
     const { value } = event.target;
 
     const validated = validateFormField(value, name);
-    this.setState({
-      applicationUpdate: {
-        ...applicationUpdate,
-        [name]: value,
-      },
-      errors: {
-        ...errors,
-        [name]: !validated,
-      },
-    });
-  }
+    setApplicationUpdate((prevUpdate) => ({
+      ...prevUpdate,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: !validated,
+    }));
+  };
 
 
-  handleToggle (name, event) {
-    const { applicationUpdate } = this.state;
+  const handleToggle = function (name, event) {
     const { checked } = event.target;
 
-    this.setState({
-      applicationUpdate: {
-        ...applicationUpdate,
-        [name]: checked,
-      },
-    });
-  }
+    setApplicationUpdate((prevUpdate) => ({
+      ...prevUpdate,
+      [name]: checked,
+    }));
+  };
 
-  handleClose (event, reason) {
+  const handleClose = function (event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    this.setState({
-      snackBarText: '',
-    });
-  }
+    setSnackBarText('');
+  };
 
-  goBack () {
-    const { history } = this.props;
-    history.goBack();
-  }
-
-  async clickUpdateApplication () {
-    const { application, applicationUpdate } = this.state;
-    this.setState({
-      updateLoading: true,
-    });
+  const clickUpdateApplication = async function () {
+    setUpdateLoading(true);
 
     Object.entries(applicationUpdate).forEach(([key, value]) => {
       application.set(key, value);
     });
     await application.save();
-    this.setState({
-      updateLoading: false,
-      application,
-      applicationUpdate: {},
-      snackBarText: "Application successfully updated"
-    });
-  }
+    setUpdateLoading(false);
+    setApplication(application);
+    setApplicationUpdate({});
+    setSnackBarText("Application successfully updated");
+  };
 
-  copyToClipboard (key) {
-    const { application } = this.state;
+  const copyToClipboard = function (key) {
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(
           application.attributes[key] || application[key],
         );
-        this.setState({ snackBarText: "Copied!" });
+        setSnackBarText("Copied!");
       }
     });
-  }
+  };
 
-  render () {
-    const { classes } = this.props;
-    const {
-      application,
-      applicationUpdate,
-      errors,
-      loading,
-      updateLoading,
-      snackBarText,
-    } = this.state;
+  return (
+    <div className={classes.root}>
+      {loading && <CircularProgress className={classes.progress} />}
 
-    return (
-      <>
-        <div className={classes.root}>
-          {loading && <CircularProgress className={classes.progress} />}
+      {!loading && (
+        <>
+          <TextField
+            id="name"
+            label="Name"
+            className={classes.textField}
+            fullWidth
+            value={
+              applicationUpdate.name ?? application.attributes.name ?? ''
+            }
+            onChange={(event) => handleChange('name', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.name}
+          />
 
-          {!loading && (
-            <>
-              <TextField
-                id="name"
-                label="Name"
-                className={classes.textField}
-                fullWidth
-                value={
-                  applicationUpdate.name ?? application.attributes.name ?? ''
+          <TextField
+            id="description"
+            label="Description"
+            className={classes.textField}
+            fullWidth
+            value={
+              applicationUpdate.description ??
+              application.attributes.description ??
+              ''
+            }
+            onChange={(event) => handleChange('description', event)}
+            margin="normal"
+            variant="outlined"
+            multiline
+            minRows={2}
+            error={errors.name}
+          />
+
+          <TextField
+            id="appleStoreLink"
+            label="App Store Link"
+            className={classes.textField}
+            fullWidth
+            value={
+              applicationUpdate.appleStoreLink ??
+              application.attributes.appleStoreLink ??
+              ''
+            }
+            onChange={(event) => handleChange('appleStoreLink', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.appleStoreLink}
+          />
+
+          <TextField
+            id="googleMarketLink"
+            label="Play Store Link"
+            className={classes.textField}
+            fullWidth
+            value={
+              applicationUpdate.googleMarketLink ??
+              application.attributes.googleMarketLink ??
+              ''
+            }
+            onChange={(event) =>
+              handleChange('googleMarketLink', event)
+            }
+            margin="normal"
+            variant="outlined"
+            error={errors.googleMarketLink}
+          />
+
+          <TextField
+            readOnly
+            id="id"
+            label="Application ID"
+            className={classes.textField}
+            fullWidth
+            helperText="Used to identify your application within the API"
+            value={application.id}
+            margin="normal"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Copy to clipboard">
+                    <IconButton
+                      onClick={() => {
+                        copyToClipboard('id');
+                      }}
+                    >
+                      <FileCopy />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            readOnly
+            id="pub_key"
+            label="OAuth Client ID"
+            className={classes.textField}
+            fullWidth
+            helperText="Used to identify your application with the OAuth flow"
+            value={application.attributes.publicKey}
+            margin="normal"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Copy to clipboard">
+                    <IconButton
+                      onClick={() => {
+                        copyToClipboard('publicKey');
+                      }}
+                    >
+                      <FileCopy />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            readOnly
+            id="sec_key"
+            label="OAuth Secret Key"
+            className={classes.textField}
+            fullWidth
+            helperText="Used to identify your application with the OAuth flow - not to be used on client side applications"
+            value={application.attributes.secretKey}
+            margin="normal"
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="Copy to clipboard">
+                    <IconButton
+                      onClick={() => {
+                        copyToClipboard('secretKey');
+                      }}
+                    >
+                      <FileCopy />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            id="redirectUris"
+            label="OAuth Redirect URIs"
+            className={classes.textField}
+            fullWidth
+            helperText="Enter URIs your app can receive the OAuth response on. Separate multiple URIs by a coma. Can be a web url or a deeplink uri for mobile apps."
+            value={
+              applicationUpdate.redirectUris ??
+              application.attributes.redirectUris ??
+              ''
+            }
+            onChange={(event) => handleChange('redirectUris', event)}
+            margin="normal"
+            variant="outlined"
+            error={errors.redirectUris}
+          />
+
+          <FormControlLabel
+            className={classes.formControlLabel}
+            sx={{ 'margin-left': '16px' }}
+            control={
+              <Switch
+                color="primary"
+                checked={
+                  applicationUpdate.allowImplicitGrant ??
+                  application.attributes.allowImplicitGrant ??
+                  false
                 }
-                onChange={(event) => this.handleChange('name', event)}
-                margin="normal"
-                variant="outlined"
-                error={errors.name}
+                onChange={(event) => handleToggle('allowImplicitGrant', event)}
               />
+            }
+            label="Allow implicit grant (less secure)"
+          />
 
-              <TextField
-                id="description"
-                label="Description"
-                className={classes.textField}
-                fullWidth
-                value={
-                  applicationUpdate.description ??
-                  application.attributes.description ??
-                  ''
-                }
-                onChange={(event) => this.handleChange('description', event)}
-                margin="normal"
-                variant="outlined"
-                multiline
-                rows="4"
-                error={errors.name}
-              />
+          <div className={classes.buttonContainer}>
+            <div className={classes.wrapper}>
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={updateLoading || !checkValid(errors)}
+                className={classes.button}
+                onClick={() => clickUpdateApplication()}
+              >
+                Save
+              </Button>
+              {updateLoading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </div>
 
-              <TextField
-                id="appleStoreLink"
-                label="App Store Link"
-                className={classes.textField}
-                fullWidth
-                value={
-                  applicationUpdate.appleStoreLink ??
-                  application.attributes.appleStoreLink ??
-                  ''
-                }
-                onChange={(event) => this.handleChange('appleStoreLink', event)}
-                margin="normal"
-                variant="outlined"
-                error={errors.appleStoreLink}
-              />
-
-              <TextField
-                id="googleMarketLink"
-                label="Play Store Link"
-                className={classes.textField}
-                fullWidth
-                value={
-                  applicationUpdate.googleMarketLink ??
-                  application.attributes.googleMarketLink ??
-                  ''
-                }
-                onChange={(event) =>
-                  this.handleChange('googleMarketLink', event)
-                }
-                margin="normal"
-                variant="outlined"
-                error={errors.googleMarketLink}
-              />
-
-              <TextField
-                readOnly
-                id="id"
-                label="Application ID"
-                className={classes.textField}
-                fullWidth
-                helperText="Used to identify your application within the API"
-                value={application.id}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('id');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                readOnly
-                id="pub_key"
-                label="OAuth Client ID"
-                className={classes.textField}
-                fullWidth
-                helperText="Used to identify your application with the OAuth flow"
-                value={application.attributes.publicKey}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('publicKey');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                readOnly
-                id="sec_key"
-                label="OAuth Secret Key"
-                className={classes.textField}
-                fullWidth
-                helperText="Used to identify your application with the OAuth flow - not to be used on client side applications"
-                value={application.attributes.secretKey}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Tooltip title="Copy to clipboard">
-                        <IconButton
-                          onClick={() => {
-                            this.copyToClipboard('secretKey');
-                          }}
-                        >
-                          <FileCopy />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                id="redirectUris"
-                label="OAuth Redirect URIs"
-                className={classes.textField}
-                fullWidth
-                helperText="Enter URIs your app can receive the OAuth response on. Separate multiple URIs by a coma. Can be a web url or a deeplink uri for mobile apps."
-                value={
-                  applicationUpdate.redirectUris ??
-                  application.attributes.redirectUris ??
-                  ''
-                }
-                onChange={(event) => this.handleChange('redirectUris', event)}
-                margin="normal"
-                variant="outlined"
-                error={errors.redirectUris}
-              />
-
-              <FormControlLabel
-                className={classes.formControlLabel}
-                sx={{ 'margin-left': '16px' }}
-                control={
-                  <Switch
-                    color="primary"
-                    checked={
-                      applicationUpdate.allowImplicitGrant ??
-                      application.attributes.allowImplicitGrant ??
-                      false
-                    }
-                    onChange={(event) => this.handleToggle('allowImplicitGrant', event)}
-                  />
-                }
-                label="Allow implicit grant (less secure)"
-              />
-
-              <div className={classes.buttonContainer}>
-                <div className={classes.wrapper}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={updateLoading || !checkValid(errors)}
-                    className={classes.button}
-                    onClick={() => this.clickUpdateApplication()}
-                  >
-                    Save
-                  </Button>
-                  {updateLoading && (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <Snackbar
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                open={!!snackBarText}
-                autoHideDuration={1000}
-                onClose={() => {
-                  this.handleClose();
-                }}
-                message={snackBarText}
-              />
-            </>
-          )}
-        </div>
-      </>
-    );
-  }
-}
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            open={!!snackBarText}
+            autoHideDuration={1000}
+            onClose={() => {
+              handleClose();
+            }}
+            message={snackBarText}
+          />
+        </>
+      )}
+    </div>
+  );
+};
 
 DetailsPage.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
-  history: PropTypes.instanceOf(Object).isRequired,
-  match: PropTypes.instanceOf(Object).isRequired,
 };
 
-export default withRouter(withStyles(styles)(DetailsPage));
+export default withStyles(styles)(DetailsPage);

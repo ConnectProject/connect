@@ -1,7 +1,7 @@
-const ParseSwagger = require('../parse/parse-server-swagger');
-const { PARSE_APP_ID, PARSE_MASTER_KEY, API_URL } = require('../config');
+import { API_URL, PARSE_APP_ID, PARSE_MASTER_KEY } from '../config/index.js';
+import ParseSwagger from '../parse/parse-server-swagger/index.js';
 
-module.exports = () =>
+export default () =>
   new ParseSwagger({
     host: API_URL,
     apiRoot: '/parse',

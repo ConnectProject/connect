@@ -1,5 +1,5 @@
-const ParseDashboard = require('parse-dashboard');
-const {
+import ParseDashboard from 'parse-dashboard';
+import {
   PUBLIC_URL,
   PARSE_APP_NAME,
   PARSE_APP_ID,
@@ -7,9 +7,9 @@ const {
   PARSE_READONLY_MASTER_KEY,
   PARSE_DASHBOARD_MAINTENER_PWD,
   PARSE_DASHBOARD_ROOT_PWD,
-} = require('../config');
+} from '../config/index.js';
 
-module.exports = () =>
+export default () =>
   new ParseDashboard({
     apps: [
       {

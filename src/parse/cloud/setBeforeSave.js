@@ -1,13 +1,14 @@
 /* eslint-disable complexity */
 
-const fs = require('fs').promises;
-const { Validator } = require('jsonschema');
-const Config = require('parse-server/lib/Config');
-const { v4: uuidv4 } = require('uuid');
-const getClasses = require('../schema/getClasses');
-const { getOAuthUserFromRequest } = require('../../oauth/oauth-service');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { promises as fs } from 'fs';
+import { Validator } from 'jsonschema';
+import { v4 as uuidv4 } from 'uuid';
+import getClasses from '../schema/getClasses.js';
+import { getOAuthUserFromRequest } from '../../oauth/oauth-service.js';
 
-module.exports = async (Parse) => {
+export default async (Parse) => {
   const schemaClasses = await getClasses();
   for (const schemaClass of schemaClasses) {
     // eslint-disable-next-line max-statements
@@ -41,6 +42,7 @@ module.exports = async (Parse) => {
         throw new Parse.Error(403, 'Please use OAuth to authenticate');
       }
 
+      const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const schemaFile = `${__dirname}/../schema/classes/${schemaClass.className.replace(
         /^Sandbox_/,
         '',
@@ -69,9 +71,7 @@ module.exports = async (Parse) => {
       }
 
       // convert dates in Parse format
-      const appId = req.headers['x-parse-application-id'];
-      const parseSchema = await Config.get(appId).database.loadSchema();
-      const actualSchemaClass = parseSchema.schemaData[schemaClass.className];
+      const actualSchemaClass = await new Parse.Schema(schemaClass.className).get();
       for (const field of Object.keys(jsonObject)) {
         if (actualSchemaClass.fields[field].type === 'Date') {
           req.object.set(field, new Date(jsonObject[field]));

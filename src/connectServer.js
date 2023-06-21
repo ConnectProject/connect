@@ -1,15 +1,17 @@
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const { EventEmitter, once } = require('events');
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
+import cors from 'cors';
+import { EventEmitter, once } from 'events';
+import { fileURLToPath } from 'url';
 
-const logger = require('./logger');
-const oauthApi = require('./oauth/oauth-routes');
-const parseApi = require('./middleware/parse');
-const parseDashboard = require('./middleware/parseDashboard');
-const parseSwagger = require('./middleware/parseSwagger');
-const sandboxMiddleware = require('./middleware/sandboxMiddleware');
-const oauthMiddleware = require('./oauth/oauth-middleware');
+import logger from './logger.js';
+import oauthApi from './oauth/oauth-routes.js';
+import parseApi from './middleware/parse.js';
+import parseDashboard from './middleware/parseDashboard.js';
+import parseSwagger from './middleware/parseSwagger.js';
+import sandboxMiddleware from './middleware/sandboxMiddleware.js';
+import oauthMiddleware from './oauth/oauth-middleware.js';
 
 // eslint-disable-next-line max-statements
 const start = async function (port, parseCloudEvent) {
@@ -21,7 +23,7 @@ const start = async function (port, parseCloudEvent) {
 
   const app = express();
 
-  // app.use(express.json());
+  app.use(bodyParser.json({ limit: '20mb' }));
 
   const corsOptions = {
     origin: '*',
@@ -60,6 +62,7 @@ const start = async function (port, parseCloudEvent) {
     /* eslint-enable global-require, import/no-extraneous-dependencies */
   } else {
     // Serve any static files
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
     app.use(express.static(path.join(__dirname, './../build')));
 
     // Handle React routing, return all requests to React app
@@ -68,16 +71,16 @@ const start = async function (port, parseCloudEvent) {
     });
   }
 
-  const ee = new EventEmitter()
+  const ee = new EventEmitter();
 
   const server = app.listen(port, () => {
     logger.info(`connect running on port ${port}.`);
-    ee.emit('listening')
+    ee.emit('listening');
   });
 
   await once(ee, 'listening');
 
   return { app, server };
-}
+};
 
-module.exports = { start };
+export default { start };

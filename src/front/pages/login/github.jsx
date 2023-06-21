@@ -1,18 +1,14 @@
 /* eslint-disable react/forbid-prop-types */
-import PropTypes from 'prop-types'; // ES6
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from "react-router-dom";
 import UserService from '../../services/user-service';
 
-class Github extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const Github = function () {
+  const location = useLocation();
+  const history = useHistory();
+  const params = new URLSearchParams(location.search);
 
-  componentDidMount() {
-    const { location, history } = this.props;
-    const params = new URLSearchParams(location.search);
-
+  useEffect(() => {
     UserService.confirmGithubAuth({ code: params.get('code') })
       .then(() => {
         if (params.get('redirectPath')) {
@@ -25,16 +21,10 @@ class Github extends React.Component {
         console.error(err);
         history.push('/');
       });
-  }
+  }, []);
 
-  render() {
-    return <p>Redirecting...</p>;
-  }
-}
 
-Github.propTypes = {
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  return <p>Redirecting...</p>;
 };
 
 export default Github;

@@ -1,8 +1,9 @@
-const path = require('path');
-const nodemailer = require('nodemailer');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
-const { ParseServer } = require('parse-server');
-const {
+import { ParseServer } from 'parse-server';
+import {
   API_URL,
   PUBLIC_URL,
   MONGO_URI,
@@ -19,33 +20,12 @@ const {
   SMTP_USER,
   SMTP_PASS,
   SMTP_SENDER
-} = require('../config');
-const cloud = require('../parse/cloud/main');
+} from '../config/index.js';
+import cloud from '../parse/cloud/main.js';
 
-class ParseMiddelware {
-  constructor(app) {
-    this.app = app;
-  }
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-  static start(options, parseCloudEvent) {
-    return new Promise((resolve) => {
-      let parseMiddelware;
-      const parseOptions = Object.assign(options, {
-        cloud: (Parse) => {
-          cloud(Parse, parseCloudEvent);
-        },
-        serverStartComplete: () => {
-          resolve(parseMiddelware);
-        },
-      });
-
-      const app = new ParseServer(parseOptions);
-      parseMiddelware = new ParseMiddelware(app);
-    });
-  }
-}
-
-module.exports = (parseCloudEvent) => {
+export default (parseCloudEvent) => {
   // Configure mail client
   // const customMail = require('customMail.js');
   // const customMailClient = customMail.configure({});
@@ -81,42 +61,42 @@ module.exports = (parseCloudEvent) => {
       // eslint-disable-next-line require-await
       apiCallback: async ({ payload }) => {
         try {
-          await transporter.sendMail(payload)
+          await transporter.sendMail(payload);
           console.log('email sent');
         } catch (err) {
-          console.log('error when sending a mail')
-          console.error(err)
+          console.log('error when sending a mail');
+          console.error(err);
         }
       }
     }
-  }
+  };
 
-  return ParseMiddelware.start(
-    {
-      databaseURI: MONGO_URI,
-      appId: PARSE_APP_ID,
-      fileKey: PARSE_FILE_KEY,
-      masterKey: PARSE_MASTER_KEY,
-      readOnlyMasterKey: PARSE_READONLY_MASTER_KEY,
-      appName: PARSE_APP_NAME,
-      allowClientClassCreation: false,
-      enableAnonymousUsers: false,
-      maxLimit: 100,
-      serverURL: `${API_URL}/parse`,
-      publicServerURL: `${PUBLIC_URL}/parse`,
-      silent: PARSE_SILENT,
-      auth: {
-        github: {
-          id: GITHUB_CLIENT_ID,
-          access_token: GITHUB_CLIENT_SECRET,
-        },
+  return new ParseServer({
+    databaseURI: MONGO_URI,
+    appId: PARSE_APP_ID,
+    fileKey: PARSE_FILE_KEY,
+    masterKey: PARSE_MASTER_KEY,
+    readOnlyMasterKey: PARSE_READONLY_MASTER_KEY,
+    appName: PARSE_APP_NAME,
+    allowClientClassCreation: false,
+    enableAnonymousUsers: false,
+    maxLimit: 100,
+    serverURL: `${API_URL}/parse`,
+    publicServerURL: `${PUBLIC_URL}/parse`,
+    silent: PARSE_SILENT,
+    auth: {
+      github: {
+        id: GITHUB_CLIENT_ID,
+        access_token: GITHUB_CLIENT_SECRET,
       },
-      directAccess: true,
-      enforcePrivateUsers: true,
-      verifyUserEmails: true,
-      preventLoginWithUnverifiedEmail: false,
-      emailAdapter
     },
-    parseCloudEvent,
-  );
-}
+    directAccess: true,
+    enforcePrivateUsers: true,
+    verifyUserEmails: true,
+    preventLoginWithUnverifiedEmail: false,
+    emailAdapter,
+    cloud: (Parse) => {
+      cloud(Parse, parseCloudEvent);
+    },
+  }).start();
+};

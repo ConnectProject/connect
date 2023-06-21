@@ -1,9 +1,7 @@
 const validate = require('validate.js');
 
 export const validateFormField = (value, field) => {
-  const urlRegex = new RegExp(
-    /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi,
-  );
+  const urlRegex = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
   switch (field) {
     case 'name':
     case 'description':

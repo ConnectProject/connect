@@ -1,10 +1,12 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-const Parse = require('parse/node');
-const axios = require('axios');
-const qs = require('qs');
-const { bindAll } = require('./helper');
-const { API_URL, PARSE_APP_ID } = require('./__mock__/config');
+import Parse from 'parse/node';
+import axios from 'axios';
+import qs from 'qs';
+import { bindAll } from './helper';
+import config from './__mock__/config';
+
+const { API_URL, PARSE_APP_ID } = config;
 
 bindAll();
 
@@ -174,7 +176,7 @@ describe('Parse server', () => {
       { sessionToken: user.getSessionToken() },
     );
 
-    const authorizationCode = new URL(redirection).searchParams.get('code')
+    const authorizationCode = new URL(redirection).searchParams.get('code');
 
     // simulate confirmation by the app's backend
     const { data } = await axios.post(
@@ -270,7 +272,7 @@ describe('Parse server', () => {
       { sessionToken: user.getSessionToken() },
     );
 
-    const token = new URL(redirection.replace('#', '?')).searchParams.get('access_token')
+    const token = new URL(redirection.replace('#', '?')).searchParams.get('access_token');
 
     return token;
   };
@@ -283,7 +285,7 @@ describe('Parse server', () => {
     );
 
     await expect(token).rejects.toHaveProperty('code', 141);
-  })
+  });
 
   it('perform implicit OAuth flow', async () => {
     const token = await getAccessTokenImplicit(
@@ -296,7 +298,7 @@ describe('Parse server', () => {
       headers: { Authorization: 'Bearer ' + token },
     });
     expect(data.id).toBe(endUserUserId);
-  })
+  });
 
   let createdGameScoreObjectId;
   let gameScoreObject;
@@ -415,7 +417,7 @@ describe('Parse server', () => {
       url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
       headers: {
         'Content-Type': 'application/json',
-        'x-parse-application-id': 'test',
+        'x-parse-application-id': PARSE_APP_ID,
         'x-parse-session-token': sessionToken,
       },
     });
@@ -563,7 +565,7 @@ describe('Parse server', () => {
         url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
         headers: {
           'Content-Type': 'application/json',
-          'x-parse-application-id': 'test',
+          'x-parse-application-id': PARSE_APP_ID,
         },
       });
     } catch (err) {
@@ -579,7 +581,7 @@ describe('Parse server', () => {
         url: `${API_URL}/parse/classes/GameScore`,
         headers: {
           'Content-Type': 'application/json',
-          'x-parse-application-id': 'test',
+          'x-parse-application-id': PARSE_APP_ID,
         },
       });
     } catch (err) {

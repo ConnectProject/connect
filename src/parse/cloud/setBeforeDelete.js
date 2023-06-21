@@ -1,9 +1,9 @@
 /* eslint-disable complexity */
 
-const getClasses = require('../schema/getClasses');
-const { getOAuthUserFromRequest } = require('../../oauth/oauth-service');
+import getClasses from '../schema/getClasses.js';
+import { getOAuthUserFromRequest } from '../../oauth/oauth-service.js';
 
-module.exports = async (Parse) => {
+export default async (Parse) => {
   const schemaClasses = await getClasses();
   for (const schemaClass of schemaClasses) {
     Parse.Cloud.beforeDelete(schemaClass.className, async (req) => {
