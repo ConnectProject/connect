@@ -440,6 +440,199 @@ describe('Parse server', () => {
     expect(data.results[0]).toEqual(gameScoreObject);
   });
 
+  it('POST huge amount of data', async () => {
+    const arraySize = 1000;
+    const requestArray = Array.from({ length: arraySize }, (_, index) => ({
+      method: 'POST',
+      path: '/parse/classes/GameScore',
+      body: { score: 1337 + index, playerName: 'ultimtester', cheatMode: false }
+    }));
+    const { data } = await axios({
+      method: 'post',
+      url: `${API_URL}/parse/batch`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+      data: {
+        requests: requestArray,
+      },
+    });
+
+    expect(data.length).toBe(arraySize);
+  });
+
+  let createdSandboxGameScoreObjectId;
+  let sandboxGameScoreObject;
+
+  it('POST sandbox GameScore event', async () => {
+    const { data } = await axios({
+      method: 'post',
+      url: `${API_URL}/parse/classes/GameScore`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+        'x-is-sandbox': true
+      },
+      data: { score: 1339, playerName: 'test0', cheatMode: true },
+    });
+
+    expect(data.createdAt).toBeDefined();
+    expect(data.updatedAt).toBeDefined();
+    expect(data.objectId).toBeDefined();
+
+    expect(data).toEqual({
+      objectId: data.objectId,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      score: 1339,
+      playerName: 'test0',
+      cheatMode: true,
+      applicationId: application.objectId,
+      userId: endUserUserId,
+    });
+
+    createdSandboxGameScoreObjectId = data.objectId;
+    sandboxGameScoreObject = data;
+  });
+
+  it('POST batch sandbox GameScore event', async () => {
+    const { data } = await axios({
+      method: 'post',
+      url: `${API_URL}/parse/batch`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+        'x-is-sandbox': true
+      },
+      data: {
+        requests: [
+          {
+            method: 'POST',
+            path: '/parse/classes/GameScore',
+            body: { score: 4945, playerName: 'tesergrgt', cheatMode: true },
+          },
+          {
+            method: 'POST',
+            path: '/parse/classes/GameScore',
+            body: { score: 4946, playerName: 'tesergrgt', cheatMode: true },
+          },
+          {
+            method: 'POST',
+            path: '/parse/classes/GameScore',
+            body: { score: 4947, playerName: 'zefzig', cheatMode: false },
+          },
+        ],
+      },
+    });
+
+    expect(data.length).toBe(3);
+    expect(data[0].success.score).toBe(4945);
+    expect(data[1].success.score).toBe(4946);
+    expect(data[2].success.score).toBe(4947);
+  });
+
+  it('GET sandbox GameScore event using OAuth', async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${API_URL}/parse/classes/GameScore/${createdSandboxGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+        'x-is-sandbox': true
+      },
+    });
+    expect(data).toEqual(sandboxGameScoreObject);
+  });
+
+  it('GET sandbox GameScore events using OAuth', async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${API_URL}/parse/classes/GameScore/`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+        'x-is-sandbox': true
+      },
+    });
+
+    expect(data.results.length).toBe(4);
+  });
+
+  it('GET sandbox GameScore event without OAuth', async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${API_URL}/parse/classes/GameScore/${createdSandboxGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        'x-parse-session-token': sessionToken,
+        'x-is-sandbox': true
+      },
+    });
+
+    expect(data).toEqual(sandboxGameScoreObject);
+  });
+
+  it('GET sandbox GameScore event without asking for sandbox should fail', async () => {
+    expect.assertions(3);
+    try {
+      await axios({
+        method: 'get',
+        url: `${API_URL}/parse/classes/GameScore/${createdSandboxGameScoreObjectId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-parse-application-id': PARSE_APP_ID,
+          Authorization: 'Bearer ' + accessToken.access_token
+        },
+      });
+    } catch (err) {
+      expect(err.response.status).toEqual(404);
+      expect(err.response.data.code).toEqual(101);
+      expect(err.response.data.error).toBeDefined();
+    }
+  });
+
+  it('GET non-sandbox GameScore event when asking for sandbox should fail', async () => {
+    expect.assertions(3);
+    try {
+      await axios({
+        method: 'get',
+        url: `${API_URL}/parse/classes/GameScore/${createdGameScoreObjectId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-parse-application-id': PARSE_APP_ID,
+          Authorization: 'Bearer ' + accessToken.access_token,
+          'x-is-sandbox': true
+        },
+      });
+    } catch (err) {
+      expect(err.response.status).toEqual(404);
+      expect(err.response.data.code).toEqual(101);
+      expect(err.response.data.error).toBeDefined();
+    }
+  });
+
+  it('DELETE sandbox GameScore event', async () => {
+    const { data } = await axios({
+      method: 'delete',
+      url: `${API_URL}/parse/classes/GameScore/${createdSandboxGameScoreObjectId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+        'x-is-sandbox': true
+      },
+    });
+
+    expect(data).toEqual({});
+  });
+
   it('allow PUT GameScore event for the creator of the object', async () => {
     const { data } = await axios({
       method: 'put',
