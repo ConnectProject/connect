@@ -391,6 +391,25 @@ describe('Parse server', () => {
     expect(data.results.length).toBe(3);
   });
 
+  it('GET GameScore events count using OAuth', async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${API_URL}/parse/classes/GameScore/`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-parse-application-id': PARSE_APP_ID,
+        Authorization: 'Bearer ' + accessToken.access_token,
+      },
+      data: {
+        count: 1,
+        limit: 2,
+      }
+    });
+
+    expect(data.results.length).toBe(2);
+    expect(data.count).toBe(3);
+  });
+
   let sessionToken;
   it('Get session token', async () => {
     const { data } = await axios({
