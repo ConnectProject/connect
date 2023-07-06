@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'; // ES6
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import oauthService from '../../services/oauth-service';
 import UserService from '../../services/user-service';
@@ -38,7 +38,7 @@ const OAuthAuthorizePage = function ({ classes }) {
 
 
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(location.search);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const OAuthAuthorizePage = function ({ classes }) {
           setLoading(false);
           setApplicationError(err);
         } else {
-          history.push('/');
+          navigate('/');
         }
       });
   }, []);

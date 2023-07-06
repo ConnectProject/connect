@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types'; // ES6
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -83,8 +83,8 @@ const ProfilePage = function ({ classes }) {
   const handleClose = async function (userToBeDeleted) {
     if (userToBeDeleted) {
       await UserService.deleteCurrentUser();
-      const history = useHistory();
-      history.push('/');
+      const navigate = useNavigate();
+      navigate('/');
     } else {
       setDialogOpen(false);
     }
@@ -104,11 +104,6 @@ const ProfilePage = function ({ classes }) {
       }
     });
   };
-
-  // goBack() {
-  //   const history = useHistory();
-  //   history.goBack();
-  // }
 
   const refreshGrantedTokens = async function () {
     const tokens = await UserTokensManagementService.getGrantedTokens();

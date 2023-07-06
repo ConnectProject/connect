@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types'; // ES6
 
 import React, { useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserService from '../../services/user-service';
 import LoginActions from '../../component/LoginActions';
 
@@ -23,18 +23,18 @@ const styles = {
 };
 
 const LoginPage = function ({ classes }) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentUser = UserService.getCurrentUser();
     if (currentUser) {
-      history.push('/home');
+      navigate('/home');
     }
   });
 
   const onUserLoggedIn = function (user) {
     if (user) {
-      history.push('/home');
+      navigate('/home');
     }
   };
 

@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -82,7 +82,7 @@ const HomePage = function ({ classes }) {
   });
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     ApplicationsService.listApplications()
@@ -132,13 +132,13 @@ const HomePage = function ({ classes }) {
   };
 
   const rowClick = function (application) {
-    history.push(`/application/${application.id}`);
+    navigate(`/application/${application.id}`);
   };
 
   const clickCreateApplication = async function () {
     try {
       const app = await ApplicationsService.create(newApplication);
-      history.push(`/application/${app.id}`);
+      navigate(`/application/${app.id}`);
     } catch (err) {
       console.error(err, err.message);
       setErrorMessage(err.message || 'An error occured.');
@@ -248,7 +248,7 @@ const HomePage = function ({ classes }) {
             margin="normal"
             variant="outlined"
             multiline
-            rows="4"
+            minRows={2}
             error={errors.description}
           />
 

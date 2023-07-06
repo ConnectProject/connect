@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
@@ -21,8 +21,8 @@ const styles = {
 
 const NoFound404Page = function ({ classes }) {
   const goToHome = function () {
-    const history = useHistory();
-    setTimeout(history.push(`/home`), 1000);
+    const navigate = useNavigate();
+    setTimeout(navigate(`/home`), 1000);
   };
 
   return (

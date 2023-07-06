@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Parse from 'parse';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -19,7 +19,7 @@ import MenuList from '@material-ui/core/MenuList';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
-import Routes from './Router';
+import Router from './Router';
 import PubSub from '../utils/pub-sub';
 import UserService from '../services/user-service';
 
@@ -29,38 +29,34 @@ const App = function () {
   const [canBack, setCanBack] = React.useState(false);
   const [userConnected, setUserConnected] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const open = Boolean(anchorEl);
 
   React.useEffect(() => {
-    if (!['/home', '/', '/authorize'].includes(history.location.pathname)) {
+    if (!['/home', '/', '/authorize'].includes(location.pathname)) {
       setCanBack(true);
+    } else {
+      setCanBack(false);
     }
-    history.listen((location) => {
-      if (location.pathname !== '/home' && location.pathname !== '/') {
-        setCanBack(true);
-      } else {
-        setCanBack(false);
-      }
-    });
 
     const currentUser = UserService.getCurrentUser();
     setUserConnected(currentUser !== null);
     if (
       currentUser === null &&
-      !['/', '/authorize'].includes(history.location.pathname)
+      !['/', '/authorize'].includes(location.pathname)
     ) {
-      history.push('/');
+      navigate('/');
     }
     PubSub.subscribe(UserService.PubSubEvents.AUTH_STATUS_UPDATED, async () => {
       const newUser = await UserService.getCurrentUserAsync();
       if (!newUser) {
-        history.push('/');
+        navigate('/');
       }
       setUserConnected(newUser !== null);
     });
-  }, []);
+  }, [location]);
 
   const handleMenuClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget.parentNode);
@@ -72,21 +68,21 @@ const App = function () {
 
   const handleMenuItemClick = (event, index) => {
     if (index === 0) {
-      history.push('/');
+      navigate('/');
     } else if (index === 1) {
       window.open(
         'https://github.com/ConnectProject/connect/blob/master/docs/usage.md',
         '_blank',
       );
     } else if (index === 2) {
-      history.push('/profile');
+      navigate('/profile');
     }
 
     handleClose();
   };
 
   const goBack = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return (
@@ -175,7 +171,7 @@ const App = function () {
         </Toolbar>
       </AppBar>
 
-      <Routes />
+      <Router />
     </div >
   );
 };
