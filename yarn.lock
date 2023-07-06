@@ -2926,7 +2926,7 @@
     "@types/range-parser" "*"
     "@types/send" "*"
 
-"@types/express@^4.17.14":
+"@types/express@^4.17.14", "@types/express@^4.17.15":
   version "4.17.17"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.17.tgz#01d5437f6ef9cfa8668e616e13c2f2ac9a491ae4"
   integrity sha512-Q4FmmuLGBG58btUnfS1c1r/NQdlp3DMfGDGig8WhfpA2YRUtEkxAjkZb0yvplJGYdF1fsQ81iMDcH24sSCNC/Q==
@@ -5382,6 +5382,13 @@ expect@^29.5.0:
     jest-matcher-utils "^29.5.0"
     jest-message-util "^29.5.0"
     jest-util "^29.5.0"
+
+express-body-parser-error-handler@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/express-body-parser-error-handler/-/express-body-parser-error-handler-1.0.7.tgz#8476ec4bd0b64da739c3172d6694be5313e5f3e0"
+  integrity sha512-QNhHyCbFFFI/SqMMb9P/p7jF0muIziXkOqe6VVXNGRbK3fxRa9qOX5qAcwLv7xa4rg70h5KahDuok0xsqqsKMw==
+  dependencies:
+    "@types/express" "^4.17.15"
 
 express-rate-limit@6.6.0:
   version "6.6.0"

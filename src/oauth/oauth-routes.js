@@ -21,7 +21,7 @@ export default (app) => {
     try {
       const userId = req.userFromJWT?.id;
       if (!userId) {
-        throw new Error('Not authenticated');
+        return res.status(401).send('Not authenticated');
       }
 
       return res.json({

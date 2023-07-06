@@ -45,6 +45,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "express-body-parser-error-handler": "^1.0.7",
     "glob-promise": "^6.0.3",
     "jsonschema": "^1.2.6",
     "lodash.flow": "^3.5.0",

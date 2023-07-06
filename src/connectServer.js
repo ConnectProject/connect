@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import bodyParserErrorHandler from 'express-body-parser-error-handler';
 import path from 'path';
 import cors from 'cors';
-import { EventEmitter, once } from 'events';
 import { fileURLToPath } from 'url';
 
 import logger from './logger.js';
@@ -18,12 +18,14 @@ const start = async function (port, parseCloudEvent) {
   logger.info(`start connect express server on port ${port}.`);
 
   process.on('unhandledRejection', (err) => {
+    console.log(err);
     throw err;
   });
 
   const app = express();
 
   app.use(bodyParser.json({ limit: '20mb' }));
+  app.use(bodyParserErrorHandler());
 
   const corsOptions = {
     origin: '*',
@@ -71,14 +73,14 @@ const start = async function (port, parseCloudEvent) {
     });
   }
 
-  const ee = new EventEmitter();
-
   const server = app.listen(port, () => {
     logger.info(`connect running on port ${port}.`);
-    ee.emit('listening');
   });
 
-  await once(ee, 'listening');
+  await new Promise((resolve, reject) => {
+    server.on('listening', resolve);
+    server.on('error', reject);
+  });
 
   return { app, server };
 };
