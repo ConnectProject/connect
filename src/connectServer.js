@@ -52,16 +52,17 @@ const start = async function (port, parseCloudEvent) {
   oauthApi(app);
 
   if (process.env.NODE_ENV === 'development') {
-    /* eslint-disable global-require, import/no-extraneous-dependencies */
-    const webpack = require('webpack');
-    const middleware = require('webpack-dev-middleware');
-    const webpackConfig = require('../webpack.config');
+    /* eslint-disable import/no-extraneous-dependencies */
+    const webpack = (await import('webpack')).default;
+    const middleware = (await import('webpack-dev-middleware')).default;
+    const webpackConfig = (await import('../webpack.config.js')).default;
+    const history = (await import('connect-history-api-fallback')).default;
+
     const compiler = webpack(webpackConfig);
     const { publicPath } = webpackConfig.output;
-    const history = require('connect-history-api-fallback');
     app.use(history());
     app.use(middleware(compiler, { publicPath }));
-    /* eslint-enable global-require, import/no-extraneous-dependencies */
+    /* eslint-enable import/no-extraneous-dependencies */
   } else {
     // Serve any static files
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
