@@ -1,14 +1,14 @@
 /* eslint-disable react/forbid-prop-types */
 
-import { CardActions, CircularProgress } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { CardActions, CircularProgress } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types'; // ES6
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import oauthService from '../../services/oauth-service';
 import UserService from '../../services/user-service';
 import LoginActions from '../../component/LoginActions';

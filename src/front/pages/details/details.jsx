@@ -2,19 +2,19 @@
 /* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import { green } from '@material-ui/core/colors';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FileCopy from '@material-ui/icons/FileCopy';
+import withStyles from '@mui/styles/withStyles';
+import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import { green } from '@mui/material/colors';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FileCopy from '@mui/icons-material/FileCopy';
 import PropTypes from 'prop-types'; // ES6
-import Snackbar from '@material-ui/core/Snackbar';
-import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import Tooltip from '@mui/material/Tooltip';
 
 import { validateFormField, checkValid } from '../../services/formValidator';
 import ApplicationsService from '../../services/applications-service';
@@ -231,7 +231,7 @@ const DetailsPage = function ({ classes }) {
                       onClick={() => {
                         copyToClipboard('id');
                       }}
-                    >
+                      size="large">
                       <FileCopy />
                     </IconButton>
                   </Tooltip>
@@ -258,7 +258,7 @@ const DetailsPage = function ({ classes }) {
                       onClick={() => {
                         copyToClipboard('publicKey');
                       }}
-                    >
+                      size="large">
                       <FileCopy />
                     </IconButton>
                   </Tooltip>
@@ -285,7 +285,7 @@ const DetailsPage = function ({ classes }) {
                       onClick={() => {
                         copyToClipboard('secretKey');
                       }}
-                    >
+                      size="large">
                       <FileCopy />
                     </IconButton>
                   </Tooltip>

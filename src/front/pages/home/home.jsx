@@ -1,70 +1,34 @@
 /* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { withStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 import Moment from 'react-moment';
-
-import PropTypes from 'prop-types'; // ES6
 
 import { validateFormField, checkValid } from '../../services/formValidator';
 import ApplicationsService from '../../services/applications-service';
 
-const styles = {
-  root: {
-    width: '100%',
-    maxWidth: 720,
-    margin: '0 auto',
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  progress: {
-    margin: '0 auto',
-    'margin-top': 140,
-  },
-  listContainer: {
-    width: '100%',
-  },
-  inline: {
-    display: 'inline',
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 32,
-    right: 32,
-  },
-  extendedIcon: {
-    marginRight: 16,
-  },
 
-  card: {
-    maxWidth: 720,
-    margin: '0 auto',
-    marginTop: 120,
-  },
-};
-
-const HomePage = function ({ classes }) {
+const HomePage = function () {
   const [loading, setLoading] = useState(true);
   const [dialogNewApplicationOpen, setDialogNewApplicationOpen] = useState(false);
   const [developerApplications, setDeveloperApplications] = useState([]);
@@ -106,14 +70,14 @@ const HomePage = function ({ classes }) {
     setNewApplication({
       name: '',
       description: '',
-      apple_store_link: '',
-      google_market_link: '',
+      appleStoreLink: '',
+      googleMarketLink: '',
     });
     setErrors({
       name: false,
       description: false,
-      apple_store_link: false,
-      google_market_link: false,
+      appleStoreLink: false,
+      googleMarketLink: false,
     });
     setErrorMessage(null);
   };
@@ -147,12 +111,21 @@ const HomePage = function ({ classes }) {
 
   return (
     <>
-      <List className={classes.root}>
-        {loading && <CircularProgress className={classes.progress} />}
+      <List sx={{
+        width: '100%',
+        maxWidth: 720,
+        margin: '0 auto',
+        display: 'flex',
+        flexWrap: 'wrap',
+      }}>
+        {loading && <CircularProgress sx={{
+          margin: '0 auto',
+          'marginTop': 17.5,
+        }} />}
 
         {!loading &&
           developerApplications.map((application) => (
-            <div key={application.id} className={classes.listContainer}>
+            <div key={application.id} style={{ width: '100%' }}>
               <ListItem
                 alignItems="flex-start"
                 button
@@ -165,8 +138,10 @@ const HomePage = function ({ classes }) {
                       <Typography
                         component="span"
                         variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
+                        sx={{
+                          display: 'inline',
+                          color: 'text.primary'
+                        }}
                       >
                         {' - '}
                         <Moment format="YYYY-MM-DD HH:mm">
@@ -184,7 +159,11 @@ const HomePage = function ({ classes }) {
       </List>
 
       {developerApplications.length === 0 && !loading && (
-        <Card className={classes.card}>
+        <Card sx={{
+          maxWidth: 720,
+          margin: '0 auto',
+          marginTop: 15
+        }}>
           <CardContent>
             <Typography variant="h5" component="h2">
               <DeveloperModeIcon />
@@ -205,10 +184,14 @@ const HomePage = function ({ classes }) {
         size="large"
         color="primary"
         aria-label="Add"
-        className={classes.fab}
+        sx={{
+          position: 'absolute',
+          bottom: 32,
+          right: 32,
+        }}
         onClick={() => handleClickOpen()}
       >
-        <AddIcon className={classes.extendedIcon} />
+        <AddIcon sx={{ marginRight: 2 }} />
         New application
       </Fab>
 
@@ -228,7 +211,6 @@ const HomePage = function ({ classes }) {
             required
             id="name"
             label="Name"
-            className={classes.textField}
             fullWidth
             value={newApplication.name}
             onChange={(event) => handleChange('name', event)}
@@ -241,7 +223,6 @@ const HomePage = function ({ classes }) {
             required
             id="description"
             label="Description"
-            className={classes.textField}
             fullWidth
             value={newApplication.description}
             onChange={(event) => handleChange('description', event)}
@@ -255,7 +236,6 @@ const HomePage = function ({ classes }) {
           <TextField
             id="appleStoreLink"
             label="App Store Link"
-            className={classes.textField}
             fullWidth
             value={newApplication.appleStoreLink}
             onChange={(event) => handleChange('appleStoreLink', event)}
@@ -267,7 +247,6 @@ const HomePage = function ({ classes }) {
           <TextField
             id="googleMarketLink"
             label="Play Store Link"
-            className={classes.textField}
             fullWidth
             value={newApplication.googleMarketLink}
             onChange={(event) => handleChange('googleMarketLink', event)}
@@ -302,9 +281,4 @@ const HomePage = function ({ classes }) {
   );
 };
 
-
-HomePage.propTypes = {
-  classes: PropTypes.instanceOf(Object).isRequired,
-};
-
-export default withStyles(styles)(HomePage);
+export default HomePage;
