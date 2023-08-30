@@ -2453,6 +2453,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@mongodb-js/saslprep@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mongodb-js/saslprep/-/saslprep-1.1.0.tgz#022fa36620a7287d17acd05c4aae1e5f390d250d"
+  integrity sha512-Xfijy7HvfzzqiOAhAepF4SGN5e9leLkMvg/OPOF97XemjfVCYN/oWa75wnkc6mltMSTwY+XlbhWgUOJmkFspSw==
+  dependencies:
+    sparse-bitfield "^3.0.3"
+
 "@mui/base@5.0.0-beta.6":
   version "5.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-beta.6.tgz#c4537231619f4642ebda714c2cfd0e598aa9f511"
@@ -4076,10 +4083,10 @@ bson@^4.7.0, bson@^4.7.2:
   dependencies:
     buffer "^5.6.0"
 
-bson@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-5.3.0.tgz#37b006df4cd91ed125cb686467c1dd6d4606b514"
-  integrity sha512-ukmCZMneMlaC5ebPHXIkP8YJzNl5DC41N5MAIvKDqLggdao342t4McltoJBQfQya/nHBWAcSsYRqlXPoQkTJag==
+bson@^5.3.0, bson@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-5.4.0.tgz#0eea77276d490953ad8616b483298dbff07384c6"
+  integrity sha512-WRZ5SQI5GfUuKnPTNmAYPiKIof3ORXAF4IRU5UcgmivNIon01rWQlw5RUH954dpu8yGL8T59YShVddIPaU/gFA==
 
 buffer-crc32@~0.2.3:
   version "0.2.13"
@@ -8035,7 +8042,7 @@ mongodb@4.10.0:
   optionalDependencies:
     saslprep "^1.0.3"
 
-mongodb@5.6.0, mongodb@^5.1.0:
+mongodb@5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-5.6.0.tgz#caff5278341bfc0f1ef6f394bb403d207de03d1e"
   integrity sha512-z8qVs9NfobHJm6uzK56XBZF8XwM9H294iRnB7wNjF0SnY93si5HPziIJn+qqvUR5QOff/4L0gCD6SShdR/GtVQ==
@@ -8057,6 +8064,17 @@ mongodb@^4.13.0:
   optionalDependencies:
     "@aws-sdk/credential-providers" "^3.186.0"
     saslprep "^1.0.3"
+
+mongodb@^5.8.0:
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-5.8.0.tgz#d45bbbb06170086bbfa3a932dbb42c92fc25270f"
+  integrity sha512-xx4CXmxcj3bNe7iGBlhntVrUqrNARYhUZteXaz4epEESv4oXD/FONAovcyoCaEffdYlw25Yz284OxMfpnPLlgQ==
+  dependencies:
+    bson "^5.4.0"
+    mongodb-connection-string-url "^2.6.0"
+    socks "^2.7.1"
+  optionalDependencies:
+    "@mongodb-js/saslprep" "^1.1.0"
 
 mongoose@^7.0.3:
   version "7.3.0"
