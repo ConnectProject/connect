@@ -8543,10 +8543,10 @@ parse-server-api-mail-adapter@^2.2.0:
   dependencies:
     mustache "4.2.0"
 
-parse-server@^6.0.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-6.2.0.tgz#dc2d9145a2b7a2d6aa785bf44a19207559548a84"
-  integrity sha512-BbPXBZfk8H4boZhq0LUQo0PJLmyLFa+5aPUBrNpi1567UXS9QFBuFouyAQ+TvZkq3AxymYHDAOA1BV0dccTk5Q==
+parse-server@^6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-6.2.2.tgz#f55da044ef9d26674badd7dcacfe33b0f04e2112"
+  integrity sha512-UE1d0lB8T7yho54ph+k6Raf8oAJvRni4nO7q2ZBaM5HTiy+RNLtGFjqTMoB3bsFIZbodcBTuieA5ot0zhtZt4Q==
   dependencies:
     "@babel/eslint-parser" "7.19.1"
     "@graphql-tools/merge" "8.3.6"
