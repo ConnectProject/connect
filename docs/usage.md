@@ -38,7 +38,9 @@ CRI : It's the organisation who manage the "connect" api and manage how it run a
 ## <a name="api-usage">Api usage</a>
 
 This part of the documentation will explain how to consume the connect api.
-A swagger documentation to explain each accessible endpoint can be found at `/swagger`.
+A swagger documentation to explain each accessible endpoint can be found at [/swagger](https://connect-project.io/swagger).
+
+The connect api relies on the parse platform api, some usage examples can be found at the [parse documentation](https://docs.parseplatform.org/rest/guide).
 
 Any request you do should have the following header : `x-parse-application-id: connect`
 
@@ -288,6 +290,17 @@ The values of the `where` parameter also support comparisons besides exact match
 | \$all        | Contains all of the given values                                                           |
 | \$regex      | Requires that a key's value match a regular expression                                     |
 | \$text       | Performs a full text search on indexed fields                                              |
+
+For example, to retrieve scores between 1000 and 3000, including the endpoints, we could issue:
+
+```bash
+curl --request GET \
+  --url $CONNECT_URL/parse/classes/GameScore \
+  --header "X-Parse-Application-Id: "$PARSE_APPLICATION \
+  --header 'x-parse-session-token: '$SESSION_TOKEN \
+  --get \
+  --data-urlencode 'where={"score":{"$gte":1000,"$lte":3000}}'
+```
 
 In addition to `where`, there are several parameters you can use to configure what types of results are returned by the query.
 
