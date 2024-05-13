@@ -6,6 +6,12 @@ An open platform to save anonymous data coming from any application using this A
 
 If you want to use the connect api service see the full [usage guide](./docs/usage.md) to learn more about it.
 
+## Examples
+
+Refer to the following example projects that use connect API
+
+- [Using ESP32 Node MCU](https://github.com/rajeevmsn/airQuality_ESP32_NodeMCU): in this example Air Quality data is updated every 10 minutes with help ESP32 Node MCU amd MQ135 gas sensor.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
