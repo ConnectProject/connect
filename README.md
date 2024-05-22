@@ -12,6 +12,7 @@ Refer to the following example projects that use connect API
 
 - [Using WebApp and Arduino Uno](https://github.com/rajeevmsn/airQualityMonitor_connect): Sending AirQuality data to connect using a web application connected to Arduino Uno and MQ135 gas sensor.
 - [Using ESP32 Node MCU](https://github.com/rajeevmsn/airQuality_ESP32_NodeMCU): Sending Air Quality data is updated every 10 minutes with help ESP32 Node MCU amd MQ135 gas sensor.
+- [getObj](https://github.com/rajeevmsn/connect_getObject): Example to get selected classes from connect using python
 
 ## Getting Started
 
