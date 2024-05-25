@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
 import { CardActions, Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+
 import UserService from '../services/user-service';
 
 const styles = {
@@ -10,7 +12,7 @@ const styles = {
   },
 };
 
-const LoginActions = function ({ classes, redirectPath, onUserLoggedIn }) {
+const LoginActions = function LoginActions ({ classes, redirectPath, onUserLoggedIn }) {
 
   const [isDialogSignupOpened, setIsDialogSignupOpened] = useState(false);
   const [isDialogLoginOpened, setIsDialogLoginOpened] = useState(false);
@@ -18,13 +20,13 @@ const LoginActions = function ({ classes, redirectPath, onUserLoggedIn }) {
   const [password, setPassword] = useState('');
   const [textMessage, setTextMessage] = useState(null);
 
-  const handleDialogClose = function () {
+  const handleDialogClose = function handleDialogClose () {
     setIsDialogSignupOpened(false);
     setIsDialogLoginOpened(false);
     setTextMessage(null);
   };
 
-  const onSubmitForm = async function () {
+  const onSubmitForm = async function onSubmitForm () {
     let user;
     try {
       if (isDialogLoginOpened) {
@@ -45,7 +47,7 @@ const LoginActions = function ({ classes, redirectPath, onUserLoggedIn }) {
     }
   };
 
-  const passwordReset = async function () {
+  const passwordReset = async function passwordReset () {
     try {
       if (!document.forms[0].email.reportValidity()) {
         return;
@@ -66,10 +68,10 @@ const LoginActions = function ({ classes, redirectPath, onUserLoggedIn }) {
   };
 
 
-  let githubRedirectUri = process.env.PUBLIC_URL + '/login/github';
+  let githubRedirectUri = `${process.env.PUBLIC_URL  }/login/github`;
   if (redirectPath) {
     githubRedirectUri =
-      githubRedirectUri + '?redirectPath=' + encodeURIComponent(redirectPath);
+      `${githubRedirectUri  }?redirectPath=${  encodeURIComponent(redirectPath)}`;
   }
   githubRedirectUri = encodeURIComponent(githubRedirectUri);
 

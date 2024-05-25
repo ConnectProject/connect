@@ -1,6 +1,6 @@
 import getSchemas from './getSchemas.js';
 
-const swaggerTypeToParseType = function (element) {
+const swaggerTypeToParseType = function swaggerTypeToParseType (element) {
   let parseType;
   switch (element.type) {
     case 'string':
@@ -29,7 +29,7 @@ const swaggerTypeToParseType = function (element) {
   return parseType;
 };
 
-const getClass = function (schema, isSandbox = false) {
+const getClass = function getClass (schema, isSandbox = false) {
   const className = isSandbox ? `Sandbox_${schema.className}` : schema.className;
 
   const parseClass = {

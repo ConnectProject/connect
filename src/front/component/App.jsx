@@ -1,31 +1,29 @@
-import React from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
-import Parse from 'parse';
-
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-
-import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
+import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Parse from 'parse';
+import React from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 
-import IconButton from '@mui/material/IconButton';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+import UserService from '../services/user-service';
+import PubSub from '../utils/pub-sub';
 
 import Router from './Router';
-import PubSub from '../utils/pub-sub';
-import UserService from '../services/user-service';
 
 const options = ['Home', 'Documentation', 'My Profile'];
 
-const App = function () {
+const App = function App () {
   const [canBack, setCanBack] = React.useState(false);
   const [userConnected, setUserConnected] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);

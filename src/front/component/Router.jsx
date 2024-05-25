@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import LoginPage from '../pages/login/login';
-import HomePage from '../pages/home/home';
-import OAuthAuthorizePage from '../pages/oauth/authorize';
 import DetailsPage from '../pages/details/details';
-import ProfilePage from '../pages/profile/profile';
-import NoFound404Page from '../pages/notfound/notfound';
+import HomePage from '../pages/home/home';
 import Github from '../pages/login/github';
+import LoginPage from '../pages/login/login';
+import NoFound404Page from '../pages/notfound/notfound';
+import OAuthAuthorizePage from '../pages/oauth/authorize';
+import ProfilePage from '../pages/profile/profile';
 
-const Router = function () {
+const Router = function Router () {
   return (
     <Routes>
       <Route path="/login/github" element={<Github />} />

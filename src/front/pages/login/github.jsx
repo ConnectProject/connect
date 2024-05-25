@@ -1,9 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+
 import UserService from '../../services/user-service';
 
-const Github = function () {
+const Github = function Github () {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);

@@ -1,15 +1,13 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
-
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-
+import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types'; // ES6
+import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   card: {
@@ -19,8 +17,8 @@ const styles = {
   },
 };
 
-const NoFound404Page = function ({ classes }) {
-  const goToHome = function () {
+const NoFound404Page = function NoFound404Page ({ classes }) {
+  const goToHome = function goToHome () {
     const navigate = useNavigate();
     setTimeout(navigate(`/home`), 1000);
   };

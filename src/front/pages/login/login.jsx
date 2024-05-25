@@ -1,14 +1,14 @@
-import withStyles from '@mui/styles/withStyles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types'; // ES6
-
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import UserService from '../../services/user-service';
+
 import LoginActions from '../../component/LoginActions';
+import UserService from '../../services/user-service';
 
 const styles = {
   card: {
@@ -22,7 +22,7 @@ const styles = {
   },
 };
 
-const LoginPage = function ({ classes }) {
+const LoginPage = function LoginPage ({ classes }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const LoginPage = function ({ classes }) {
     }
   });
 
-  const onUserLoggedIn = function (user) {
+  const onUserLoggedIn = function onUserLoggedIn (user) {
     if (user) {
       navigate('/home');
     }

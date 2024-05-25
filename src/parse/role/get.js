@@ -1,6 +1,6 @@
 /* global Parse */
 
-const getOne = async function (name) {
+const getOne = async function getOne (name) {
   const Role = Parse.Object.extend('_Role');
   const query = new Parse.Query(Role);
   query.equalTo('name', name);

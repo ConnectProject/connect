@@ -1,23 +1,23 @@
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
+import FileCopy from '@mui/icons-material/FileCopy';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Snackbar from '@mui/material/Snackbar';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import withStyles from '@mui/styles/withStyles';
+import PropTypes from 'prop-types'; // ES6
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import withStyles from '@mui/styles/withStyles';
-import TextField from '@mui/material/TextField';
-import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
-import { green } from '@mui/material/colors';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FileCopy from '@mui/icons-material/FileCopy';
-import PropTypes from 'prop-types'; // ES6
-import Snackbar from '@mui/material/Snackbar';
-import Tooltip from '@mui/material/Tooltip';
 
-import { validateFormField, checkValid } from '../../services/formValidator';
 import ApplicationsService from '../../services/applications-service';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 const styles = {
   root: {
@@ -64,7 +64,7 @@ const styles = {
   }
 };
 
-const DetailsPage = function ({ classes }) {
+const DetailsPage = function DetailsPage ({ classes }) {
   const { appId } = useParams();
   const [loading, setLoading] = useState(true);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -85,7 +85,7 @@ const DetailsPage = function ({ classes }) {
     });
   }, [appId]);
 
-  const handleChange = function (name, event) {
+  const handleChange = function handleChange (name, event) {
     const { value } = event.target;
 
     const validated = validateFormField(value, name);
@@ -100,7 +100,7 @@ const DetailsPage = function ({ classes }) {
   };
 
 
-  const handleToggle = function (name, event) {
+  const handleToggle = function handleToggle (name, event) {
     const { checked } = event.target;
 
     setApplicationUpdate((prevUpdate) => ({
@@ -109,7 +109,7 @@ const DetailsPage = function ({ classes }) {
     }));
   };
 
-  const handleClose = function (event, reason) {
+  const handleClose = function handleClose (event, reason) {
     if (reason === 'clickaway') {
       return;
     }
@@ -117,7 +117,7 @@ const DetailsPage = function ({ classes }) {
     setSnackBarText('');
   };
 
-  const clickUpdateApplication = async function () {
+  const clickUpdateApplication = async function clickUpdateApplication () {
     setUpdateLoading(true);
 
     Object.entries(applicationUpdate).forEach(([key, value]) => {
@@ -130,7 +130,7 @@ const DetailsPage = function ({ classes }) {
     setSnackBarText("Application successfully updated");
   };
 
-  const copyToClipboard = function (key) {
+  const copyToClipboard = function copyToClipboard (key) {
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(

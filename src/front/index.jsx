@@ -1,7 +1,7 @@
+import Parse from 'parse';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import Parse from 'parse';
 
 import App from './component/App';
 import './index.css';

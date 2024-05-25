@@ -1,34 +1,33 @@
+/* eslint-disable no-console */
 /* eslint-disable max-lines */
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
-
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-
+import Divider from '@mui/material/Divider';
+import Fab from '@mui/material/Fab';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
+import { useNavigate } from "react-router-dom";
 
-import { validateFormField, checkValid } from '../../services/formValidator';
 import ApplicationsService from '../../services/applications-service';
+import { validateFormField, checkValid } from '../../services/formValidator';
 
 
-const HomePage = function () {
+const HomePage = function HomePage () {
   const [loading, setLoading] = useState(true);
   const [dialogNewApplicationOpen, setDialogNewApplicationOpen] = useState(false);
   const [developerApplications, setDeveloperApplications] = useState([]);
@@ -61,11 +60,11 @@ const HomePage = function () {
       });
   }, []);
 
-  const handleClickOpen = function () {
+  const handleClickOpen = function handleClickOpen () {
     setDialogNewApplicationOpen(true);
   };
 
-  const handleClose = function () {
+  const handleClose = function handleClose () {
     setDialogNewApplicationOpen(false);
     setNewApplication({
       name: '',
@@ -82,7 +81,7 @@ const HomePage = function () {
     setErrorMessage(null);
   };
 
-  const handleChange = function (name, event) {
+  const handleChange = function handleChange (name, event) {
     const { value } = event.target;
     const validated = validateFormField(value, name);
     setNewApplication(prevState => ({
@@ -95,11 +94,11 @@ const HomePage = function () {
     }));
   };
 
-  const rowClick = function (application) {
+  const rowClick = function rowClick (application) {
     navigate(`/application/${application.id}`);
   };
 
-  const clickCreateApplication = async function () {
+  const clickCreateApplication = async function clickCreateApplication () {
     try {
       const app = await ApplicationsService.create(newApplication);
       navigate(`/application/${app.id}`);

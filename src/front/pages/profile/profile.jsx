@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
 
+import FileCopy from '@mui/icons-material/FileCopy';
 import Button from '@mui/material/Button';
 import { green } from '@mui/material/colors';
 import Dialog from '@mui/material/Dialog';
@@ -7,24 +8,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import withStyles from '@mui/styles/withStyles';
-import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types'; // ES6
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import Snackbar from '@mui/material/Snackbar';
-import InputAdornment from '@mui/material/InputAdornment';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import FileCopy from '@mui/icons-material/FileCopy';
-import Tooltip from '@mui/material/Tooltip';
+import InputAdornment from '@mui/material/InputAdornment';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
+import PropTypes from 'prop-types'; // ES6
+import React, { useState, useEffect } from 'react';
 import Moment from 'react-moment';
-import UserTokensManagementService from '../../services/user-tokens-management-service';
+import { useNavigate } from "react-router-dom";
+
 import UserService from '../../services/user-service';
+import UserTokensManagementService from '../../services/user-tokens-management-service';
 
 const styles = {
   root: {
@@ -72,7 +73,7 @@ const styles = {
   },
 };
 
-const ProfilePage = function ({ classes }) {
+const ProfilePage = function ProfilePage ({ classes }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [grantedTokens, setGrantedTokens] = useState([]);
@@ -80,7 +81,7 @@ const ProfilePage = function ({ classes }) {
 
   const user = UserService.getCurrentUser();
 
-  const handleClose = async function (userToBeDeleted) {
+  const handleClose = async function handleClose (userToBeDeleted) {
     if (userToBeDeleted) {
       await UserService.deleteCurrentUser();
       const navigate = useNavigate();
@@ -90,13 +91,13 @@ const ProfilePage = function ({ classes }) {
     }
   };
 
-  const handleCloseSnackbar = function (event, reason) {
+  const handleCloseSnackbar = function handleCloseSnackbar (event, reason) {
     if (reason !== 'clickaway') {
       setSnackBarOpen(false);
     }
   };
 
-  const copyToClipboard = function () {
+  const copyToClipboard = function copyToClipboard () {
     navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(user.getSessionToken());
@@ -105,12 +106,12 @@ const ProfilePage = function ({ classes }) {
     });
   };
 
-  const refreshGrantedTokens = async function () {
+  const refreshGrantedTokens = async function refreshGrantedTokens () {
     const tokens = await UserTokensManagementService.getGrantedTokens();
     setGrantedTokens(tokens || []);
   };
 
-  const deleteToken = async function () {
+  const deleteToken = async function deleteToken () {
     await UserTokensManagementService.revokeToken({
       tokenId: tokenToRevokeInDialog.id,
     });
