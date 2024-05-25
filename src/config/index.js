@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-const testConfig = function (config, name) {
+const testConfig = function testConfig (config, name) {
   if (
     (!config && config !== false && config !== 'false') ||
     `${config}`.length <= 0

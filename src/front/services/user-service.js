@@ -1,4 +1,5 @@
 import Parse from 'parse';
+
 import PubSub from '../utils/pub-sub';
 
 const PubSubEvents = {
@@ -36,7 +37,7 @@ const verifyEmail = ({ email }) => Parse.User.requestEmailVerification(email);
 
 const confirmGithubAuth = async ({ code }) => {
   const authData = await Parse.Cloud.run('get-github-auth-data', {
-    code: code,
+    code,
   });
 
   const newlyLoggedInUser = await Parse.User.logInWith('github', { authData });

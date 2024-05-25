@@ -1,6 +1,7 @@
 /* global Parse */
 
 import { Request, Response } from 'oauth2-server';
+
 import oauthServer from './oauth-server.js';
 
 const getOAuthUserFromRequest = async (req, res) => {
@@ -26,7 +27,7 @@ const getOAuthUserFromRequest = async (req, res) => {
 
     return {};
   } catch (err) {
-    //do not crash if request does not have oauth data
+    // do not crash if request does not have oauth data
     return {};
   }
 };

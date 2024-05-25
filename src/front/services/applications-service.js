@@ -1,4 +1,5 @@
 import Parse from 'parse';
+
 import UserService from './user-service';
 
 const Application = Parse.Object.extend('OAuthApplication');

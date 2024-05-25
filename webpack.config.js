@@ -1,10 +1,12 @@
-import dotenv from 'dotenv';
 import path from 'path';
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { fileURLToPath } from 'url';
+
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import dotenv from 'dotenv';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack from 'webpack';
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const getPath = path.join.bind(path, __dirname);

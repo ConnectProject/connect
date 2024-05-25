@@ -4,16 +4,17 @@ Script to monitor the I/O speed of an Application.
 The output will be written in ../perf.csv
 */
 
-const axios = require('axios');
-const { performance } = require('perf_hooks');
 const fs = require('fs');
+const { performance } = require('perf_hooks');
+
+const axios = require('axios');
 const json2csv = require('json2csv');
 
 // To be changed with the Application to Monitor
 const APP_NAME = '7n3k8m-Test';
 const APP_TOKEN = 'f81eda23-3bab-466e-89bb-627a96ba3991';
 
-const getHeaderWithToken = function (sessionToken) {
+const getHeaderWithToken = function getHeaderWithToken (sessionToken) {
   return {
     'x-parse-application-id': 'connect',
     'x-parse-session-token': sessionToken,
@@ -21,7 +22,7 @@ const getHeaderWithToken = function (sessionToken) {
   };
 };
 
-const writeToCSV = function (task, quantity, time) {
+const writeToCSV = function writeToCSV (task, quantity, time) {
   const newLine = '\r\n';
   const fields = ['date', 'task', 'quantity', 'time'];
   const data = {
@@ -52,7 +53,7 @@ const writeToCSV = function (task, quantity, time) {
   });
 };
 
-const createObjects = async function (numberOfObject, sessionToken) {
+const createObjects = async function createObjects (numberOfObject, sessionToken) {
   const t0 = performance.now();
   for (let i = 0; i < numberOfObject; i++) {
     // eslint-disable-next-line no-await-in-loop
@@ -75,7 +76,7 @@ const createObjects = async function (numberOfObject, sessionToken) {
   writeToCSV('POST /classes', numberOfObject, t1 - t0);
 };
 
-const readObjects = async function (numberOfObject, sessionToken) {
+const readObjects = async function readObjects (numberOfObject, sessionToken) {
   const t0 = performance.now();
   // eslint-disable-next-line no-unused-vars
   for (const _ of Array(numberOfObject).keys()) {
@@ -91,7 +92,7 @@ const readObjects = async function (numberOfObject, sessionToken) {
   writeToCSV('GET /classes', numberOfObject, t1 - t0);
 };
 
-const readObjectsWithCondition = async function (numberOfObject, sessionToken) {
+const readObjectsWithCondition = async function readObjectsWithCondition (numberOfObject, sessionToken) {
   const t0 = performance.now();
   for (let i = 0; i < numberOfObject; i++) {
     // eslint-disable-next-line no-await-in-loop
@@ -112,7 +113,7 @@ const readObjectsWithCondition = async function (numberOfObject, sessionToken) {
   writeToCSV('GET /classes w/ condition', numberOfObject, t1 - t0);
 };
 
-const checkAdd = async function () {
+const checkAdd = async function checkAdd () {
   try {
     const response = await axios.get('http://127.0.0.1:1337/parse/login', {
       params: {

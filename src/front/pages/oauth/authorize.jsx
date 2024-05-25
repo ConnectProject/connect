@@ -1,17 +1,19 @@
+/* eslint-disable no-console */
 /* eslint-disable react/forbid-prop-types */
 
 import { CardActions, CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types'; // ES6
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
-import Button from '@mui/material/Button';
+
+import LoginActions from '../../component/LoginActions';
 import oauthService from '../../services/oauth-service';
 import UserService from '../../services/user-service';
-import LoginActions from '../../component/LoginActions';
 
 const styles = {
   card: {
@@ -28,7 +30,7 @@ const styles = {
   },
 };
 
-const OAuthAuthorizePage = function ({ classes }) {
+const OAuthAuthorizePage = function OAuthAuthorizePage ({ classes }) {
 
   const [applicationError, setApplicationError] = useState(null);
   const [authorizationError, setAuthorizationError] = useState(false);
@@ -90,11 +92,11 @@ const OAuthAuthorizePage = function ({ classes }) {
   }, []);
 
   // eslint-disable-next-line no-shadow
-  const onUserLoggedIn = function (currentUser) {
+  const onUserLoggedIn = function onUserLoggedIn (currentUser) {
     setCurrentUser(currentUser);
   };
 
-  const confirmAuthorization = async function () {
+  const confirmAuthorization = async function confirmAuthorization () {
     const params = Object.fromEntries(urlParams);
     try {
       window.location.href = await oauthService.authorize(params);

@@ -1,6 +1,6 @@
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 
 const changeUrl = (req, toReplace, replacement) => {
   req.url = req.url.replace(toReplace, replacement);
@@ -13,7 +13,7 @@ const transformPathForSandbox = (originalPath) => {
   if (regexpResult.length > 1) {
     const className = regexpResult[1];
     if (!className.startsWith('Sandbox_')) {
-      return '/parse/classes/Sandbox_' + className;
+      return `/parse/classes/Sandbox_${  className}`;
     }
   }
 };

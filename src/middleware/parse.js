@@ -1,8 +1,9 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import nodemailer from 'nodemailer';
 
+import nodemailer from 'nodemailer';
 import { ParseServer } from 'parse-server';
+
 import {
   API_URL,
   PUBLIC_URL,
@@ -21,6 +22,7 @@ import {
   SMTP_PASS,
   SMTP_SENDER
 } from '../config/index.js';
+import logger from '../logger.js';
 import cloud from '../parse/cloud/main.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -62,10 +64,10 @@ export default (parseCloudEvent) => {
       apiCallback: async ({ payload }) => {
         try {
           await transporter.sendMail(payload);
-          console.log('email sent');
+          logger.info('email sent');
         } catch (err) {
-          console.log('error when sending a mail');
-          console.error(err);
+          logger.info('error when sending a mail');
+          logger.error(err);
         }
       }
     }

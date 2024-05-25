@@ -1,12 +1,14 @@
 /* eslint-disable complexity */
 
+import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { promises as fs } from 'fs';
+
 import { Validator } from 'jsonschema';
 import { v4 as uuidv4 } from 'uuid';
-import getClasses from '../schema/getClasses.js';
+
 import { getOAuthUserFromRequest } from '../../oauth/oauth-service.js';
+import getClasses from '../schema/getClasses.js';
 
 export default async (Parse) => {
   const schemaClasses = await getClasses();
@@ -110,10 +112,10 @@ export default async (Parse) => {
       )
       : null;
     if (!existingObject || !existingObject.get('publicKey')) {
-      req.object.set('publicKey', 'pub_' + uuidv4().replace(/-/g, ''));
+      req.object.set('publicKey', `pub_${  uuidv4().replace(/-/g, '')}`);
     }
     if (!existingObject || !existingObject.get('secretKey')) {
-      req.object.set('secretKey', 'sec_' + uuidv4().replace(/-/g, ''));
+      req.object.set('secretKey', `sec_${  uuidv4().replace(/-/g, '')}`);
     }
   });
 

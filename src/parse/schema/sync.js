@@ -1,10 +1,10 @@
 /* global Parse */
+import initClasses from './_initClasses.js';
 import getClasses from './getClasses.js';
 import sanitizeClass from './sanitizeClass.js';
-import initClasses from './_initClasses.js';
 
 // Retrieve the fields not already setup on the parse schema installed
-const getNewFields = function (actualSchemaClass, schemaClass) {
+const getNewFields = function getNewFields (actualSchemaClass, schemaClass) {
 
   const newFields = {};
   for (const field of Object.keys(schemaClass.fields)) {
@@ -17,7 +17,7 @@ const getNewFields = function (actualSchemaClass, schemaClass) {
 };
 
 // Create or Update the schema
-const applySchemaSync = async function (actualSchemas, schemaClass) {
+const applySchemaSync = async function applySchemaSync (actualSchemas, schemaClass) {
   const actualSchemaClass = actualSchemas.find((schema) => schema.className === schemaClass.className);
   const schemaObject = new Parse.Schema(schemaClass.className);
   if (actualSchemaClass) {

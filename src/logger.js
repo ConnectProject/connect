@@ -1,9 +1,9 @@
-import winston from 'winston';
 import flow from 'lodash.flow';
+import winston from 'winston';
 
 const { combine, timestamp, json } = winston.format;
 
-const createFormatMessage = function (name) {
+const createFormatMessage = function createFormatMessage (name) {
   /**
    * Format params to return an unique object that matches willing format
    * JSDoc not verified
@@ -60,7 +60,7 @@ const createFormatMessage = function (name) {
  * @param {*} severity custom severity
  * @returns {Object} object with severity
  */
-const addSeverity = function (severity) {
+const addSeverity = function addSeverity (severity) {
   return (params) => ({
     ...params,
     severity,
@@ -72,7 +72,7 @@ const addSeverity = function (severity) {
  * @param {string} appName app name
  * @returns {Object} logger
  */
-const createLogger = function (appName) {
+const createLogger = function createLogger (appName) {
   const systemLogger = winston.createLogger({
     transports: [new winston.transports.Console()],
     format: combine(timestamp(), json()),

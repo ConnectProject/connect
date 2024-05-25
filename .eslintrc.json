@@ -35,7 +35,11 @@
       "WithStatement"
     ],
     // disable import/extensions rule as node requires to specify the extension on es module imports
-    "import/extensions": "off"
+    "import/extensions": "off",
+    // allow implicit undefined return
+    "consistent-return": "off",
+    // not a problem in esm
+    "no-param-reassign": "off"
   },
   "overrides": [
     {

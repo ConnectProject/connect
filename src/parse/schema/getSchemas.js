@@ -1,7 +1,8 @@
 
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
+
 import glob from 'glob-promise';
 
 let schemas;

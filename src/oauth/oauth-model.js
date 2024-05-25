@@ -175,7 +175,7 @@ export default {
     };
   },
 
-  //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#getauthorizationcode-authorizationcode-callback
+  // see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#getauthorizationcode-authorizationcode-callback
   async getAuthorizationCode(authorizationCode) {
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode)
@@ -195,7 +195,7 @@ export default {
     }
   },
 
-  //see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#revokeauthorizationcode-code-callback
+  // see example at https://oauth2-server.readthedocs.io/en/latest/model/spec.html#revokeauthorizationcode-code-callback
   async revokeAuthorizationCode(authorizationCode) {
     const foundCode = await new Parse.Query('OAuthAuthorizationCode')
       .equalTo('authorizationCode', authorizationCode.authorizationCode)

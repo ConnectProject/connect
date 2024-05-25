@@ -1,8 +1,10 @@
-import mongoose from 'mongoose';
-import nock from 'nock';
 import { EventEmitter, once } from 'events';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { jest } from '@jest/globals';
+import mongoose from 'mongoose';
+import nock from 'nock';
+// eslint-disable-next-line import/no-extraneous-dependencies
 
 import configMock from './__mock__/config';
 
@@ -13,7 +15,7 @@ jest.unstable_mockModule('../src/config', () => configMock);
 // Set up a default API server for testing with default configuration.
 const ConnectServer = (await import('../src/connectServer')).default;
 
-const bindServer = function () {
+const bindServer = function bindServer () {
   let server;
 
   afterAll(async () => {
@@ -34,7 +36,7 @@ const bindServer = function () {
   });
 };
 
-const bindGithub = function () {
+const bindGithub = function bindGithub () {
   beforeAll(() => {
     nock(`https://github.com`)
       .persist()
@@ -54,7 +56,7 @@ const bindGithub = function () {
   afterAll(() => nock.cleanAll());
 };
 
-const bindAll = function () {
+const bindAll = function bindAll () {
   bindServer();
   bindGithub();
 };

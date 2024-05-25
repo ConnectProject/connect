@@ -4,7 +4,7 @@
  * @param {string} type Parse type
  * @returns {string} swagger type
  */
-const schemaTypeToSwaggerType = function (type) {
+const schemaTypeToSwaggerType = function schemaTypeToSwaggerType (type) {
   let swaggerType;
   switch (type) {
     case 'String':
@@ -52,7 +52,7 @@ const schemaTypeToSwaggerType = function (type) {
  * @param {*} schema schema
  * @returns {Object} path
  */
-const getPath = function (schema) {
+const getPath = function getPath (schema) {
   return {
     get: {
       security: [{ ParseAppId: [], ParseSessionId: [], OAuth2BearerToken: [] }],
@@ -110,7 +110,7 @@ const getPath = function (schema) {
  * @param {Object} schema schema
  * @returns {Object} path
  */
-const getPathById = function (schema) {
+const getPathById = function getPathById (schema) {
   return {
     get: {
       security: [
@@ -245,7 +245,7 @@ const getPathById = function (schema) {
  * @param {Object} oneClass server class
  * @returns {Object} schema
  */
-const transformClasseToSchema = function (oneClass) {
+const transformClasseToSchema = function transformClasseToSchema (oneClass) {
   const schema = { type: 'object', properties: {} };
 
   Object.entries(oneClass.fields).forEach(([key, element]) => {

@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 
-import getClasses from '../schema/getClasses.js';
 import { getOAuthUserFromRequest } from '../../oauth/oauth-service.js';
+import getClasses from '../schema/getClasses.js';
 
 export default async (Parse) => {
   const schemaClasses = await getClasses();

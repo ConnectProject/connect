@@ -1,5 +1,5 @@
-import getClasses from '../schema/getClasses.js';
 import roleGet from '../role/get.js';
+import getClasses from '../schema/getClasses.js';
 
 export default async (Parse) => {
   Parse.Cloud.afterSave(Parse.User, async (req) => {

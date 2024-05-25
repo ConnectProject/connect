@@ -1,4 +1,5 @@
 import { Request, Response } from 'oauth2-server';
+
 import oauthModel from '../../../oauth/oauth-model.js';
 import oauthServer from '../../../oauth/oauth-server.js';
 

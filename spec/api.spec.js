@@ -1,10 +1,11 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-statements */
-import Parse from 'parse/node';
 import axios from 'axios';
+import Parse from 'parse/node';
 import qs from 'qs';
-import { bindAll } from './helper';
+
 import config from './__mock__/config';
+import { bindAll } from './helper';
 
 const { API_URL, PARSE_APP_ID } = config;
 
@@ -180,7 +181,7 @@ describe('Parse server', () => {
 
     // simulate confirmation by the app's backend
     const { data } = await axios.post(
-      API_URL + '/oauth/token',
+      `${API_URL  }/oauth/token`,
       qs.stringify({
         client_id: fromApp.publicKey,
         client_secret: fromApp.secretKey,
@@ -228,15 +229,15 @@ describe('Parse server', () => {
   });
 
   it('GET the user id associated to the accessToken', async () => {
-    const { data } = await axios.get(API_URL + '/oauth/user', {
-      headers: { Authorization: 'Bearer ' + accessToken.access_token },
+    const { data } = await axios.get(`${API_URL  }/oauth/user`, {
+      headers: { Authorization: `Bearer ${  accessToken.access_token}` },
     });
     expect(data.id).toBe(endUserUserId);
   });
 
   it('GET valid OAuth refreshToken', async () => {
     const { data } = await axios.post(
-      API_URL + '/oauth/token',
+      `${API_URL  }/oauth/token`,
       qs.stringify({
         client_id: application.publicKey,
         client_secret: application.secretKey,
@@ -294,8 +295,8 @@ describe('Parse server', () => {
       application2,
     );
 
-    const { data } = await axios.get(API_URL + '/oauth/user', {
-      headers: { Authorization: 'Bearer ' + token },
+    const { data } = await axios.get(`${API_URL  }/oauth/user`, {
+      headers: { Authorization: `Bearer ${  token}` },
     });
     expect(data.id).toBe(endUserUserId);
   });
@@ -310,7 +311,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
       data: { score: 1337, playerName: 'test9', cheatMode: false },
     });
@@ -341,7 +342,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
       data: {
         requests: [
@@ -371,7 +372,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
     });
     expect(data).toEqual(gameScoreObject);
@@ -384,7 +385,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
     });
 
@@ -398,7 +399,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
       data: {
         count: 1,
@@ -472,7 +473,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
       data: {
         requests: requestArray,
@@ -492,7 +493,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
         'x-is-sandbox': true
       },
       data: { score: 1339, playerName: 'test0', cheatMode: true },
@@ -524,7 +525,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
         'x-is-sandbox': true
       },
       data: {
@@ -561,7 +562,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
         'x-is-sandbox': true
       },
     });
@@ -575,7 +576,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
         'x-is-sandbox': true
       },
     });
@@ -607,7 +608,7 @@ describe('Parse server', () => {
         headers: {
           'Content-Type': 'application/json',
           'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessToken.access_token
+          Authorization: `Bearer ${  accessToken.access_token}`
         },
       });
     } catch (err) {
@@ -626,7 +627,7 @@ describe('Parse server', () => {
         headers: {
           'Content-Type': 'application/json',
           'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessToken.access_token,
+          Authorization: `Bearer ${  accessToken.access_token}`,
           'x-is-sandbox': true
         },
       });
@@ -644,7 +645,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
         'x-is-sandbox': true
       },
     });
@@ -659,7 +660,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
       data: { score: 1338, cheatMode: true },
     });
@@ -690,7 +691,7 @@ describe('Parse server', () => {
         headers: {
           'Content-Type': 'application/json',
           'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessTokenApp2.access_token,
+          Authorization: `Bearer ${  accessTokenApp2.access_token}`,
         },
         data: { score: 1338, cheatMode: true },
       });
@@ -815,7 +816,7 @@ describe('Parse server', () => {
         headers: {
           'Content-Type': 'application/json',
           'x-parse-application-id': PARSE_APP_ID,
-          Authorization: 'Bearer ' + accessTokenApp2.access_token,
+          Authorization: `Bearer ${  accessTokenApp2.access_token}`,
         }
       });
     } catch (err) {
@@ -830,7 +831,7 @@ describe('Parse server', () => {
       headers: {
         'Content-Type': 'application/json',
         'x-parse-application-id': PARSE_APP_ID,
-        Authorization: 'Bearer ' + accessToken.access_token,
+        Authorization: `Bearer ${  accessToken.access_token}`,
       },
     });
 

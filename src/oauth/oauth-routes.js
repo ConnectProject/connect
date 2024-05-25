@@ -1,4 +1,5 @@
 import { Request, Response } from 'oauth2-server';
+
 import oAuthMiddleware from './oauth-middleware.js';
 import oauthServer from './oauth-server.js';
 
@@ -8,10 +9,11 @@ export default (app) => {
       const response = new Response(res);
       const token = await oauthServer.token(new Request(req), response);
       // doesn't seem to be useful
-      res.locals.oauth = { token: token };
+      res.locals.oauth = { token };
 
       res.set(response.headers);
-      res.status(response.status ?? 200).send(response.body);
+      
+      return res.status(response.status ?? 200).send(response.body);
     } catch (err) {
       return next(err);
     }

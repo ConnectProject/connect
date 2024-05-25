@@ -1,24 +1,25 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import bodyParserErrorHandler from 'express-body-parser-error-handler';
 import path from 'path';
-import cors from 'cors';
 import { fileURLToPath } from 'url';
 
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import bodyParserErrorHandler from 'express-body-parser-error-handler';
+
 import logger from './logger.js';
-import oauthApi from './oauth/oauth-routes.js';
 import parseApi from './middleware/parse.js';
 import parseDashboard from './middleware/parseDashboard.js';
 import parseSwagger from './middleware/parseSwagger.js';
 import sandboxMiddleware from './middleware/sandboxMiddleware.js';
 import oauthMiddleware from './oauth/oauth-middleware.js';
+import oauthApi from './oauth/oauth-routes.js';
 
 // eslint-disable-next-line max-statements
-const start = async function (port, parseCloudEvent) {
+const start = async function start (port, parseCloudEvent) {
   logger.info(`start connect express server on port ${port}.`);
 
   process.on('unhandledRejection', (err) => {
-    console.log(err);
+    logger.error(err);
     throw err;
   });
 

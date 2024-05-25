@@ -1,13 +1,14 @@
 import logger from '../../logger.js';
-import schemaSync from '../schema/sync.js';
 import roleInstall from '../role/install.js';
-import setBeforeSave from './setBeforeSave.js';
+import schemaSync from '../schema/sync.js';
+
+import initCloudFunctions from './functions/index.js';
+import setAfterFind from './setAfterFind.js';
 import setAfterSave from './setAfterSave.js';
 import setBeforeDelete from './setBeforeDelete.js';
-import setAfterFind from './setAfterFind.js';
-import initCloudFunctions from './functions/index.js';
+import setBeforeSave from './setBeforeSave.js';
 
-const init = async function (Parse) {
+const init = async function init (Parse) {
   await roleInstall();
   logger.info('Role correctly setup');
 
