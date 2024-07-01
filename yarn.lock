@@ -8478,10 +8478,10 @@ parse-server-api-mail-adapter@^2.2.0:
   dependencies:
     mustache "4.2.0"
 
-parse-server@^6.0.0:
-  version "6.5.6"
-  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-6.5.6.tgz#12dcf3da3620834338cd0f22aa8aacfee138d3fa"
-  integrity sha512-DeZYx4CWZ6Iw7uKJuh+VGyIuPhCg2xYB7b+/LvovgWAowZh8+m5eY4RowtpWWwk7GGd2lFDif+PwYg04l2mCXg==
+parse-server@^6.5.7:
+  version "6.5.7"
+  resolved "https://registry.yarnpkg.com/parse-server/-/parse-server-6.5.7.tgz#aaa590f2baff16a18262ea65d4be6da725cd6904"
+  integrity sha512-hpVVhEqadq7QN3mCpItjFM1KzwCHgEn+EmiGggcKKWncOnB1viZ2C68+miu6nadgvIDwbeK1mAzx/QvJliVALw==
   dependencies:
     "@babel/eslint-parser" "7.24.1"
     "@graphql-tools/merge" "8.4.1"
@@ -8525,7 +8525,7 @@ parse-server@^6.0.0:
     uuid "9.0.1"
     winston "3.12.0"
     winston-daily-rotate-file "5.0.0"
-    ws "8.16.0"
+    ws "8.17.1"
   optionalDependencies:
     "@node-rs/bcrypt" "1.1.0"
 
@@ -11155,10 +11155,10 @@ ws@8.13.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-ws@8.16.0:
-  version "8.16.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
-  integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
+ws@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.1.tgz#9293da530bb548febc95371d90f9c878727d919b"
+  integrity sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==
 
 "ws@^5.2.0 || ^6.0.0 || ^7.0.0":
   version "7.5.9"
